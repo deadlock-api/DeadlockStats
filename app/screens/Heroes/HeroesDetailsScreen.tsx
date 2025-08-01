@@ -1,5 +1,5 @@
 import { type FC, useState } from "react";
-import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
+import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { HeroAbilities } from "@/components/heroes/HeroAbilities";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
@@ -31,14 +31,18 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
           >
             <HeroImage hero_id={hero.id} size={80} />
             <View>
-              <HeroName hero_id={hero.id} fontSize={20} />
+              <Text numberOfLines={1} style={{ fontSize: 20 }}>
+                <HeroName hero_id={hero.id} />
+              </Text>
               <Text numberOfLines={2} style={{ flexWrap: "wrap", marginTop: theme.spacing.xs, maxWidth: 200 }}>
                 {hero.description.role}
               </Text>
             </View>
           </View>
           <View style={themed($abilitiesContainer)}>
-            <Text style={themed($heading)}>Abilities</Text>
+            <Text preset="subheading" style={$styles.textCenter}>
+              Abilities
+            </Text>
             <HeroAbilities
               hero_id={hero.id}
               highlightedAbility={selectedAbility}
@@ -48,7 +52,9 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
             />
             {selectedAbility && (
               <View style={themed($abilityDescriptionContainer)}>
-                <Text style={themed($subheading)}>Description</Text>
+                <Text preset="subsubheading" style={$styles.textCenter}>
+                  Description
+                </Text>
                 <AbilityDescription ability_class_name={selectedAbility} />
               </View>
             )}
@@ -67,18 +73,6 @@ const $abilitiesContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   borderRadius: spacing.md,
   paddingTop: spacing.lg,
 });
-
-const $heading: TextStyle = {
-  fontSize: 20,
-  fontWeight: "bold",
-  textAlign: "center",
-};
-
-const $subheading: TextStyle = {
-  fontSize: 16,
-  fontWeight: "bold",
-  textAlign: "center",
-};
 
 const $abilityDescriptionContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   borderRadius: spacing.md,

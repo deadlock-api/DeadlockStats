@@ -22,8 +22,7 @@ export class AssetsApi {
   constructor(config: AssetsApiConfig = DEFAULT_ASSETS_API_CONFIG) {
     this.config = config;
     this.api = create({
-      // baseURL: this.config.apiUrl,
-      baseURL: "https://assets.deadlock-api.com/",
+      baseURL: this.config.apiUrl,
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",

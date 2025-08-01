@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { assetsApi } from "@/services/assets-api";
+import type { Hero } from "@/services/assets-api/types/hero";
 
 export const useAssetsHeroes = () => {
   return useQuery({
@@ -20,7 +21,6 @@ export const useAssetsHeroes = () => {
 
 export const useAssetsHero = (heroId: number) => {
   const heroes = useAssetsHeroes();
-  // @ts-ignore
-  heroes.data = useMemo(() => heroes.data?.find((h) => h.id === heroId), [heroes.data, heroId]);
-  return heroes;
+  const hero = useMemo(() => heroes.data?.find((h) => h.id === heroId), [heroes.data, heroId]);
+  return { ...heroes, data: hero as Hero | undefined };
 };

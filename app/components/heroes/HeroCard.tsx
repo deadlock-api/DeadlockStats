@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { ActivityIndicator, type ImageStyle, View } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
+import { Text } from "@/components/ui/Text";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
@@ -27,7 +28,9 @@ export function HeroCard(props: HeroCardProps) {
   return (
     <View style={[themed($container), { backgroundColor }]}>
       <HeroImage hero_id={hero.id} size={70} />
-      <HeroName hero_id={hero.id} fontSize={props.fontSize} />
+      <Text numberOfLines={1} style={{ fontSize: props.fontSize }}>
+        <HeroName hero_id={hero.id} />
+      </Text>
     </View>
   );
 }

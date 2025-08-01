@@ -1,10 +1,11 @@
-import type { ViewStyle } from "react-native";
+import type { TextStyle, ViewStyle } from "react-native";
 
 import { spacing } from "./spacing";
 
 /* Use this file to define styles that are used in multiple places in your app. */
 export const $styles = {
   row: { flexDirection: "row" } as ViewStyle,
+  textCenter: { textAlign: "center" } as TextStyle,
   flex1: { flex: 1 } as ViewStyle,
   flexWrap: { flexWrap: "wrap" } as ViewStyle,
 
