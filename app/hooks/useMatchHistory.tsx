@@ -12,7 +12,7 @@ export const useMatchHistory = (steamId: number | null) => {
       if (response.ok) {
         return response.data;
       } else {
-        throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
+        throw new Error(`Error fetching match history: ${JSON.stringify(response)}`);
       }
     },
     staleTime: 5 * 60 * 1000,
