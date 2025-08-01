@@ -6,10 +6,12 @@ import { useAppTheme } from "@/theme/context";
 
 export interface HeroAbilitiesProps {
   hero_id: number;
+  highlightedAbility?: string | null;
+  onAbilityClick?: (ability_class_name: string) => void;
 }
 
 export function HeroAbilities(props: HeroAbilitiesProps) {
-  const { themed, theme } = useAppTheme();
+  const { theme } = useAppTheme();
 
   const { data: hero } = useAssetsHero(props.hero_id);
 
@@ -20,11 +22,20 @@ export function HeroAbilities(props: HeroAbilitiesProps) {
     ) as string[];
   }, [hero]);
 
+  const renderAbility = ({ item }: { item: string }) => (
+    <AbilityCard
+      highlighted={!props.highlightedAbility || item === props.highlightedAbility}
+      key={item}
+      ability_class_name={item}
+      onPress={() => props.onAbilityClick?.(item)}
+    />
+  );
+
   return (
     <SimpleGrid
       listKey={"abilities"}
       data={abilities}
-      renderItem={({ item }) => <AbilityCard ability_class_name={item} />}
+      renderItem={renderAbility}
       keyExtractor={(item) => item}
       itemDimension={100}
       maxItemsPerRow={2}
