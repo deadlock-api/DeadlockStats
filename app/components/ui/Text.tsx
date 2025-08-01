@@ -1,7 +1,7 @@
 import type { TOptions } from "i18next";
 import { type ForwardedRef, forwardRef, type ReactNode } from "react";
 // eslint-disable-next-line no-restricted-imports
-import { Text as RNText, type TextProps as RNTextProps, type StyleProp, type TextStyle } from "react-native";
+import { type StyleProp, Text as RNText, type TextProps as RNTextProps, type TextStyle } from "react-native";
 
 import { isRTL, type TxKeyPath } from "@/i18n";
 import { translate } from "@/i18n/translate";
@@ -11,7 +11,7 @@ import { typography } from "@/theme/typography";
 
 type Sizes = keyof typeof $sizeStyles;
 type Weights = keyof typeof typography.primary;
-type Presets = "default" | "bold" | "heading" | "subheading" | "formLabel" | "formHelper";
+type Presets = "default" | "bold" | "heading" | "subheading" | "subsubheading" | "formLabel" | "formHelper";
 
 export interface TextProps extends RNTextProps {
   /**
@@ -110,6 +110,7 @@ const $presets: Record<Presets, ThemedStyleArray<TextStyle>> = {
     },
   ],
   subheading: [$baseStyle, { ...$sizeStyles.lg, ...$fontWeightStyles.medium }],
+  subsubheading: [$baseStyle, { ...$sizeStyles.md, ...$fontWeightStyles.medium }],
   formLabel: [$baseStyle, { ...$fontWeightStyles.medium }],
   formHelper: [$baseStyle, { ...$sizeStyles.sm, ...$fontWeightStyles.normal }],
 };

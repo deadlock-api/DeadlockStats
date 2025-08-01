@@ -20,10 +20,8 @@ const en = {
     },
   },
   mainNavigator: {
-    matchesTab: "Matches",
-    componentsTab: "Components",
+    profileTab: "Profile",
     heroesTab: "Heroes",
-    itemsTab: "Items",
     settingsTab: "Settings",
   },
   heroesScreen: {
@@ -62,8 +60,22 @@ const en = {
     tagLine:
       "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
     reportBugs: "Report Bugs",
-    demoList: "Demo List",
-    demoPodcastList: "Demo Podcast List",
+    signOut: "Sign Out",
+    signOutConfirmTitle: "Sign Out",
+    signOutConfirmMessage: "Are you sure you want to sign out? You'll need to sign in again to access your stats.",
+    signOutConfirmButton: "Sign Out",
+    cancel: "Cancel",
+  },
+  welcomeScreen: {
+    title: "Welcome to DeadlockStats",
+    subtitle: "Track your Deadlock game statistics and performance",
+    description: "Sign in with your Steam account to get started and view your detailed game analytics.",
+    signInButton: "Sign in with Steam",
+    signInButtonLoading: "Signing in...",
+    errorTitle: "Authentication Error",
+    errorMessage: "Failed to authenticate with Steam. Please try again.",
+    errorRetryButton: "Try Again",
+    loadingMessage: "Authenticating with Steam...",
   },
 };
 

@@ -32,18 +32,14 @@ export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE";
 const prefix = Linking.createURL("/");
 const config = {
   screens: {
-    Login: {
-      path: "",
-    },
     Welcome: "welcome",
-    Demo: {
+    "auth/steam/callback": "auth/steam/callback",
+    Main: {
       screens: {
         MainComponents: {
           path: "showroom/:queryIndex?/:itemIndex?",
         },
-        DemoDebug: "debug",
-        MainItems: "podcast",
-        MainHeroes: "community",
+        HeroesList: "heroes",
       },
     },
   },

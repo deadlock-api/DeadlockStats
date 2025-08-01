@@ -6,15 +6,15 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { translate } from "@/i18n/translate";
 import { HeroesNavigator } from "@/navigators/HeroesNavigator";
-import { MainComponentsScreen } from "@/screens/MainComponentsScreen";
+import { ProfileNavigator } from "@/navigators/ProfileNavigator";
 import { MainSettingsScreen } from "@/screens/MainSettingsScreen";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator";
 
 export type MainTabParamList = {
-  MainHeroes: undefined;
-  MainComponents: { queryIndex?: string; itemIndex?: string };
+  MainProfile: undefined;
+  MainHeroesList: undefined;
   Settings: undefined;
 };
 
@@ -35,7 +35,7 @@ const Tab = createBottomTabNavigator<MainTabParamList>();
  * Each tab is a stack navigator with its own set of screens.
  *
  * More info: https://reactnavigation.org/docs/bottom-tab-navigator/
- * @returns {JSX.Element} The rendered `DemoNavigator`.
+ * @returns {JSX.Element} The rendered `MainNavigator`.
  */
 export function MainNavigator() {
   const { bottom } = useSafeAreaInsets();
@@ -57,7 +57,18 @@ export function MainNavigator() {
       }}
     >
       <Tab.Screen
-        name="MainHeroes"
+        name="MainProfile"
+        component={ProfileNavigator}
+        options={{
+          tabBarLabel: translate("mainNavigator:profileTab"),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="user" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="MainHeroesList"
         component={HeroesNavigator}
         options={{
           tabBarLabel: translate("mainNavigator:heroesTab"),
@@ -65,17 +76,12 @@ export function MainNavigator() {
             <FontAwesome6 name="user-group" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
-      />
-
-      <Tab.Screen
-        name="MainComponents"
-        component={MainComponentsScreen}
-        options={{
-          tabBarLabel: translate("mainNavigator:componentsTab"),
-          tabBarIcon: ({ focused }) => (
-            <FontAwesome6 name="cubes" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
-          ),
-        }}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate(route.name, { screen: "List" });
+          },
+        })}
       />
 
       <Tab.Screen

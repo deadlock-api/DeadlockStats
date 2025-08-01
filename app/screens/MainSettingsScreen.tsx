@@ -1,7 +1,6 @@
 import * as Application from "expo-application";
 import { type FC, useCallback } from "react";
 import { LayoutAnimation, Linking, type TextStyle, useColorScheme, View, type ViewStyle } from "react-native";
-
 import { Button } from "@/components/ui/Button";
 import { ListItem } from "@/components/ui/ListItem";
 import { Screen } from "@/components/ui/Screen";
@@ -11,6 +10,7 @@ import type { MainTabScreenProps } from "@/navigators/MainNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
+import { removeSteamId } from "@/utils/steamAuth";
 
 /**
  * @param {string} url - The URL to open in the browser.
@@ -22,7 +22,8 @@ function openLinkInBrowser(url: string) {
 
 const usingHermes = typeof HermesInternal === "object" && HermesInternal !== null;
 
-export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function MainSettingsScreen(_props) {
+export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function MainSettingsScreen(props) {
+  const { navigation } = props;
   const { setThemeContextOverride, themeContext, themed } = useAppTheme();
 
   // @ts-expect-error
@@ -40,6 +41,15 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
     setThemeContextOverride(undefined);
   }, [setThemeContextOverride]);
 
+  // Handle sign out
+  const handleSignOut = useCallback(() => {
+    removeSteamId();
+    navigation.getParent()?.reset({
+      index: 0,
+      routes: [{ name: "Welcome" }],
+    });
+  }, [navigation]);
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={[$styles.container, themed($container)]}>
       <Text
@@ -55,6 +65,10 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
 
       <View style={themed($itemsContainer)}>
         <Button onPress={toggleTheme} text={`Toggle Theme: ${themeContext}`} />
+      </View>
+
+      <View style={themed($itemsContainer)}>
+        <Button preset="reversed" tx="settingsScreen:signOut" onPress={handleSignOut} style={themed($signOutButton)} />
       </View>
       <View style={themed($itemsContainer)}>
         <ListItem
@@ -145,4 +159,8 @@ const _$hint: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   fontSize: 12,
   lineHeight: 15,
   paddingBottom: spacing.lg,
+});
+
+const $signOutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.error,
 });
