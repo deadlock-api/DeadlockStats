@@ -1,14 +1,14 @@
-import { ComponentType, forwardRef, Ref, useImperativeHandle, useRef } from "react";
+import { type ComponentType, forwardRef, type Ref, useImperativeHandle, useRef } from "react";
 import {
-  ImageStyle,
-  StyleProp,
+  type ImageStyle,
+  type StyleProp,
   // eslint-disable-next-line no-restricted-imports
   TextInput,
-  TextInputProps,
-  TextStyle,
+  type TextInputProps,
+  type TextStyle,
   TouchableOpacity,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from "react-native";
 
 import { isRTL } from "@/i18n";
@@ -17,7 +17,7 @@ import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle, ThemedStyleArray } from "@/theme/types";
 
-import { Text, TextProps } from "./Text";
+import { Text, type TextProps } from "./Text";
 
 export interface TextFieldAccessoryProps {
   style: StyleProp<ViewStyle | TextStyle | ImageStyle>;

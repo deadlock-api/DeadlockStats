@@ -1,4 +1,4 @@
-import { exec } from "child_process";
+import { exec } from "node:child_process";
 
 import en from "../app/i18n/en";
 
@@ -18,7 +18,7 @@ const EXCEPTIONS: string[] = [
 
 function iterate(obj, stack, array) {
   for (const property in obj) {
-    if (Object.prototype.hasOwnProperty.call(obj, property)) {
+    if (Object.hasOwn(obj, property)) {
       if (typeof (obj as object)[property] === "object") {
         iterate(obj[property], `${stack}.${property}`, array);
       } else {

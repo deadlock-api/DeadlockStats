@@ -1,6 +1,6 @@
 import * as Application from "expo-application";
-import { type FC, useCallback, useMemo } from "react";
-import { LayoutAnimation, Linking, Platform, type TextStyle, useColorScheme, View, type ViewStyle } from "react-native";
+import { type FC, useCallback } from "react";
+import { LayoutAnimation, Linking, type TextStyle, useColorScheme, View, type ViewStyle } from "react-native";
 
 import { Button } from "@/components/ui/Button";
 import { ListItem } from "@/components/ui/ListItem";
@@ -132,15 +132,15 @@ const $itemsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginVertical: spacing.xl,
 });
 
-const $button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const _$button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.xs,
 });
 
-const $buttonContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const _$buttonContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
 });
 
-const $hint: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+const _$hint: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   color: colors.palette.neutral600,
   fontSize: 12,
   lineHeight: 15,

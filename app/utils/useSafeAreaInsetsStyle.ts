@@ -1,4 +1,4 @@
-import { Edge, useSafeAreaInsets } from "react-native-safe-area-context";
+import { type Edge, useSafeAreaInsets } from "react-native-safe-area-context";
 
 export type ExtendedEdge = Edge | "start" | "end";
 

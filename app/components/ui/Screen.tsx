@@ -1,22 +1,22 @@
-import { ReactNode, useRef, useState } from "react";
+import { useScrollToTop } from "@react-navigation/native";
+import { type ReactNode, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
-  KeyboardAvoidingViewProps,
-  LayoutChangeEvent,
+  type KeyboardAvoidingViewProps,
+  type LayoutChangeEvent,
   Platform,
-  ScrollView,
-  ScrollViewProps,
-  StyleProp,
+  type ScrollView,
+  type ScrollViewProps,
+  type StyleProp,
   View,
-  ViewStyle,
+  type ViewStyle,
 } from "react-native";
-import { useScrollToTop } from "@react-navigation/native";
-import { SystemBars, SystemBarsProps, SystemBarStyle } from "react-native-edge-to-edge";
+import { type SystemBarStyle, SystemBars, type SystemBarsProps } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
-import { ExtendedEdge, useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle";
+import { type ExtendedEdge, useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle";
 
 export const DEFAULT_BOTTOM_OFFSET = 50;
 
@@ -123,7 +123,7 @@ function useAutoPreset(props: AutoScreenProps): {
     if (scrollViewHeight.current === null || scrollViewContentHeight.current === null) return;
 
     // check whether content fits the screen then toggle scroll state according to it
-    const contentFitsScreen = (function () {
+    const contentFitsScreen = (() => {
       if (point) {
         return scrollViewContentHeight.current < scrollViewHeight.current - point;
       } else {
@@ -142,7 +142,7 @@ function useAutoPreset(props: AutoScreenProps): {
    * @param {number} w - The width of the content.
    * @param {number} h - The height of the content.
    */
-  function onContentSizeChange(w: number, h: number) {
+  function onContentSizeChange(_w: number, h: number) {
     // update scroll-view content height
     scrollViewContentHeight.current = h;
     updateScrollState();

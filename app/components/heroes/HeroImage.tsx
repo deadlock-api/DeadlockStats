@@ -1,8 +1,6 @@
-import type { ImageStyle } from "react-native";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
-import { useAppTheme } from "@/theme/context";
-import type { ThemedStyle } from "@/theme/types";
+import type { Hero } from "@/services/assets-api/types/hero";
 
 const DEFAULT_SIZE = 70;
 
@@ -12,25 +10,24 @@ export interface HeroImageProps {
 }
 
 export function HeroImage(props: HeroImageProps) {
-  const { themed } = useAppTheme();
+  const { data: hero } = useAssetsHero(props.hero_id) as { data: Hero | undefined };
 
-  const { data: hero } = useAssetsHero(props.hero_id);
+  const getBackgroundColor = (hero: Hero | undefined) => {
+    if (!hero) return "transparent";
+    return `rgba(${hero.colors.ui.join(",")}, 0.3)`;
+  };
 
   return (
     <AutoImage
       source={{ uri: hero?.images.icon_image_small_webp }}
       style={[
-        themed($image),
         {
           width: props.size ?? DEFAULT_SIZE,
           height: props.size ?? DEFAULT_SIZE,
           borderRadius: (props.size ?? DEFAULT_SIZE) / 2,
+          backgroundColor: getBackgroundColor(hero),
         },
       ]}
     />
   );
 }
-
-const $image: ThemedStyle<ImageStyle> = ({ colors }) => ({
-  backgroundColor: colors.palette.neutral100,
-});
