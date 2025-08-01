@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { ActivityIndicator, type ImageStyle, type TextStyle, View } from "react-native";
+import { ActivityIndicator, type ImageStyle, View } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
-import { Text } from "@/components/ui/Text";
+import { HeroName } from "@/components/heroes/HeroName";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
@@ -20,18 +20,14 @@ export function HeroCard(props: HeroCardProps) {
     return `rgba(${hero?.colors.ui.join(",")}, 0.1)`;
   }, [hero]);
 
+  if (!hero) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <View style={[themed($container), { backgroundColor }]}>
-      {hero ? (
-        <>
-          <HeroImage hero_id={hero.id} size={70} />
-          <Text numberOfLines={1} style={[themed($text), { fontSize: props.fontSize }]}>
-            {hero?.name}
-          </Text>
-        </>
-      ) : (
-        <ActivityIndicator />
-      )}
+      <HeroImage hero_id={hero.id} size={70} />
+      <HeroName hero_id={hero.id} fontSize={props.fontSize} />
     </View>
   );
 }
@@ -46,8 +42,3 @@ const $container: ThemedStyle<ImageStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xs,
   marginHorizontal: "auto",
 });
-
-const $text: TextStyle = {
-  fontSize: 20,
-  textAlign: "center",
-};
