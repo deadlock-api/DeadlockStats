@@ -74,7 +74,7 @@ const $abilitiesContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   paddingTop: spacing.lg,
 });
 
-const $abilityDescriptionContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+const $abilityDescriptionContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   borderRadius: spacing.md,
   paddingHorizontal: spacing.lg,
   paddingBottom: spacing.xl,

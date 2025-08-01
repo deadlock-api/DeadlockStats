@@ -1,5 +1,6 @@
 import type { FC } from "react";
 import { type TextStyle, View, type ViewStyle } from "react-native";
+import { MatchHistoryStats } from "@/components/profile/MatchHistoryStats";
 import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -10,7 +11,7 @@ import type { ThemedStyle } from "@/theme/types";
 import { getSteamId } from "@/utils/steamAuth";
 
 export const ProfileOverviewScreen: FC<ProfileStackScreenProps<"Overview">> = (_props) => {
-  const { themed, theme } = useAppTheme();
+  const { themed } = useAppTheme();
 
   const steamId = getSteamId();
 
@@ -20,6 +21,7 @@ export const ProfileOverviewScreen: FC<ProfileStackScreenProps<"Overview">> = (_
         <Text style={[themed($highlight), $styles.textCenter]} preset="subheading">
           <SteamName steamId={steamId} />
         </Text>
+        <MatchHistoryStats steamId={steamId} />
       </View>
     </Screen>
   );

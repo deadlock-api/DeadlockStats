@@ -33,7 +33,7 @@ export class AssetsApi {
     return await this.api.get(`v1/players/${playerId}/steam`);
   }
 
-  async getMatchHistory(playerId: number): Promise<ApiResponse<MatchHistory>> {
+  async getMatchHistory(playerId: number): Promise<ApiResponse<MatchHistory[]>> {
     return await this.api.get(`v1/players/${playerId}/match-history`);
   }
 }
