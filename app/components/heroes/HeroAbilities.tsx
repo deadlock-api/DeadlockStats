@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { SimpleGrid } from "react-native-super-grid";
-import { HeroAbilityCard } from "@/components/heroes/HeroAbilityCard";
+import { AbilityCard } from "@/components/items/AbilityCard";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
 import { useAppTheme } from "@/theme/context";
 
@@ -24,7 +24,7 @@ export function HeroAbilities(props: HeroAbilitiesProps) {
     <SimpleGrid
       listKey={"abilities"}
       data={abilities}
-      renderItem={({ item }) => <HeroAbilityCard ability_class_name={item} />}
+      renderItem={({ item }) => <AbilityCard ability_class_name={item} />}
       keyExtractor={(item) => item}
       itemDimension={100}
       maxItemsPerRow={2}

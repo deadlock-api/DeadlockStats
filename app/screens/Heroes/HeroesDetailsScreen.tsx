@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
 import { HeroAbilities } from "@/components/heroes/HeroAbilities";
 import { HeroImage } from "@/components/heroes/HeroImage";
+import { HeroName } from "@/components/heroes/HeroName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
@@ -28,9 +29,7 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
           >
             <HeroImage hero_id={hero.id} size={80} />
             <View>
-              <Text numberOfLines={1} style={{ fontSize: 20, fontWeight: "bold" }}>
-                {hero.name}
-              </Text>
+              <HeroName hero_id={hero.id} fontSize={20} />
               <Text numberOfLines={2} style={{ flexWrap: "wrap", marginTop: theme.spacing.xs, maxWidth: 200 }}>
                 {hero.description.role}
               </Text>
