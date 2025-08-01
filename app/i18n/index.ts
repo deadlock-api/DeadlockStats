@@ -1,11 +1,11 @@
-import { I18nManager } from "react-native";
 import * as Localization from "expo-localization";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { I18nManager } from "react-native";
 import "intl-pluralrules";
 
 // if English isn't your default language, move Translations to the appropriate language file.
-import en, { Translations } from "./en";
+import en, { type Translations } from "./en";
 
 const fallbackLocale = "en-US";
 
@@ -28,7 +28,7 @@ const pickSupportedLocale: () => Localization.Locale | undefined = () => {
 const locale = pickSupportedLocale();
 
 export const deadlock_locale = {
-  "pt-BR": "brazilian",
+  pt: "portuguese",
   bg: "bulgarian",
   cs: "czech",
   da: "danish",
@@ -43,21 +43,18 @@ export const deadlock_locale = {
   it: "italian",
   ja: "japanese",
   ko: "koreana",
-  "es-419": "latam",
+  es: "spanish",
   no: "norwegian",
   pl: "polish",
-  pt: "portuguese",
   ro: "romanian",
   ru: "russian",
-  "zh-Hans": "schinese",
-  es: "spanish",
+  zh: "tchinese",
   sv: "swedish",
-  "zh-Hant": "tchinese",
   th: "thai",
   tr: "turkish",
   uk: "ukrainian",
   vi: "vietnamese",
-}[locale?.languageTag ?? fallbackLocale];
+}[(locale?.languageTag ?? fallbackLocale).split("-")[0]];
 
 export let isRTL = false;
 

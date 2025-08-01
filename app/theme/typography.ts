@@ -1,14 +1,14 @@
 // TODO: write documentation about fonts and typography along with guides on how to add custom fonts in own
 // markdown file and add links from here
 
-import { Platform } from "react-native";
 import {
-  SpaceGrotesk_300Light as spaceGroteskLight,
-  SpaceGrotesk_400Regular as spaceGroteskRegular,
-  SpaceGrotesk_500Medium as spaceGroteskMedium,
-  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
   SpaceGrotesk_700Bold as spaceGroteskBold,
+  SpaceGrotesk_300Light as spaceGroteskLight,
+  SpaceGrotesk_500Medium as spaceGroteskMedium,
+  SpaceGrotesk_400Regular as spaceGroteskRegular,
+  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
 } from "@expo-google-fonts/space-grotesk";
+import { Platform } from "react-native";
 
 export const customFontsToLoad = {
   spaceGroteskLight,

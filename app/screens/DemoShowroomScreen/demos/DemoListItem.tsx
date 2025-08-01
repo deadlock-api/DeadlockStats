@@ -100,7 +100,7 @@ export const DemoListItem: Demo = {
         topSeparator
         LeftComponent={
           <View style={themed([$styles.row, $customLeft, { marginEnd: theme.spacing.md }])}>
-            {Array.from({ length: 9 }, (x, i) => i).map((i) => (
+            {Array.from({ length: 9 }, (_x, i) => i).map((i) => (
               <Icon key={i} icon="ladybug" color={theme.colors.palette.neutral100} size={20} />
             ))}
           </View>
@@ -114,7 +114,7 @@ export const DemoListItem: Demo = {
         bottomSeparator
         RightComponent={
           <View style={themed([$styles.row, $customLeft, { marginStart: theme.spacing.md }])}>
-            {Array.from({ length: 9 }, (x, i) => i).map((i) => (
+            {Array.from({ length: 9 }, (_x, i) => i).map((i) => (
               <Icon key={i} icon="ladybug" color={theme.colors.palette.neutral100} size={20} />
             ))}
           </View>

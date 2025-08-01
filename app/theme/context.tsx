@@ -1,10 +1,10 @@
-import { createContext, FC, PropsWithChildren, useCallback, useContext, useEffect, useMemo } from "react";
-import { StyleProp, useColorScheme } from "react-native";
 import {
   DarkTheme as NavDarkTheme,
   DefaultTheme as NavDefaultTheme,
-  Theme as NavTheme,
+  type Theme as NavTheme,
 } from "@react-navigation/native";
+import { createContext, type FC, type PropsWithChildren, useCallback, useContext, useEffect, useMemo } from "react";
+import { type StyleProp, useColorScheme } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 
 import { storage } from "@/utils/storage";
@@ -68,7 +68,7 @@ export const ThemeProvider: FC<PropsWithChildren<ThemeProviderProps>> = ({ child
    * systemColorScheme is the value from the device. If undefined, we fall back to "light"
    */
   const themeContext: ImmutableThemeContextModeT = useMemo(() => {
-    const t = initialContext || themeScheme || (!!systemColorScheme ? systemColorScheme : "light");
+    const t = initialContext || themeScheme || (systemColorScheme ? systemColorScheme : "light");
     return t === "dark" ? "dark" : "light";
   }, [initialContext, themeScheme, systemColorScheme]);
 

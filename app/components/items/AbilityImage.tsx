@@ -1,4 +1,5 @@
-import type { ImageStyle } from "react-native";
+import { type ImageStyle, View } from "react-native";
+import { SvgUri } from "react-native-svg";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { useAssetsAbility } from "@/hooks/useAssetsitems";
 import { useAppTheme } from "@/theme/context";
@@ -9,16 +10,33 @@ export interface AbilityImageProps {
 }
 
 export function AbilityImage(props: AbilityImageProps) {
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
 
   const { data: ability } = useAssetsAbility(props.ability_class_name);
-  return <AutoImage source={{ uri: ability?.image_webp }} style={themed($image)} />;
+  return (
+    <>
+      <View
+        style={{
+          position: "absolute",
+          zIndex: -1,
+          top: -25,
+        }}
+      >
+        <SvgUri
+          uri="https://assets-bucket.deadlock-api.com/assets-api-res/icons/ability_frame_standard.svg"
+          width={120}
+          height={120}
+          filter={theme.isDark ? "" : "invert(100%)"}
+        />
+      </View>
+      <AutoImage source={{ uri: ability?.image_webp }} style={themed($image)} />
+    </>
+  );
 }
 
 const $image: ThemedStyle<ImageStyle> = (theme) => ({
-  width: 60,
-  height: 60,
-  borderRadius: 30,
-  backgroundColor: theme.colors.palette.neutral100,
-  tintColor: theme.colors.tint,
+  width: 55,
+  height: 55,
+  tintColor: theme.colors.background,
+  marginBottom: 10,
 });

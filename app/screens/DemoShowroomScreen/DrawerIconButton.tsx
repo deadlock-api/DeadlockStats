@@ -1,4 +1,4 @@
-import { Pressable, PressableProps, ViewStyle, Platform } from "react-native";
+import { Platform, Pressable, type PressableProps, type ViewStyle } from "react-native";
 import { useDrawerProgress } from "react-native-drawer-layout";
 import Animated, { interpolate, interpolateColor, useAnimatedStyle } from "react-native-reanimated";
 

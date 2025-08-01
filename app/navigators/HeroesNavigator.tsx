@@ -22,7 +22,7 @@ const Stack = createNativeStackNavigator<HeroesStackParamList>();
 
 export interface NavigationProps extends Partial<ComponentProps<typeof NavigationContainer<HeroesStackParamList>>> {}
 
-export const HeroesNavigator = (props: NavigationProps) => {
+export const HeroesNavigator = (_props: NavigationProps) => {
   const { theme } = useAppTheme();
 
   useBackButtonHandler((routeName) => exitRoutes.includes(routeName));

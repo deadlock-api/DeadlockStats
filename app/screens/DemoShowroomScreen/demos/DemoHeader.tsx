@@ -71,7 +71,7 @@ export const DemoHeader: Demo = {
         titleStyle={$rightAlignTitle}
         LeftActionComponent={
           <View style={themed([$styles.row, $customLeftAction])}>
-            {Array.from({ length: 20 }, (x, i) => i).map((i) => (
+            {Array.from({ length: 20 }, (_x, i) => i).map((i) => (
               <Icon key={i} icon="ladybug" color={theme.colors.palette.neutral100} size={20} />
             ))}
           </View>

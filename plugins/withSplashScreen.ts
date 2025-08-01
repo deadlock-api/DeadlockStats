@@ -1,4 +1,4 @@
-import { ConfigPlugin, withStringsXml, AndroidConfig, withAndroidStyles } from "expo/config-plugins";
+import { AndroidConfig, type ConfigPlugin, withAndroidStyles, withStringsXml } from "expo/config-plugins";
 
 /**
  *

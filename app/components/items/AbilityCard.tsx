@@ -38,4 +38,6 @@ const $container: ThemedStyle<ImageStyle> = ({ spacing }) => ({
   borderRadius: spacing.md,
   padding: spacing.xxs,
   paddingTop: spacing.xs,
+  paddingBottom: 0,
+  gap: spacing.xs,
 });

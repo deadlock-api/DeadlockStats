@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from "react";
+import { createNavigationContainerRef, type NavigationState, type PartialState } from "@react-navigation/native";
+import { useEffect, useRef, useState } from "react";
 import { BackHandler, Linking, Platform } from "react-native";
-import { NavigationState, PartialState, createNavigationContainerRef } from "@react-navigation/native";
 
 import Config from "@/config";
 import type { PersistNavigationConfig } from "@/config/config.base";
-import * as storage from "@/utils/storage";
+import type * as storage from "@/utils/storage";
 import { useIsMounted } from "@/utils/useIsMounted";
 
 import type { AppStackParamList, NavigationProps } from "./AppNavigator";
@@ -158,7 +158,7 @@ export function useNavigationPersistence(storage: Storage, persistenceKey: strin
     if (!isRestored) restoreState();
     // runs once on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isRestored, restoreState]);
 
   return { onNavigationStateChange, restoreState, isRestored, initialNavigationState };
 }

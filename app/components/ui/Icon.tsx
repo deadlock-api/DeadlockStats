@@ -1,12 +1,12 @@
 import {
   Image,
-  ImageStyle,
-  StyleProp,
+  type ImageStyle,
+  type StyleProp,
   TouchableOpacity,
-  TouchableOpacityProps,
+  type TouchableOpacityProps,
   View,
-  ViewProps,
-  ViewStyle,
+  type ViewProps,
+  type ViewStyle,
 } from "react-native";
 
 import { useAppTheme } from "@/theme/context";

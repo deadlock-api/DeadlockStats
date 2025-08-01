@@ -1,4 +1,4 @@
-import { Component, ErrorInfo, ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
 import { ErrorDetails } from "./ErrorDetails";
 
@@ -48,7 +48,7 @@ export class ErrorBoundary extends Component<Props, State> {
   };
 
   // To avoid unnecessary re-renders
-  shouldComponentUpdate(nextProps: Readonly<Props>, nextState: Readonly<State>): boolean {
+  shouldComponentUpdate(_nextProps: Readonly<Props>, nextState: Readonly<State>): boolean {
     return nextState.error !== this.state.error;
   }
 

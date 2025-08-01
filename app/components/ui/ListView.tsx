@@ -1,6 +1,6 @@
-import { ForwardedRef, forwardRef, PropsWithoutRef, ReactElement, RefObject } from "react";
+import { FlashList, type FlashListProps } from "@shopify/flash-list";
+import { type ForwardedRef, forwardRef, type PropsWithoutRef, type ReactElement, type RefObject } from "react";
 import { FlatList } from "react-native";
-import { FlashList, FlashListProps } from "@shopify/flash-list";
 
 import { isRTL } from "@/i18n";
 
