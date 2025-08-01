@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import { deadlock_locale } from "@/i18n";
 import { assetsApi } from "@/services/assets-api";
 
 export const useAssetsAbility = (itemId: number | string) => {
   return useQuery({
-    queryKey: ["assets-ability", itemId],
+    queryKey: ["assets-ability", deadlock_locale, itemId],
     queryFn: async () => {
       const response = await assetsApi.getAbility(itemId);
       if (response.ok) {
@@ -19,7 +20,7 @@ export const useAssetsAbility = (itemId: number | string) => {
 
 export const useAssetsWeapon = (itemId: number) => {
   return useQuery({
-    queryKey: ["assets-weapon", itemId],
+    queryKey: ["assets-weapon", deadlock_locale, itemId],
     queryFn: async () => {
       const response = await assetsApi.getWeapon(itemId);
       if (response.ok) {

@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { assetsApi } from "@/services/assets-api";
 
 export const useAssetsHeroes = () => {
@@ -18,21 +19,8 @@ export const useAssetsHeroes = () => {
 };
 
 export const useAssetsHero = (heroId: number) => {
-  return useQuery({
-    queryKey: ["assets-hero", heroId],
-    queryFn: async () => {
-      const response = await assetsApi.getHeroes();
-      if (response.ok) {
-        const hero = response.data?.find((hero) => hero.id === heroId);
-        if (!hero) {
-          throw new Error(`Hero not found: ${heroId}`);
-        }
-        return hero;
-      } else {
-        throw new Error(`Error fetching hero: ${JSON.stringify(response)}`);
-      }
-    },
-    staleTime: 24 * 60 * 60 * 1000,
-    networkMode: "offlineFirst",
-  });
+  const heroes = useAssetsHeroes();
+  // @ts-ignore
+  heroes.data = useMemo(() => heroes.data?.find((h) => h.id === heroId), [heroes.data, heroId]);
+  return heroes;
 };
