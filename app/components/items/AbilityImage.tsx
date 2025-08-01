@@ -20,4 +20,5 @@ const $image: ThemedStyle<ImageStyle> = (theme) => ({
   height: 60,
   borderRadius: 30,
   backgroundColor: theme.colors.palette.neutral100,
+  tintColor: theme.colors.tint,
 });

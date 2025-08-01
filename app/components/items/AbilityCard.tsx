@@ -1,4 +1,4 @@
-import { ActivityIndicator, type ImageStyle, View } from "react-native";
+import { ActivityIndicator, type ImageStyle, TouchableOpacity, View } from "react-native";
 import { AbilityImage } from "@/components/items/AbilityImage";
 import { useAssetsAbility } from "@/hooks/useAssetsitems";
 import { useAppTheme } from "@/theme/context";
@@ -7,6 +7,8 @@ import { AbilityName } from "./AbilityName";
 
 export interface HeroAbilityCardProps {
   ability_class_name: string;
+  highlighted?: boolean;
+  onPress?: () => void;
 }
 
 export function AbilityCard(props: HeroAbilityCardProps) {
@@ -19,10 +21,12 @@ export function AbilityCard(props: HeroAbilityCardProps) {
   }
 
   return (
-    <View style={[themed($container), ability.ability_type === "ultimate" && themed($ultimate)]}>
-      <AbilityImage ability_class_name={props.ability_class_name} />
-      <AbilityName ability_class_name={props.ability_class_name} fontSize={11} />
-    </View>
+    <TouchableOpacity onPress={() => props.onPress?.()}>
+      <View style={[themed($container), { opacity: props.highlighted ? 1 : 0.5 }]}>
+        <AbilityImage ability_class_name={props.ability_class_name} />
+        <AbilityName ability_class_name={props.ability_class_name} fontSize={12} />
+      </View>
+    </TouchableOpacity>
   );
 }
 
@@ -34,9 +38,4 @@ const $container: ThemedStyle<ImageStyle> = ({ spacing }) => ({
   borderRadius: spacing.md,
   padding: spacing.xxs,
   paddingTop: spacing.xs,
-});
-
-const $ultimate: ThemedStyle<ImageStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.palette.neutral300,
-  borderRadius: spacing.md,
 });
