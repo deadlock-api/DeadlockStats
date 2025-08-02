@@ -15,8 +15,8 @@ export const HeroesListScreen: FC<HeroesStackScreenProps<"List">> = (props) => {
   const { data: heroes } = useAssetsHeroes();
 
   const renderHero = ({ item }: { item: Hero }) => (
-    <TouchableOpacity onPress={() => props.navigation.navigate("Details", { hero_id: item.id })}>
-      <HeroCard key={item.id} hero_id={item.id} fontSize={14} />
+    <TouchableOpacity onPress={() => props.navigation.navigate("Details", { heroId: item.id })}>
+      <HeroCard key={item.id} heroId={item.id} fontSize={14} />
     </TouchableOpacity>
   );
 

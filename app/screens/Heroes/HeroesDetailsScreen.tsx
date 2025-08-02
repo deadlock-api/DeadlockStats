@@ -15,7 +15,7 @@ import type { ThemedStyle } from "@/theme/types";
 export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) => {
   const { themed, theme } = useAppTheme();
 
-  const { data: hero } = useAssetsHero(props.route.params.hero_id);
+  const { data: hero } = useAssetsHero(props.route.params.heroId);
   const [selectedAbility, setSelectedAbility] = useState<string | null>(null);
 
   return (
@@ -29,10 +29,10 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
               justifyContent: "space-around",
             }}
           >
-            <HeroImage hero_id={hero.id} size={80} />
+            <HeroImage heroId={hero.id} size={80} />
             <View>
               <Text numberOfLines={1} style={{ fontSize: 20 }}>
-                <HeroName hero_id={hero.id} />
+                <HeroName heroId={hero.id} />
               </Text>
               <Text numberOfLines={2} style={{ flexWrap: "wrap", marginTop: theme.spacing.xs, maxWidth: 200 }}>
                 {hero.description.role}
@@ -44,7 +44,7 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
               Abilities
             </Text>
             <HeroAbilities
-              hero_id={hero.id}
+              heroId={hero.id}
               highlightedAbility={selectedAbility}
               onAbilityClick={(clickedAbility) =>
                 setSelectedAbility(clickedAbility === selectedAbility ? null : clickedAbility)

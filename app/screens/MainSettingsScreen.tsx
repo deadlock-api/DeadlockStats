@@ -146,21 +146,6 @@ const $itemsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginVertical: spacing.xl,
 });
 
-const _$button: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.xs,
-});
-
-const _$buttonContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginBottom: spacing.md,
-});
-
-const _$hint: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
-  color: colors.palette.neutral600,
-  fontSize: 12,
-  lineHeight: 15,
-  paddingBottom: spacing.lg,
-});
-
 const $signOutButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
   backgroundColor: colors.error,
 });

@@ -2,7 +2,7 @@
   "name": "DeadlockStats",
   "slug": "DeadlockStats",
   "scheme": "deadlockstats",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "orientation": "portrait",
   "userInterfaceStyle": "automatic",
   "icon": "./assets/images/app-icon-all.png",
@@ -20,12 +20,14 @@
       "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
     },
     "allowBackup": false,
-    "edgeToEdgeEnabled": true
+    "edgeToEdgeEnabled": true,
+    "versionCode": 1
   },
   "ios": {
     "icon": "./assets/images/app-icon-ios.png",
     "supportsTablet": true,
-    "bundleIdentifier": "com.deadlockapi.deadlockstats"
+    "bundleIdentifier": "com.deadlockapi.deadlockstats",
+    "buildNumber": "0.0.1"
   },
   "web": {
     "favicon": "./assets/images/app-icon-web-favicon.png",

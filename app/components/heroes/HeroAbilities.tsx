@@ -5,7 +5,7 @@ import { useAssetsHero } from "@/hooks/useAssetsHeroes";
 import { useAppTheme } from "@/theme/context";
 
 export interface HeroAbilitiesProps {
-  hero_id: number;
+  heroId: number;
   highlightedAbility?: string | null;
   onAbilityClick?: (ability_class_name: string) => void;
 }
@@ -13,7 +13,7 @@ export interface HeroAbilitiesProps {
 export function HeroAbilities(props: HeroAbilitiesProps) {
   const { theme } = useAppTheme();
 
-  const { data: hero } = useAssetsHero(props.hero_id);
+  const { data: hero } = useAssetsHero(props.heroId);
 
   const abilities: string[] = useMemo(() => {
     const items = hero?.items;

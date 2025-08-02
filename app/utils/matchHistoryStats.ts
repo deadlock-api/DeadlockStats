@@ -206,3 +206,24 @@ export function formatRelativeTime(timestamp: number): string {
   const date = new Date(timestamp * 1000);
   return date.toLocaleDateString();
 }
+
+export function parseMatchMode(matchMode: number): string {
+  switch (matchMode) {
+    case 1:
+      return "Unranked";
+    case 2:
+      return "Private Lobby";
+    case 3:
+      return "Co-op Bot";
+    case 4:
+      return "Ranked";
+    case 5:
+      return "Server Test";
+    case 6:
+      return "Tutorial";
+    case 7:
+      return "Hero Labs";
+    default:
+      return "Unknown";
+  }
+}

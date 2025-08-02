@@ -1,62 +1,64 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { type FC, useEffect, useState } from "react";
-import { ActivityIndicator, TouchableOpacity, View, type ViewStyle } from "react-native";
+import type { FC } from "react";
+import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { usePlayerSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
+import { MatchItem } from "@/components/matches/MatchItem";
+import { AccountSelector } from "@/components/profile/AccountSelector";
 import { StatCard } from "@/components/profile/StatCard";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHeroes } from "@/hooks/useAssetsHeroes";
 import { useMatchHistory } from "@/hooks/useMatchHistory";
-import { useSteamProfile } from "@/hooks/useSteamProfile";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
 import type { MatchHistory } from "@/services/api/types/match_history";
-import type { SteamProfile } from "@/services/api/types/steam_profile";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "@/utils/matchHistoryStats";
-import { getSteamId } from "@/utils/steamAuth";
 
 export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (props) => {
   const { themed, theme } = useAppTheme();
 
-  const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile(steamId);
-
-  const initialPlayer = props.route.params?.selectedPlayer?.account_id
-    ? props.route.params.selectedPlayer
-    : userProfile;
-
-  const [player, setPlayer] = useState<SteamProfile | null>(initialPlayer ?? null);
-
-  useEffect(() => {
-    if (!player) setPlayer(userProfile ?? null);
-  }, [player, userProfile]);
+  const [player, _] = usePlayerSelected();
 
   const { data: matchHistory, isLoading, error } = useMatchHistory(player?.account_id ?? null);
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
-      <View style={themed($header)}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.md }}>
-          <Text preset="subheading">
-            {player && player.account_id !== steamId
-              ? (player?.personaname ?? player?.realname ?? player?.account_id)
-              : (userProfile?.personaname ?? userProfile?.realname ?? userProfile?.account_id)}
-          </Text>
-          {player && player.account_id !== steamId && (
-            <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>
-              <FontAwesome6 name="xmark" solid color={theme.colors.error} size={20} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <TouchableOpacity style={[themed($searchButton)]} onPress={() => props.navigation.navigate("PlayerSearch")}>
-          <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
-        </TouchableOpacity>
-      </View>
+      <AccountSelector />
       {matchHistory && matchHistory.length > 0 ? (
-        <StatDisplays matchHistory={matchHistory} />
+        <>
+          <StatDisplays matchHistory={matchHistory} />
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Text preset="subheading" style={{ marginVertical: theme.spacing.md }}>
+              Recent Matches
+            </Text>
+            <TouchableOpacity
+              style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
+              onPress={() => props.navigation.navigate("MainMatches", { screen: "MatchesList" })}
+            >
+              <Text style={[themed($viewAllText), { color: theme.colors.text }]}>View All Matches</Text>
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
+            </TouchableOpacity>
+          </View>
+          <View style={[themed($matchesContainer), { backgroundColor: theme.colors.palette.neutral100 }]}>
+            {matchHistory.slice(0, 4).map((match, index) => (
+              <MatchItem
+                key={match.match_id}
+                match={match}
+                noBorder={index === 3}
+                onPress={() =>
+                  props.navigation.navigate("MainMatches", {
+                    screen: "MatchDetails",
+                    matchId: match.match_id,
+                  })
+                }
+              />
+            ))}
+          </View>
+        </>
       ) : (
         <View style={themed($noDataContainer)}>
           {isLoading ? (
@@ -106,13 +108,13 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
     <View style={themed($statDisplaysContainer)}>
       <StatCard
         title="Win Rate (7 Days)"
-        value={`${winRate}%`}
+        value={wins + losses > 0 ? `${winRate}%` : "-"}
         subtitle={`${wins}W ${losses}L`}
         valueColor={scaleColor(winRate, 30, 70)}
       />
       <StatCard
         title="Avg KDA (7 Days)"
-        value={kda.ratio}
+        value={kda.ratio > 0 ? kda.ratio : "-"}
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
         valueColor={scaleColor(kda.ratio, 0.5, 3)}
       />
@@ -127,9 +129,9 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
               marginBottom: theme.spacing.xxs,
             }}
           >
-            <HeroImage hero_id={mostPlayedHero.heroId} size={30} />
+            <HeroImage heroId={mostPlayedHero.heroId} size={30} />
             <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName hero_id={mostPlayedHero.heroId} />
+              <HeroName heroId={mostPlayedHero.heroId} />
             </Text>
           </View>
         }
@@ -147,9 +149,9 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
               marginBottom: theme.spacing.xxs,
             }}
           >
-            <HeroImage hero_id={highestWinRateHero.heroId} size={30} />
+            <HeroImage heroId={highestWinRateHero.heroId} size={30} />
             <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName hero_id={highestWinRateHero.heroId} />
+              <HeroName heroId={highestWinRateHero.heroId} />
             </Text>
           </View>
         }
@@ -160,11 +162,25 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
   );
 };
 
-const $noDataContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-  paddingVertical: spacing.xl,
+const $matchesContainer: ThemedStyle<ViewStyle> = () => ({
+  marginHorizontal: 20,
+  borderRadius: 16,
+  overflow: "hidden",
+  elevation: 2,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 8,
+});
+
+const $viewAllText: ThemedStyle<TextStyle> = () => ({
+  fontSize: 12,
+  fontWeight: "bold",
+});
+
+const $noDataContainer: ThemedStyle<TextStyle> = () => ({
+  fontSize: 16,
+  fontFamily: "Inter-SemiBold",
 });
 
 const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({

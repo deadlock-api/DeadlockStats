@@ -17,7 +17,7 @@ import {
 const mockMatches: MatchHistory[] = [
   {
     account_id: 123,
-    match_id: 1,
+    matchId: 1,
     hero_id: 1,
     hero_level: 25,
     start_time: Math.floor(Date.now() / 1000) - 10 * 24 * 60 * 60, // 10 days ago
@@ -39,7 +39,7 @@ const mockMatches: MatchHistory[] = [
   },
   {
     account_id: 123,
-    match_id: 2,
+    matchId: 2,
     hero_id: 2,
     hero_level: 20,
     start_time: Math.floor(Date.now() / 1000) - 20 * 24 * 60 * 60, // 20 days ago

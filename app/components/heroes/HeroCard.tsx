@@ -8,14 +8,14 @@ import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
 export interface HeroCardProps {
-  hero_id: number;
+  heroId: number;
   fontSize?: number;
 }
 
 export function HeroCard(props: HeroCardProps) {
   const { themed } = useAppTheme();
 
-  const { data: hero } = useAssetsHero(props.hero_id);
+  const { data: hero } = useAssetsHero(props.heroId);
 
   const backgroundColor = useMemo(() => {
     return `rgba(${hero?.colors.ui.join(",")}, 0.1)`;
@@ -27,9 +27,9 @@ export function HeroCard(props: HeroCardProps) {
 
   return (
     <View style={[themed($container), { backgroundColor }]}>
-      <HeroImage hero_id={hero.id} size={70} />
+      <HeroImage heroId={hero.id} size={70} />
       <Text numberOfLines={1} style={{ fontSize: props.fontSize }}>
-        <HeroName hero_id={hero.id} />
+        <HeroName heroId={hero.id} />
       </Text>
     </View>
   );

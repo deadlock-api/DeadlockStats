@@ -11,7 +11,7 @@ const exitRoutes = Config.exitRoutes;
 
 export type HeroesStackParamList = {
   List: undefined;
-  Details: { hero_id: number };
+  Details: { heroId: number };
 };
 export type HeroesStackScreenProps<T extends keyof HeroesStackParamList> = NativeStackScreenProps<
   HeroesStackParamList,

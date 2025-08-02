@@ -3,6 +3,7 @@ import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { type FC, useState } from "react";
 import { type ImageStyle, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { usePlayerSelected } from "@/app";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -17,7 +18,7 @@ import { load, save } from "@/utils/storage";
 export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> = (props) => {
   const { themed, theme } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [_, setPlayer] = usePlayerSelected();
   const [recentSearches, setRecentSearches] = useState<SteamProfile[]>(load("recentSearches") ?? []);
 
   const handlePress = (player: SteamProfile) => {
@@ -30,7 +31,8 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
     }
     setRecentSearches(newSearches);
     save("recentSearches", newSearches);
-    props.navigation.navigate("Dashboard", { selectedPlayer: player });
+    setPlayer(player);
+    props.navigation.goBack();
   };
 
   const { data: profiles } = useQuery({
@@ -56,7 +58,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
           style={[themed($backButton), { backgroundColor: theme.colors.palette.neutral100 }]}
           onPress={() => props.navigation.goBack()}
         >
-          <FontAwesome6 name="arrow-left" solid size={24} color={theme.colors.text} />
+          <FontAwesome6 name="chevron-left" solid size={24} color={theme.colors.text} />
         </TouchableOpacity>
         <Text style={[themed($title)]}>Search Player</Text>
         <View style={themed($placeholder)} />
