@@ -20,8 +20,10 @@ const en = {
     },
   },
   mainNavigator: {
-    profileTab: "Profile",
+    dashboardTab: "Dashboard",
+    matchesTab: "Matches",
     heroesTab: "Heroes",
+    profileTab: "Profile",
     settingsTab: "Settings",
   },
   heroesScreen: {

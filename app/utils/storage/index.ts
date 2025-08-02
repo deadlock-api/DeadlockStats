@@ -1,12 +1,8 @@
 import { MMKV } from "react-native-mmkv";
+import SessionStorage from "react-native-session-storage";
 
 export const storage = new MMKV();
 
-/**
- * Loads a string from storage.
- *
- * @param key The key to fetch.
- */
 export function loadString(key: string): string | null {
   try {
     return storage.getString(key) ?? null;
@@ -16,12 +12,6 @@ export function loadString(key: string): string | null {
   }
 }
 
-/**
- * Saves a string to storage.
- *
- * @param key The key to fetch.
- * @param value The value to store.
- */
 export function saveString(key: string, value: string): boolean {
   try {
     storage.set(key, value);
@@ -31,11 +21,6 @@ export function saveString(key: string, value: string): boolean {
   }
 }
 
-/**
- * Loads something from storage and runs it thru JSON.parse.
- *
- * @param key The key to fetch.
- */
 export function load<T>(key: string): T | null {
   let almostThere: string | null = null;
   try {
@@ -46,12 +31,6 @@ export function load<T>(key: string): T | null {
   }
 }
 
-/**
- * Saves an object to storage.
- *
- * @param key The key to fetch.
- * @param value The value to store.
- */
 export function save(key: string, value: unknown): boolean {
   try {
     saveString(key, JSON.stringify(value));
@@ -61,22 +40,39 @@ export function save(key: string, value: unknown): boolean {
   }
 }
 
-/**
- * Removes something from storage.
- *
- * @param key The key to kill.
- */
 export function remove(key: string): void {
   try {
     storage.delete(key);
   } catch {}
 }
 
-/**
- * Burn it all to the ground.
- */
 export function clear(): void {
   try {
     storage.clearAll();
+  } catch {}
+}
+
+export function sessionLoad<T>(key: string): T | undefined {
+  return SessionStorage.getItem(key) as T | undefined;
+}
+
+export function sessionSave(key: string, value: unknown): boolean {
+  try {
+    SessionStorage.setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function sessionRemove(key: string): void {
+  try {
+    SessionStorage.removeItem(key);
+  } catch {}
+}
+
+export function sessionClear(): void {
+  try {
+    SessionStorage.clear();
   } catch {}
 }

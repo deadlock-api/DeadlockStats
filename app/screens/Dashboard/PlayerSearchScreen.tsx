@@ -1,0 +1,241 @@
+import { FontAwesome6 } from "@expo/vector-icons";
+import { FlashList } from "@shopify/flash-list";
+import { useQuery } from "@tanstack/react-query";
+import { type FC, useState } from "react";
+import { type ImageStyle, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { AutoImage } from "@/components/ui/AutoImage";
+import { Screen } from "@/components/ui/Screen";
+import { Text } from "@/components/ui/Text";
+import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
+import { api } from "@/services/api";
+import type { SteamProfile } from "@/services/api/types/steam_profile";
+import { useAppTheme } from "@/theme/context";
+import { $styles } from "@/theme/styles";
+import type { ThemedStyle } from "@/theme/types";
+import { load, save } from "@/utils/storage";
+
+export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> = (props) => {
+  const { themed, theme } = useAppTheme();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [recentSearches, setRecentSearches] = useState<SteamProfile[]>(load("recentSearches") ?? []);
+
+  const handlePress = (player: SteamProfile) => {
+    let newSearches: SteamProfile[];
+    if (recentSearches.every((p) => p.account_id !== player.account_id)) {
+      newSearches = [player, ...recentSearches].slice(0, 5);
+    } else {
+      newSearches = recentSearches.filter((p) => p.account_id !== player.account_id);
+      newSearches.unshift(player);
+    }
+    setRecentSearches(newSearches);
+    save("recentSearches", newSearches);
+    props.navigation.navigate("Dashboard", { selectedPlayer: player });
+  };
+
+  const { data: profiles } = useQuery({
+    queryKey: ["api-steam-profile-search", searchQuery],
+    queryFn: async () => {
+      if (!searchQuery || searchQuery.length < 3) {
+        return [];
+      }
+      const response = await api.searchSteamProfile(searchQuery);
+      if (response.ok) {
+        return response.data?.slice(0, 5);
+      } else {
+        throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
+      }
+    },
+    staleTime: 60 * 1000,
+  });
+
+  return (
+    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+      <View style={themed($header)}>
+        <TouchableOpacity
+          style={[themed($backButton), { backgroundColor: theme.colors.palette.neutral100 }]}
+          onPress={() => props.navigation.goBack()}
+        >
+          <FontAwesome6 name="arrow-left" solid size={24} color={theme.colors.text} />
+        </TouchableOpacity>
+        <Text style={[themed($title)]}>Search Player</Text>
+        <View style={themed($placeholder)} />
+      </View>
+
+      <View
+        style={[
+          themed($searchContainer),
+          { backgroundColor: theme.colors.palette.neutral100, borderColor: theme.colors.border },
+        ]}
+      >
+        <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={20} />
+        <TextInput
+          style={[themed($searchInput), { color: theme.colors.text }]}
+          placeholder="Enter steam name..."
+          placeholderTextColor={theme.colors.textDim}
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoFocus
+        />
+      </View>
+
+      <View style={themed($resultsSection)}>
+        {searchQuery ? (
+          <View>
+            <Text preset="subheading">Search Results</Text>
+            {profiles && profiles.length > 0 ? (
+              <FlashList
+                data={profiles}
+                renderItem={({ item }) => <PlayerResult onPress={handlePress} player={item} />}
+                keyExtractor={(item) => item.account_id.toString()}
+                showsVerticalScrollIndicator={false}
+                estimatedItemSize={100}
+              />
+            ) : (
+              <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
+                <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
+                <Text style={themed($noResultsText)}>No players found</Text>
+                <Text style={[themed($noResultsSubtext), { color: theme.colors.textDim }]}>
+                  Try checking the spelling
+                </Text>
+              </View>
+            )}
+          </View>
+        ) : (
+          <View>
+            {recentSearches && recentSearches.length > 0 && <Text preset="subheading">Recent Searches</Text>}
+            {recentSearches.map((player) => (
+              <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
+            ))}
+          </View>
+        )}
+      </View>
+    </Screen>
+  );
+};
+
+const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (player: SteamProfile) => void }) => {
+  const { themed, theme } = useAppTheme();
+  return (
+    <TouchableOpacity
+      style={[themed($playerResult), { backgroundColor: theme.colors.palette.neutral100 }]}
+      onPress={() => onPress(player)}
+    >
+      <View style={[themed($playerAvatar), { backgroundColor: theme.colors.palette.neutral200 }]}>
+        {player.avatar ? (
+          <AutoImage source={{ uri: player.avatar }} style={themed($avatarImage)} />
+        ) : (
+          <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
+        )}
+      </View>
+      <View style={{ flex: 1 }}>
+        <Text style={themed($playerName)}>{player.personaname ?? player.realname ?? player.account_id}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: spacing.md,
+});
+
+const $backButton: ThemedStyle<ViewStyle> = () => ({
+  width: 48,
+  height: 48,
+  borderRadius: 12,
+  justifyContent: "center",
+  alignItems: "center",
+  borderWidth: 1,
+  backgroundColor: "transparent",
+  borderColor: "transparent",
+});
+
+const $title: ThemedStyle<ViewStyle> = () => ({
+  flex: 1,
+  textAlign: "center",
+  fontSize: 20,
+  fontWeight: "bold",
+});
+
+const $placeholder: ThemedStyle<ViewStyle> = () => ({
+  width: 48,
+  height: 48,
+});
+
+const $searchContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  alignItems: "center",
+  borderWidth: 1,
+  borderRadius: 12,
+  paddingHorizontal: 16,
+  paddingVertical: 12,
+  gap: 12,
+  marginBottom: spacing.md,
+});
+
+const $searchInput: ThemedStyle<ViewStyle> = ({ typography }) => ({
+  flex: 1,
+  fontSize: 16,
+  fontFamily: typography.primary.normal,
+});
+
+const $resultsSection: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  paddingHorizontal: spacing.lg,
+});
+
+const $noResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingVertical: spacing.xl,
+});
+
+const $noResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  fontSize: 16,
+  fontWeight: "bold",
+  marginBottom: spacing.md,
+});
+
+const $noResultsSubtext: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  fontSize: 14,
+  marginBottom: spacing.md,
+});
+
+const $playerResult: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  alignItems: "center",
+  padding: 16,
+  borderRadius: 12,
+  marginBottom: 12,
+  elevation: 2,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.1,
+  shadowRadius: 8,
+});
+
+const $playerAvatar: ThemedStyle<ViewStyle> = () => ({
+  width: 48,
+  height: 48,
+  borderRadius: 24,
+  justifyContent: "center",
+  alignItems: "center",
+  marginRight: 12,
+});
+
+const $avatarImage: ThemedStyle<ImageStyle> = () => ({
+  width: 48,
+  height: 48,
+  borderRadius: 12,
+});
+
+const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
+  fontSize: 16,
+  fontFamily: typography.primary.semiBold,
+});
