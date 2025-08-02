@@ -1,12 +1,12 @@
 import type { MatchHistory } from "@/services/api/types/match_history";
 
 /**
- * Filters match history to only include matches from the last 30 days
+ * Filters match history to only include matches from the last 7 days
  * @param matches Array of match history objects
- * @returns Filtered array of matches from the last 30 days
+ * @returns Filtered array of matches from the last 7 days
  */
-export function filterLast30Days(matches: MatchHistory[]): MatchHistory[] {
-  const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 30 * 24 * 60 * 60;
+export function filterLast7Days(matches: MatchHistory[]): MatchHistory[] {
+  const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
   return matches.filter((match) => match.start_time >= thirtyDaysAgo);
 }
 
@@ -18,7 +18,7 @@ export function filterLast30Days(matches: MatchHistory[]): MatchHistory[] {
 export function calculateWinRate(matches: MatchHistory[]): number {
   if (matches.length === 0) return 0;
 
-  const wins = matches.filter((match) => match.match_result === 1).length;
+  const wins = matches.filter((match) => isMatchWon(match)).length;
   return Math.round((wins / matches.length) * 100);
 }
 
@@ -88,7 +88,7 @@ export function calculateAverageMatchDuration(matches: MatchHistory[]): number {
  * @param matches Array of match history objects
  * @returns Array of hero statistics sorted by play count (descending)
  */
-export function getMostPlayedHeroes(matches: MatchHistory[]): Array<{
+export function getHeroStats(matches: MatchHistory[]): Array<{
   heroId: number;
   playCount: number;
   winRate: number;
@@ -108,7 +108,7 @@ export function getMostPlayedHeroes(matches: MatchHistory[]): Array<{
       }
 
       acc[heroId].playCount++;
-      if (match.match_result === 1) {
+      if (isMatchWon(match)) {
         acc[heroId].wins++;
       }
 
@@ -118,13 +118,11 @@ export function getMostPlayedHeroes(matches: MatchHistory[]): Array<{
   );
 
   // Convert to array and calculate win rates
-  return Object.entries(heroStats)
-    .map(([heroId, stats]) => ({
-      heroId: parseInt(heroId, 10),
-      playCount: stats.playCount,
-      winRate: Math.round((stats.wins / stats.playCount) * 100),
-    }))
-    .sort((a, b) => b.playCount - a.playCount); // Sort by play count descending
+  return Object.entries(heroStats).map(([heroId, stats]) => ({
+    heroId: parseInt(heroId, 10),
+    playCount: stats.playCount,
+    winRate: Math.round((stats.wins / stats.playCount) * 100),
+  }));
 }
 
 /**
@@ -149,4 +147,62 @@ export function formatNumber(num: number): string {
  */
 export function formatDuration(minutes: number): string {
   return `${minutes} min`;
+}
+
+/**
+ * Formats duration in seconds to a readable string
+ * @param seconds Duration in seconds
+ * @returns Formatted duration string (e.g., "25:30")
+ */
+export function formatMatchDuration(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+}
+
+/**
+ * Determines if a match was won by the player
+ * @param match MatchHistory object
+ * @returns true if the player won, false if they lost
+ */
+export function isMatchWon(match: MatchHistory): boolean {
+  return match.match_result === match.player_team;
+}
+
+/**
+ * Formats a Unix timestamp to a relative time string
+ * @param timestamp Unix timestamp in seconds
+ * @returns Relative time string (e.g., "2 days ago", "3 hours ago")
+ */
+export function formatRelativeTime(timestamp: number): string {
+  const now = Math.floor(Date.now() / 1000);
+  const diffSeconds = now - timestamp;
+
+  if (diffSeconds < 60) {
+    return "Just now";
+  }
+
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  if (diffMinutes < 60) {
+    return `${diffMinutes} minute${diffMinutes === 1 ? "" : "s"} ago`;
+  }
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) {
+    return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  }
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) {
+    return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+  }
+
+  const diffWeeks = Math.floor(diffDays / 7);
+  if (diffWeeks < 4) {
+    return `${diffWeeks} week${diffWeeks === 1 ? "" : "s"} ago`;
+  }
+
+  // For older dates, show absolute date
+  const date = new Date(timestamp * 1000);
+  return date.toLocaleDateString();
 }

@@ -5,8 +5,8 @@ import type { TextStyle, ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { translate } from "@/i18n/translate";
+import { DashboardNavigator } from "@/navigators/DashboardNavigator";
 import { HeroesNavigator } from "@/navigators/HeroesNavigator";
-import { ProfileNavigator } from "@/navigators/ProfileNavigator";
 import { MainSettingsScreen } from "@/screens/MainSettingsScreen";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
@@ -57,12 +57,23 @@ export function MainNavigator() {
       }}
     >
       <Tab.Screen
-        name="MainProfile"
-        component={ProfileNavigator}
+        name="MainDashboard"
+        component={DashboardNavigator}
         options={{
-          tabBarLabel: translate("mainNavigator:profileTab"),
+          tabBarLabel: translate("mainNavigator:dashboardTab"),
           tabBarIcon: ({ focused }) => (
-            <FontAwesome6 name="user" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+            <FontAwesome6 name="house" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="MainMatches"
+        component={DashboardNavigator}
+        options={{
+          tabBarLabel: translate("mainNavigator:matchesTab"),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="bar-chart" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
       />
@@ -73,7 +84,7 @@ export function MainNavigator() {
         options={{
           tabBarLabel: translate("mainNavigator:heroesTab"),
           tabBarIcon: ({ focused }) => (
-            <FontAwesome6 name="user-group" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+            <FontAwesome6 name="trophy" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
         listeners={({ navigation, route }) => ({
@@ -82,6 +93,17 @@ export function MainNavigator() {
             navigation.navigate(route.name, { screen: "List" });
           },
         })}
+      />
+
+      <Tab.Screen
+        name="MainProfile"
+        component={DashboardNavigator}
+        options={{
+          tabBarLabel: translate("mainNavigator:profileTab"),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="user" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+          ),
+        }}
       />
 
       <Tab.Screen

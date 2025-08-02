@@ -33,6 +33,10 @@ export class AssetsApi {
     return await this.api.get(`v1/players/${playerId}/steam`);
   }
 
+  async searchSteamProfile(search: string): Promise<ApiResponse<SteamProfile[]>> {
+    return await this.api.get(`v1/players/steam-search`, { search_query: search });
+  }
+
   async getMatchHistory(playerId: number): Promise<ApiResponse<MatchHistory[]>> {
     return await this.api.get(`v1/players/${playerId}/match-history`);
   }

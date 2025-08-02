@@ -31,7 +31,6 @@ export const HeroesNavigator = (_props: NavigationProps) => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
-        navigationBarColor: theme.colors.background,
         contentStyle: {
           backgroundColor: theme.colors.background,
         },

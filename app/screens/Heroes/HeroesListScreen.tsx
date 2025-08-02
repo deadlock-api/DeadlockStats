@@ -9,13 +9,13 @@ import type { Hero } from "@/services/assets-api/types/hero";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 
-export const HeroesListScreen: FC<HeroesStackScreenProps<"List">> = (_props) => {
+export const HeroesListScreen: FC<HeroesStackScreenProps<"List">> = (props) => {
   const { themed, theme } = useAppTheme();
 
   const { data: heroes } = useAssetsHeroes();
 
   const renderHero = ({ item }: { item: Hero }) => (
-    <TouchableOpacity onPress={() => _props.navigation.navigate("Details", { hero_id: item.id })}>
+    <TouchableOpacity onPress={() => props.navigation.navigate("Details", { hero_id: item.id })}>
       <HeroCard key={item.id} hero_id={item.id} fontSize={14} />
     </TouchableOpacity>
   );
