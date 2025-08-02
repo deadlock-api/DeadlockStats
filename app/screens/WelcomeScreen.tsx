@@ -28,14 +28,12 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
     setIsLoading(true);
 
     try {
-      // Create the callback URL for the app
-      const callbackUrl = Linking.createURL("/auth/steam/callback");
       // Build Steam OpenID parameters
       const params = new URLSearchParams({
         "openid.ns": "http://specs.openid.net/auth/2.0",
         "openid.mode": "checkid_setup",
-        "openid.return_to": callbackUrl,
-        "openid.realm": callbackUrl.split("/auth")[0],
+        "openid.return_to": "https://deadlock-api.com/auth/steam/callback",
+        "openid.realm": "https://deadlock-api.com",
         "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
         "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select",
       });

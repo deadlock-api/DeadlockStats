@@ -92,6 +92,9 @@ importers:
       react-native-gesture-handler:
         specifier: ~2.24.0
         version: 2.24.0(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
+      react-native-global-state-hooks:
+        specifier: ^11.0.1
+        version: 11.0.1(json-storage-formatter@2.0.9)(react-dom@19.0.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       react-native-keyboard-controller:
         specifier: ^1.18.2
         version: 1.18.2(react-native-reanimated@3.17.5(@babel/core@7.28.0)(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -110,9 +113,6 @@ importers:
       react-native-screens:
         specifier: ~4.11.1
         version: 4.11.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
-      react-native-session-storage:
-        specifier: ^2.0.1
-        version: 2.0.1
       react-native-super-grid:
         specifier: ^6.0.1
         version: 6.0.1(eslint-plugin-react-hooks@5.2.0(eslint@8.57.1))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
@@ -3367,6 +3367,9 @@ packages:
   json-stable-stringify-without-jsonify@1.0.1:
     resolution: {integrity: sha512-Bdboy+l7tA3OGW6FjyFHWkP5LuByj1Tk33Ljyq0axyzdk9//JSi2u3fP1QSmd1KNwq6VOKYGlAu87CisVir6Pw==}
 
+  json-storage-formatter@2.0.9:
+    resolution: {integrity: sha512-8UsiveogvIJp+Bf1h5yTKPsLbt5tgQKmuh7tFru9Z5js2BjrJMHsdqO+KOWJrvaaj0D1TexMLGg1/q0yDrwgQw==}
+
   json5@1.0.2:
     resolution: {integrity: sha512-g1MWMLBiz8FKi1e4w0UyVL3w+iJceWAFBAaBnnGKOpNa5f8TLktkbre1+s6oICydWAm+HRUGTmI+//xv2hvXYA==}
     hasBin: true
@@ -4027,6 +4030,13 @@ packages:
     peerDependencies:
       react: '>=17.0.0'
 
+  react-hooks-global-states@9.0.1:
+    resolution: {integrity: sha512-9Fzt+LmWZRO35vfMCZFC2Go6nJNvd2avpgU4X75+7FSjPbJ2IjTDE7Tv8aFxzVANjVDx2be6Q2A+MQhhh3z6qQ==}
+    peerDependencies:
+      json-storage-formatter: ^2.0.9
+      react: ^18.0.0
+      react-dom: ^18.0.0
+
   react-i18next@15.6.1:
     resolution: {integrity: sha512-uGrzSsOUUe2sDBG/+FJq2J1MM+Y4368/QW8OLEKSFvnDflHBbZhSd1u3UkW0Z06rMhZmnB/AQrhCpYfE5/5XNg==}
     peerDependencies:
@@ -4071,6 +4081,17 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
+
+  react-native-global-state-hooks@11.0.1:
+    resolution: {integrity: sha512-xDj2XE345eM9qVHAf9/YBBxU6E0WFeTvS2qdrqtX6U1OO0pukW9CnRqD//bp2CrI9LfeQ7+yxWLIHAdhU19Rng==}
+    peerDependencies:
+      '@react-native-async-storage/async-storage': '>=1.17.11'
+      json-storage-formatter: ^2.0.5
+      react: '>=17.0.0'
+      react-native: '>=0.71.6'
+    peerDependenciesMeta:
+      '@react-native-async-storage/async-storage':
+        optional: true
 
   react-native-is-edge-to-edge@1.1.7:
     resolution: {integrity: sha512-EH6i7E8epJGIcu7KpfXYXiV2JFIYITtq+rVS8uEb+92naMRBdxhTuS8Wn2Q7j9sqyO0B+Xbaaf9VdipIAmGW4w==}
@@ -4121,9 +4142,6 @@ packages:
     peerDependencies:
       react: '*'
       react-native: '*'
-
-  react-native-session-storage@2.0.1:
-    resolution: {integrity: sha512-5aC9C2lAuTaXWcXsq5f1UmJcvQOpLm64bdpId8BW2TKq5ZcaF8oe2jGNkRzavz+t6IxuZ/vW1Qa3G3wwtyxtNQ==}
 
   react-native-super-grid@6.0.1:
     resolution: {integrity: sha512-mM307KZ9593xM3pCjLson+4jR3CYp+4zNPnHzIVPbfic6Z+K8zLIn7m+zNy9fufSX6xnKKjiO9Ka69Tqco59Fw==}
@@ -9356,6 +9374,8 @@ snapshots:
 
   json-stable-stringify-without-jsonify@1.0.1: {}
 
+  json-storage-formatter@2.0.9: {}
+
   json5@1.0.2:
     dependencies:
       minimist: 1.2.8
@@ -10073,6 +10093,12 @@ snapshots:
     dependencies:
       react: 19.0.0
 
+  react-hooks-global-states@9.0.1(json-storage-formatter@2.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+    dependencies:
+      json-storage-formatter: 2.0.9
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
   react-i18next@15.6.1(i18next@23.16.8)(react-dom@19.0.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)(typescript@5.8.3):
     dependencies:
       '@babel/runtime': 7.28.2
@@ -10110,6 +10136,15 @@ snapshots:
       invariant: 2.2.4
       react: 19.0.0
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+
+  react-native-global-state-hooks@11.0.1(json-storage-formatter@2.0.9)(react-dom@19.0.0(react@19.0.0))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
+    dependencies:
+      json-storage-formatter: 2.0.9
+      react: 19.0.0
+      react-hooks-global-states: 9.0.1(json-storage-formatter@2.0.9)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
+    transitivePeerDependencies:
+      - react-dom
 
   react-native-is-edge-to-edge@1.1.7(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:
@@ -10182,8 +10217,6 @@ snapshots:
       react-native: 0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0)
       react-native-is-edge-to-edge: 1.2.1(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0)
       warn-once: 0.1.1
-
-  react-native-session-storage@2.0.1: {}
 
   react-native-super-grid@6.0.1(eslint-plugin-react-hooks@5.2.0(eslint@8.57.1))(react-native@0.79.5(@babel/core@7.28.0)(@types/react@19.0.14)(react@19.0.0))(react@19.0.0):
     dependencies:

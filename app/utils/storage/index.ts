@@ -1,5 +1,4 @@
 import { MMKV } from "react-native-mmkv";
-import SessionStorage from "react-native-session-storage";
 
 export const storage = new MMKV();
 
@@ -49,30 +48,5 @@ export function remove(key: string): void {
 export function clear(): void {
   try {
     storage.clearAll();
-  } catch {}
-}
-
-export function sessionLoad<T>(key: string): T | undefined {
-  return SessionStorage.getItem(key) as T | undefined;
-}
-
-export function sessionSave(key: string, value: unknown): boolean {
-  try {
-    SessionStorage.setItem(key, value);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-export function sessionRemove(key: string): void {
-  try {
-    SessionStorage.removeItem(key);
-  } catch {}
-}
-
-export function sessionClear(): void {
-  try {
-    SessionStorage.clear();
   } catch {}
 }

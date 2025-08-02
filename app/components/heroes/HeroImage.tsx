@@ -5,12 +5,12 @@ import type { Hero } from "@/services/assets-api/types/hero";
 const DEFAULT_SIZE = 70;
 
 export interface HeroImageProps {
-  hero_id: number;
+  heroId: number;
   size?: number;
 }
 
 export function HeroImage(props: HeroImageProps) {
-  const { data: hero } = useAssetsHero(props.hero_id) as { data: Hero | undefined };
+  const { data: hero } = useAssetsHero(props.heroId) as { data: Hero | undefined };
 
   const getBackgroundColor = (hero: Hero | undefined) => {
     if (!hero) return "transparent";

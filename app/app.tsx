@@ -16,11 +16,13 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
+import { createGlobalState } from "react-hooks-global-states";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { initI18n } from "./i18n";
 import { AppNavigator } from "./navigators/AppNavigator";
 import { useNavigationPersistence } from "./navigators/navigationUtilities";
+import type { SteamProfile } from "./services/api/types/steam_profile";
 import { ThemeProvider } from "./theme/context";
 import { customFontsToLoad } from "./theme/typography";
 import { loadDateFnsLocale } from "./utils/formatDate";
@@ -44,6 +46,9 @@ const config = {
     },
   },
 };
+
+// Globals
+export const usePlayerSelected = createGlobalState<SteamProfile | null>(null);
 
 /**
  * This is the root component of our app.

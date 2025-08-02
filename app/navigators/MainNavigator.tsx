@@ -7,14 +7,16 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { translate } from "@/i18n/translate";
 import { DashboardNavigator } from "@/navigators/DashboardNavigator";
 import { HeroesNavigator } from "@/navigators/HeroesNavigator";
+import { MatchesNavigator } from "@/navigators/MatchesNavigator";
 import { MainSettingsScreen } from "@/screens/MainSettingsScreen";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 import type { AppStackParamList, AppStackScreenProps } from "./AppNavigator";
 
 export type MainTabParamList = {
-  MainProfile: undefined;
-  MainHeroesList: undefined;
+  MainDashboard: undefined;
+  MainMatches: undefined;
+  MainHeroes: undefined;
   Settings: undefined;
 };
 
@@ -69,7 +71,7 @@ export function MainNavigator() {
 
       <Tab.Screen
         name="MainMatches"
-        component={DashboardNavigator}
+        component={MatchesNavigator}
         options={{
           tabBarLabel: translate("mainNavigator:matchesTab"),
           tabBarIcon: ({ focused }) => (
@@ -79,7 +81,7 @@ export function MainNavigator() {
       />
 
       <Tab.Screen
-        name="MainHeroesList"
+        name="MainHeroes"
         component={HeroesNavigator}
         options={{
           tabBarLabel: translate("mainNavigator:heroesTab"),
@@ -93,17 +95,6 @@ export function MainNavigator() {
             navigation.navigate(route.name, { screen: "List" });
           },
         })}
-      />
-
-      <Tab.Screen
-        name="MainProfile"
-        component={DashboardNavigator}
-        options={{
-          tabBarLabel: translate("mainNavigator:profileTab"),
-          tabBarIcon: ({ focused }) => (
-            <FontAwesome6 name="user" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
-          ),
-        }}
       />
 
       <Tab.Screen
