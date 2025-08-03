@@ -1,10 +1,11 @@
 import type { FC } from "react";
-import { type TextStyle, View, type ViewStyle } from "react-native";
-import { usePlayerSelected } from "@/app";
+import { ActivityIndicator, ScrollView, type TextStyle, View, type ViewStyle } from "react-native";
+import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroDescriptionRole } from "@/components/heroes/HeroDescriptionRole";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { AccountSelector } from "@/components/profile/AccountSelector";
+import { TimeRangeSelect } from "@/components/select/TimeRangeSelect";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useHeroStats } from "@/hooks/useHeroStats";
@@ -16,28 +17,40 @@ import type { ThemedStyle } from "@/theme/types";
 import { formatRelativeTime } from "@/utils/matchHistoryStats";
 import { scaleColor } from "@/utils/scaleColor";
 
-export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = (props) => {
-  const { themed, theme } = useAppTheme();
+export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
+  const { themed } = useAppTheme();
 
-  const [player, _] = usePlayerSelected();
+  const [timeRange, _1] = useTimeRangeSelected();
+  const [player, _2] = usePlayerSelected();
 
-  const { data: heroStats } = useHeroStats(player?.account_id ?? null);
+  const now = Math.floor(Date.now() / 1000);
+  const nextFullHour = Math.ceil(now / 3600) * 3600;
+  const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : null;
+  let { data: heroStats, isLoading } = useHeroStats(player?.account_id ?? null, minUnixTimestamp);
+  heroStats = heroStats
+    ?.filter((heroStat) => heroStat.matches_played > 0)
+    .sort((a, b) => b.last_played - a.last_played);
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       <AccountSelector />
+      <TimeRangeSelect />
 
       {heroStats && heroStats.length > 0 ? (
-        <View style={themed($heroesContainer)}>
-          {heroStats
-            .filter((heroStat) => heroStat.matches_played > 0)
-            .sort((a, b) => b.last_played - a.last_played)
-            .map((heroStat) => (
-              <HeroStatItem key={heroStat.hero_id} heroStat={heroStat} />
-            ))}
+        <ScrollView style={themed($heroesContainer)}>
+          {heroStats.map((h) => (
+            <HeroStatItem key={h.hero_id} heroStat={h} />
+          ))}
+        </ScrollView>
+      ) : isLoading ? (
+        <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <ActivityIndicator size="large" />
+          <Text>Loading hero stats...</Text>
         </View>
       ) : (
-        <Text>No matches found</Text>
+        <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
+          <Text>No hero stats found</Text>
+        </View>
       )}
     </Screen>
   );
@@ -111,6 +124,12 @@ const $heroStats: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   borderRadius: 12,
   padding: spacing.md,
   gap: spacing.sm,
+  marginVertical: spacing.xxs,
+  elevation: 1,
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 1 },
+  shadowOpacity: 0.05,
+  shadowRadius: 4,
 });
 
 const $heroStatTopRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -128,7 +147,7 @@ const $heroStatsBottomRow: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   paddingTop: spacing.xs,
 });
 
-const $heroStatsContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({});
+const $heroStatsContent: ThemedStyle<ViewStyle> = () => ({});
 
 const $heroStatsContentStat: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",

@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { createGlobalState } from "react-hooks-global-states";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
+import { DEFAULT_TIME_RANGE, type TimeRange } from "@/components/select/TimeRangeSelect";
 import { initI18n } from "./i18n";
 import { AppNavigator } from "./navigators/AppNavigator";
 import { useNavigationPersistence } from "./navigators/navigationUtilities";
@@ -30,6 +31,10 @@ import * as storage from "./utils/storage";
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE";
 
+// Globals
+export const usePlayerSelected = createGlobalState<SteamProfile | null>(null);
+export const useTimeRangeSelected = createGlobalState<TimeRange>(DEFAULT_TIME_RANGE);
+
 // Web linking configuration
 const prefix = Linking.createURL("/");
 const config = {
@@ -38,21 +43,20 @@ const config = {
     "auth/steam/callback": "auth/steam/callback",
     Main: {
       screens: {
-        MainComponents: {
-          path: "showroom/:queryIndex?/:itemIndex?",
-        },
-        HeroesList: "heroes",
+        Dashboard: "dashboard",
+        MatchesList: "matches",
+        MatchDetails: "matches/:matchId",
+        HeroesStats: "heroes",
+        HeroesDetails: "heroes/:heroId",
+        Settings: "settings",
       },
     },
   },
 };
 
-// Globals
-export const usePlayerSelected = createGlobalState<SteamProfile | null>(null);
-
 /**
  * This is the root component of our app.
- * @param {AppProps} props - The props for the `App` component.
+ *
  * @returns {JSX.Element} The rendered `App` component.
  */
 export function App() {

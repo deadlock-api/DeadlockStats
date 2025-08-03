@@ -44,12 +44,11 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
               <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
             </TouchableOpacity>
           </View>
-          <View style={[themed($matchesContainer), { backgroundColor: theme.colors.palette.neutral100 }]}>
-            {matchHistory.slice(0, 4).map((match, index) => (
+          <View style={themed($matchesContainer)}>
+            {matchHistory.slice(0, 4).map((match) => (
               <MatchItem
                 key={match.match_id}
                 match={match}
-                noBorder={index === 3}
                 onPress={() =>
                   props.navigation.navigate("MainMatches", {
                     screen: "MatchDetails",
@@ -156,14 +155,8 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
 };
 
 const $matchesContainer: ThemedStyle<ViewStyle> = () => ({
-  // marginHorizontal: 20,
   borderRadius: 16,
   overflow: "hidden",
-  elevation: 2,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 8,
 });
 
 const $viewAllText: ThemedStyle<TextStyle> = () => ({

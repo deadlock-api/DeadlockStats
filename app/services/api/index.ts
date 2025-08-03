@@ -42,8 +42,10 @@ export class AssetsApi {
     return await this.api.get(`v1/players/${playerId}/match-history`);
   }
 
-  async getHeroStats(playerId: number): Promise<ApiResponse<HeroStats[]>> {
-    return await this.api.get(`v1/players/${playerId}/hero-stats`);
+  async getHeroStats(playerId: number, minUnixTimestamp?: number | null): Promise<ApiResponse<HeroStats[]>> {
+    return await this.api.get(`v1/players/${playerId}/hero-stats`, {
+      min_unix_timestamp: minUnixTimestamp,
+    });
   }
 }
 
