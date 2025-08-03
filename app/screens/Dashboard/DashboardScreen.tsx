@@ -17,6 +17,7 @@ import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "@/utils/matchHistoryStats";
+import { scaleColor } from "@/utils/scaleColor";
 
 export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (props) => {
   const { themed, theme } = useAppTheme();
@@ -96,14 +97,6 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
     .filter((stats) => stats.playCount >= avgMatchesPerHero)
     .sort((a, b) => b.winRate - a.winRate)[0];
 
-  const scaleColor = (value: number, min: number, max: number) => {
-    const inBoundsValue = Math.min(Math.max(value, min), max);
-    const normalizedValue = (inBoundsValue - min) / (max - min);
-    const red = Math.round(255 * (1 - normalizedValue));
-    const green = Math.round(255 * normalizedValue);
-    return `rgb(${red}, ${green}, 0)`;
-  };
-
   return (
     <View style={themed($statDisplaysContainer)}>
       <StatCard
@@ -116,7 +109,7 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
         title="Avg KDA (7 Days)"
         value={kda.ratio > 0 ? kda.ratio : "-"}
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
-        valueColor={scaleColor(kda.ratio, 0.5, 3)}
+        valueColor={scaleColor(kda.ratio, 0.5, 4)}
       />
       <StatCard
         title="Main Hero (Overall)"
@@ -163,7 +156,7 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
 };
 
 const $matchesContainer: ThemedStyle<ViewStyle> = () => ({
-  marginHorizontal: 20,
+  // marginHorizontal: 20,
   borderRadius: 16,
   overflow: "hidden",
   elevation: 2,
@@ -189,22 +182,4 @@ const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-evenly",
   flexWrap: "wrap",
   gap: spacing.md,
-});
-
-const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: spacing.md,
-});
-
-const $searchButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  width: 48,
-  height: 48,
-  borderRadius: 12,
-  justifyContent: "center",
-  alignItems: "center",
-  borderWidth: 1,
-  backgroundColor: colors.palette.neutral100,
-  borderColor: colors.border,
 });

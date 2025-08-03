@@ -10,7 +10,7 @@ import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 
 export const HeroesListScreen: FC<HeroesStackScreenProps<"List">> = (props) => {
-  const { themed, theme } = useAppTheme();
+  const { theme } = useAppTheme();
 
   const { data: heroes } = useAssetsHeroes();
 
@@ -27,6 +27,7 @@ export const HeroesListScreen: FC<HeroesStackScreenProps<"List">> = (props) => {
           itemDimension={80}
           data={heroes}
           renderItem={renderHero}
+          maxItemsPerRow={4}
           keyExtractor={(hero) => hero.id.toString()}
           listKey={"heroes"}
           spacing={theme.spacing.sm}

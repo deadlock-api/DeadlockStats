@@ -1,6 +1,7 @@
 import { type FC, useState } from "react";
 import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { HeroAbilities } from "@/components/heroes/HeroAbilities";
+import { HeroDescriptionRole } from "@/components/heroes/HeroDescriptionRole";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { AbilityDescription } from "@/components/items/AbilityDescription";
@@ -35,7 +36,7 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
                 <HeroName heroId={hero.id} />
               </Text>
               <Text numberOfLines={2} style={{ flexWrap: "wrap", marginTop: theme.spacing.xs, maxWidth: 200 }}>
-                {hero.description.role}
+                <HeroDescriptionRole heroId={hero.id} />
               </Text>
             </View>
           </View>

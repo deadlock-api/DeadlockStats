@@ -1,6 +1,7 @@
 import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
 import Config from "@/config";
+import type { HeroStats } from "@/services/api/types/hero_stats";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
 import type { MatchHistory } from "./types/match_history";
 
@@ -39,6 +40,10 @@ export class AssetsApi {
 
   async getMatchHistory(playerId: number): Promise<ApiResponse<MatchHistory[]>> {
     return await this.api.get(`v1/players/${playerId}/match-history`);
+  }
+
+  async getHeroStats(playerId: number): Promise<ApiResponse<HeroStats[]>> {
+    return await this.api.get(`v1/players/${playerId}/hero-stats`);
   }
 }
 

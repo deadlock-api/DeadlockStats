@@ -93,7 +93,6 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
                 renderItem={({ item }) => <PlayerResult onPress={handlePress} player={item} />}
                 keyExtractor={(item) => item.account_id.toString()}
                 showsVerticalScrollIndicator={false}
-                estimatedItemSize={100}
               />
             ) : (
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
