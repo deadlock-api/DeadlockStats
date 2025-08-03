@@ -29,7 +29,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
   matchHistory = matchHistory?.filter((match) => !minUnixTimestamp || match.start_time >= minUnixTimestamp) ?? [];
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" contentContainerStyle={$styles.container}>
       <AccountSelector />
       <TimeRangeSelect />
       {matchHistory ? (

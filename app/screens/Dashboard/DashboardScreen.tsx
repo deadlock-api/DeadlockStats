@@ -28,7 +28,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
   const { data: matchHistory, isLoading, error } = useMatchHistory(player?.account_id ?? null);
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       <AccountSelector />
       {matchHistory && matchHistory.length > 0 ? (
         <>
