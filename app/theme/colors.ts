@@ -94,7 +94,7 @@ export const colors = {
   /**
    * The inactive tinting color.
    */
-  tintInactive: palette.neutral300,
+  tintInactive: palette.neutral500,
   /**
    * A subtle color used for lines.
    */

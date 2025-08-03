@@ -57,8 +57,7 @@ const en = {
     demoViaSpecifiedTxProp: "Via `{{prop}}Tx` Prop",
   },
   settingsScreen: {
-    howTo: "HOW TO",
-    title: "Debug",
+    title: "Settings",
     tagLine:
       "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
     signOut: "Sign Out",

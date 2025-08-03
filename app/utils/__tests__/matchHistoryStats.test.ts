@@ -10,7 +10,7 @@ import {
   formatNumber,
   formatRelativeTime,
   getHeroStats,
-  isMatchWon
+  isMatchWon,
 } from "../matchHistoryStats";
 
 // Mock match history data for testing
