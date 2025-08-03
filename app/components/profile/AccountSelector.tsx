@@ -26,11 +26,11 @@ export const AccountSelector = () => {
 
   return (
     <View style={themed($header)}>
-      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.md }}>
+      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
         {player?.avatar && (
           <AutoImage source={{ uri: player?.avatar }} style={{ width: 48, height: 48, borderRadius: 24 }} />
         )}
-        <Text preset="subheading">
+        <Text numberOfLines={1} preset="subheading" style={{ flex: 1, maxWidth: 150 }}>
           {player && player.account_id !== steamId
             ? (player?.personaname ?? player?.realname ?? player?.account_id)
             : (userProfile?.personaname ?? userProfile?.realname ?? userProfile?.account_id)}
