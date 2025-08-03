@@ -7,6 +7,7 @@ import { usePlayerSelected } from "@/app";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
+import { translate } from "@/i18n/translate";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
 import { api } from "@/services/api";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
@@ -60,7 +61,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
         >
           <FontAwesome6 name="chevron-left" solid size={24} color={theme.colors.text} />
         </TouchableOpacity>
-        <Text style={[themed($title)]}>Search Player</Text>
+        <Text style={[themed($title)]} tx="playerSearchScreen:title" />
         <View style={themed($placeholder)} />
       </View>
 
@@ -73,7 +74,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
         <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={20} />
         <TextInput
           style={[themed($searchInput), { color: theme.colors.text }]}
-          placeholder="Enter steam name..."
+          placeholder={translate("playerSearchScreen:searchPlaceholder")}
           placeholderTextColor={theme.colors.textDim}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -86,7 +87,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
       <View style={themed($resultsSection)}>
         {searchQuery ? (
           <View>
-            <Text preset="subheading">Search Results</Text>
+            <Text preset="subheading" tx="playerSearchScreen:searchResults" />
             {profiles && profiles.length > 0 ? (
               <FlashList
                 data={profiles}
@@ -97,16 +98,14 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
             ) : (
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
-                <Text style={themed($noResultsText)}>No players found</Text>
-                <Text style={[themed($noResultsSubtext), { color: theme.colors.textDim }]}>
-                  Try checking the spelling
-                </Text>
+                <Text style={themed($noResultsText)} tx="playerSearchScreen:noPlayersFound" />
+                <Text style={[themed($noResultsSubtext), { color: theme.colors.textDim }]} tx="playerSearchScreen:tryCheckingSpelling" />
               </View>
             )}
           </View>
         ) : (
           <View>
-            {recentSearches && recentSearches.length > 0 && <Text preset="subheading">Recent Searches</Text>}
+            {recentSearches && recentSearches.length > 0 && <Text preset="subheading" tx="playerSearchScreen:recentSearches" />}
             {recentSearches.map((player) => (
               <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
             ))}

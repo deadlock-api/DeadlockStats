@@ -2,6 +2,7 @@ import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-na
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { Text } from "@/components/ui/Text";
+import { translate } from "@/i18n/translate";
 import type { MatchHistory } from "@/services/api/types/match_history";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
@@ -30,7 +31,7 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
               { color: isMatchWon(match) ? theme.colors.palette.success500 : theme.colors.palette.failure500 },
             ]}
           >
-            {isMatchWon(match) ? "Victory" : "Defeat"}
+{isMatchWon(match) ? translate("matchItem:victory") : translate("matchItem:defeat")}
           </Text>
           <Text style={themed($timeText)}>{formatMatchDuration(match.match_duration_s)}</Text>
           <Text style={themed($timeText)}>{formatRelativeTime(match.start_time)}</Text>

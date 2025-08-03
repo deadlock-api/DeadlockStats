@@ -45,11 +45,11 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
           <ActivityIndicator size="large" />
-          <Text>Loading hero stats...</Text>
+          <Text tx="heroesStatsScreen:loadingHeroStats" />
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text>No hero stats found</Text>
+          <Text tx="heroesStatsScreen:noHeroStatsFound" />
         </View>
       )}
     </Screen>

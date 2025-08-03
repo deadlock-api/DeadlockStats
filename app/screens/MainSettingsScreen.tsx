@@ -4,6 +4,7 @@ import React, { type FC, useCallback } from "react";
 import { LayoutAnimation, Linking, Switch, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
+import { translate } from "@/i18n/translate";
 import type { MainTabScreenProps } from "@/navigators/MainNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
@@ -30,11 +31,11 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={[$styles.container, themed($container)]}>
       <Text style={themed($title)} preset="heading" tx="settingsScreen:title" />
-      <SettingsSection title="Apppearance">
+      <SettingsSection title={translate("settingsScreen:appearanceSection")}>
         <SettingsItem
           icon={<FontAwesome6 name="moon" solid color={theme.colors.text} size={20} />}
-          title="Dark Mode"
-          subtitle="Use dark theme"
+          title={translate("settingsScreen:darkMode")}
+          subtitle={translate("settingsScreen:useDarkTheme")}
           onPress={toggleTheme}
           rightElement={
             <Switch
@@ -47,32 +48,34 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
         />
       </SettingsSection>
 
-      <SettingsSection title="Support">
+      <SettingsSection title={translate("settingsScreen:supportSection")}>
         <SettingsItem
           icon={<FontAwesome6 name="discord" solid color={theme.colors.text} size={20} />}
-          title="Contact us"
-          subtitle="Join our Discord server"
+          title={translate("settingsScreen:contactUs")}
+          subtitle={translate("settingsScreen:joinDiscordServer")}
           onPress={() => Linking.openURL("https://discord.gg/XMF9Xrgfqu")}
         />
         <SettingsItem
           icon={<FontAwesome6 name="shield" solid color={theme.colors.text} size={20} />}
-          title="Privacy Policy"
-          subtitle="Read our privacy policy"
+          title={translate("settingsScreen:privacyPolicy")}
+          subtitle={translate("settingsScreen:readPrivacyPolicy")}
           onPress={() => Linking.openURL("https://deadlock-api.com/deadlockstats-privacy")}
         />
       </SettingsSection>
 
-      <SettingsSection title="Account">
+      <SettingsSection title={translate("settingsScreen:accountSection")}>
         <SettingsItem
           icon={<FontAwesome6 name="arrow-right-from-bracket" solid color={theme.colors.palette.angry500} size={20} />}
-          title="Sign Out"
-          subtitle="Log out of your account"
+          title={translate("settingsScreen:signOut")}
+          subtitle={translate("settingsScreen:logOutOfAccount")}
           onPress={handleSignOut}
           rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.palette.angry500} size={20} />}
         />
       </SettingsSection>
 
-      <Text style={themed($version)}>Version {Application.nativeApplicationVersion}</Text>
+      <Text style={themed($version)}>
+        {translate("settingsScreen:version")} {Application.nativeApplicationVersion}
+      </Text>
     </Screen>
   );
 };

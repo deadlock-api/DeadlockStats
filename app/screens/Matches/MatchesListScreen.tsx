@@ -39,7 +39,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
             <MatchItem match={item} onPress={() => props.navigation.navigate("Details", { matchId: item.match_id })} />
           )}
           keyExtractor={(item) => item.match_id.toString()}
-          ListEmptyComponent={() => <Text style={themed($noDataText)} text="No matches found" />}
+          ListEmptyComponent={() => <Text style={themed($noDataText)} tx="matchesListScreen:noMatchesFound" />}
           maxToRenderPerBatch={RENDER_STEP_SIZE}
           style={{
             borderRadius: 12,
@@ -48,11 +48,11 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
           <ActivityIndicator size="large" />
-          <Text>Loading match history...</Text>
+          <Text tx="matchesListScreen:loadingMatchHistory" />
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text>No matches found</Text>
+          <Text tx="matchesListScreen:noMatchesFound" />
         </View>
       )}
     </Screen>
