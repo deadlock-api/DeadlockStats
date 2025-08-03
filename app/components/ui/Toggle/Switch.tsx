@@ -1,12 +1,10 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { Animated, Image, type ImageStyle, Platform, type StyleProp, View, type ViewStyle } from "react-native";
-
-import { iconRegistry } from "@/components/ui/Icon";
+import { Animated, type ImageStyle, Platform, type StyleProp, View, type ViewStyle } from "react-native";
 import { isRTL } from "@/i18n";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
-
 import { $inputOuterBase, type BaseToggleInputProps, Toggle, type ToggleProps } from "./Toggle";
 
 export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, "ToggleInput"> {
@@ -208,12 +206,13 @@ function SwitchAccessibilityLabel(props: SwitchInputProps & { role: "on" | "off"
         />
       )}
 
-      {accessibilityMode === "icon" && shouldLabelBeVisible && (
-        <Image
-          style={[$switchAccessibilityIcon, { tintColor: color }]}
-          source={role === "off" ? iconRegistry.hidden : iconRegistry.view}
-        />
-      )}
+      {accessibilityMode === "icon" &&
+        shouldLabelBeVisible &&
+        (role === "off" ? (
+          <FontAwesome6 name="eye-slash" solid color={color} size={14} />
+        ) : (
+          <FontAwesome6 name="eye" solid color={color} size={14} />
+        ))}
     </View>
   );
 }

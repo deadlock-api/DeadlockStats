@@ -1,8 +1,7 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import type { ErrorInfo } from "react";
 import { ScrollView, type TextStyle, View, type ViewStyle } from "react-native";
-
 import { Button } from "@/components/ui/Button";
-import { Icon } from "@/components/ui/Icon";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAppTheme } from "@/theme/context";
@@ -20,11 +19,11 @@ export interface ErrorDetailsProps {
  * @returns {JSX.Element} The rendered `ErrorDetails` component.
  */
 export function ErrorDetails(props: ErrorDetailsProps) {
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
   return (
     <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={themed($contentContainer)}>
       <View style={$topSection}>
-        <Icon icon="ladybug" size={64} />
+        <FontAwesome6 name="bug" solid color={theme.colors.text} size={64} />
         <Text style={themed($heading)} preset="subheading" tx="errorScreen:title" />
         <Text tx="errorScreen:friendlySubtitle" />
       </View>
