@@ -20,7 +20,7 @@ export const HeroesDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props
   const [selectedAbility, setSelectedAbility] = useState<string | null>(null);
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container} safeAreaEdges={["top"]}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       {hero ? (
         <>
           <View
