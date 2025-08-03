@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { Text } from "@/components/ui/Text";
-import { useAssetsAbility } from "@/hooks/useAssetsitems";
+import { useAssetsAbilities } from "@/hooks/useAssetsitems";
 
 export interface AbilityNameProps {
   ability_class_name: string;
@@ -7,7 +8,11 @@ export interface AbilityNameProps {
 }
 
 export function AbilityName(props: AbilityNameProps) {
-  const { data: ability } = useAssetsAbility(props.ability_class_name);
+  const { data: abilities } = useAssetsAbilities();
+  const ability = useMemo(
+    () => abilities?.find((a) => a.class_name === props.ability_class_name),
+    [abilities, props.ability_class_name],
+  );
   return (
     <Text numberOfLines={1} style={{ fontSize: props.fontSize }}>
       {ability?.name}

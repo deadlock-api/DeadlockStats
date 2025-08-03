@@ -39,6 +39,7 @@ export function HeroAbilities(props: HeroAbilitiesProps) {
       keyExtractor={(item) => item}
       itemDimension={100}
       maxItemsPerRow={2}
+      fixed
       spacing={theme.spacing.lg}
     />
   );

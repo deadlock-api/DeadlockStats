@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { ActivityIndicator, type ImageStyle, View } from "react-native";
+import { type ImageStyle, View } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { Text } from "@/components/ui/Text";
@@ -22,7 +22,7 @@ export function HeroCard(props: HeroCardProps) {
   }, [hero]);
 
   if (!hero) {
-    return <ActivityIndicator />;
+    return null;
   }
 
   return (

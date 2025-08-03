@@ -1,6 +1,7 @@
 import type { MixedStyleDeclaration } from "@native-html/transient-render-engine";
+import { useMemo } from "react";
 import RenderHtml from "react-native-render-html";
-import { useAssetsAbility } from "@/hooks/useAssetsitems";
+import { useAssetsAbilities } from "@/hooks/useAssetsitems";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
@@ -11,7 +12,12 @@ export interface AbilityDescriptionProps {
 
 export function AbilityDescription(props: AbilityDescriptionProps) {
   const { themed } = useAppTheme();
-  const { data: ability } = useAssetsAbility(props.ability_class_name);
+
+  const { data: abilities } = useAssetsAbilities();
+  const ability = useMemo(
+    () => abilities?.find((a) => a.class_name === props.ability_class_name),
+    [abilities, props.ability_class_name],
+  );
   const description = ability?.description?.desc || "";
 
   // const svgRenderer = ({ ...props }) => {
