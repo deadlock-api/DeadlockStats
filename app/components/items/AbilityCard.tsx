@@ -1,6 +1,7 @@
-import { ActivityIndicator, type ImageStyle, TouchableOpacity, View } from "react-native";
+import { useMemo } from "react";
+import { type ImageStyle, TouchableOpacity, View } from "react-native";
 import { AbilityImage } from "@/components/items/AbilityImage";
-import { useAssetsAbility } from "@/hooks/useAssetsitems";
+import { useAssetsAbilities } from "@/hooks/useAssetsitems";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 import { AbilityName } from "./AbilityName";
@@ -14,10 +15,15 @@ export interface HeroAbilityCardProps {
 export function AbilityCard(props: HeroAbilityCardProps) {
   const { themed } = useAppTheme();
 
-  const { data: ability } = useAssetsAbility(props.ability_class_name);
+  const { data: abilities } = useAssetsAbilities();
+
+  const ability = useMemo(
+    () => abilities?.find((a) => a.class_name === props.ability_class_name),
+    [abilities, props.ability_class_name],
+  );
 
   if (!ability) {
-    return <ActivityIndicator />;
+    return null;
   }
 
   return (

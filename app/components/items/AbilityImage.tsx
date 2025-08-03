@@ -1,7 +1,8 @@
+import { useMemo } from "react";
 import { type ImageStyle, View } from "react-native";
 import { SvgUri } from "react-native-svg";
 import { AutoImage } from "@/components/ui/AutoImage";
-import { useAssetsAbility } from "@/hooks/useAssetsitems";
+import { useAssetsAbilities } from "@/hooks/useAssetsitems";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
@@ -12,7 +13,11 @@ export interface AbilityImageProps {
 export function AbilityImage(props: AbilityImageProps) {
   const { themed, theme } = useAppTheme();
 
-  const { data: ability } = useAssetsAbility(props.ability_class_name);
+  const { data: abilities } = useAssetsAbilities();
+  const ability = useMemo(
+    () => abilities?.find((a) => a.class_name === props.ability_class_name),
+    [abilities, props.ability_class_name],
+  );
   return (
     <>
       <View
