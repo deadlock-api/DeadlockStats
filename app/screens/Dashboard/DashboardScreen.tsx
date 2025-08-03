@@ -19,6 +19,7 @@ import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "@/utils/matchHistoryStats";
 import { scaleColor } from "@/utils/scaleColor";
+import { hasSteamId } from "@/utils/steamAuth";
 
 export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (props) => {
   const { themed, theme } = useAppTheme();
@@ -64,6 +65,8 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
             <Text tx="dashboardScreen:loadingMatchHistory" />
           ) : error ? (
             <Text tx="dashboardScreen:failedToLoadMatchHistory" />
+          ) : !hasSteamId() ? (
+            <Text tx="dashboardScreen:noSteamAccountLinked" />
           ) : (
             <Text tx="dashboardScreen:noMatchesFound" />
           )}

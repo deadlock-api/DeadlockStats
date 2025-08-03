@@ -3,7 +3,10 @@
     "ok": "OK!",
     "cancel": "Cancel",
     "back": "Back",
-    "logOut": "Log Out"
+    "logOut": "Log Out",
+    "noSteamAccount": "No Account",
+    "linkSteamAccount": "Link your Steam account to view stats",
+    "steamNotLinked": "Steam account not linked"
   },
   "errorScreen": {
     "title": "Something went wrong!",
@@ -31,6 +34,8 @@
     "description": "Sign in with your Steam account to get started and view your detailed game analytics.",
     "signInButton": "Sign in with Steam",
     "signInButtonLoading": "Signing in...",
+    "skipButton": "Skip for now",
+    "skipDescription": "You can link your Steam account later in settings",
     "errorTitle": "Authentication Error",
     "errorMessage": "Failed to authenticate with Steam. Please try again.",
     "errorRetryButton": "Try Again",
@@ -42,6 +47,7 @@
     "loadingMatchHistory": "Loading match history...",
     "failedToLoadMatchHistory": "Failed to load match history",
     "noMatchesFound": "No matches found",
+    "noSteamAccountLinked": "Link your Steam account to view your match history and statistics",
     "winRate7Days": "Win Rate (7d)",
     "avgKda7Days": "Avg KDA (7d)",
     "mainHeroOverall": "Main Hero (All)",
@@ -57,11 +63,13 @@
   },
   "heroesStatsScreen": {
     "loadingHeroStats": "Loading hero stats...",
-    "noHeroStatsFound": "No hero stats found"
+    "noHeroStatsFound": "No hero stats found",
+    "noSteamAccountLinked": "Link your Steam account to view your hero statistics"
   },
   "matchesListScreen": {
     "loadingMatchHistory": "Loading match history...",
-    "noMatchesFound": "No matches found"
+    "noMatchesFound": "No matches found",
+    "noSteamAccountLinked": "Link your Steam account to view your match history"
   },
   "timeRangeSelect": {
     "label24h": "24h",
@@ -86,6 +94,8 @@
     "accountSection": "Account",
     "signOut": "Sign Out",
     "logOutOfAccount": "Log out of your account",
+    "linkToSteam": "Link to Steam",
+    "linkSteamAccount": "Link your Steam account to view stats",
     "version": "Version"
   }
 }

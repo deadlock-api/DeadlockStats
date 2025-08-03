@@ -1,8 +1,8 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, type TextStyle, View, type ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
 import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -10,14 +10,20 @@ import { translate } from "@/i18n/translate";
 import type { AppStackScreenProps } from "@/navigators/AppNavigator";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
-import { convertToSteamID3, extractSteamIdFromUrl, saveSteamId } from "@/utils/steamAuth";
+import {
+  convertToSteamID3,
+  extractSteamIdFromUrl,
+  removeSkipWelcomePreference,
+  saveSkipWelcomePreference,
+  saveSteamId,
+} from "@/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
 
 interface WelcomeScreenProps extends AppStackScreenProps<"Welcome"> {}
 
 export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
   const { top } = useSafeAreaInsets();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -75,6 +81,8 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           const saved = saveSteamId(steamId3);
 
           if (saved) {
+            // Remove skip preference since user has now linked Steam
+            removeSkipWelcomePreference();
             // Navigate to main app
             navigation.navigate("Main");
           } else {
@@ -96,6 +104,14 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
     },
     [navigation],
   );
+
+  /**
+   * Handles skipping the welcome screen
+   */
+  const handleSkip = useCallback(() => {
+    saveSkipWelcomePreference(true);
+    navigation.navigate("Main");
+  }, [navigation]);
 
   /**
    * Set up deep link listener for Steam auth callback
@@ -135,13 +151,37 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
 
         <Text tx="welcomeScreen:description" style={themed($description)} />
 
-        <Button
-          preset="filled"
-          tx={isLoading ? "welcomeScreen:signInButtonLoading" : "welcomeScreen:signInButton"}
-          onPress={handleSteamSignIn}
-          disabled={isLoading}
-          style={themed($signInButton)}
-        />
+        <Button preset="filled" onPress={handleSteamSignIn} style={themed($signInButton)}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Text>{translate("welcomeScreen:signInButton")}</Text>
+            <FontAwesome6 name="steam" solid color={theme.colors.text} size={20} style={{ marginHorizontal: 8 }} />
+          </View>
+        </Button>
+
+        <Button preset="default" onPress={handleSkip} style={themed($skipButton)}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Text>{translate("welcomeScreen:skipButton")}</Text>
+            <FontAwesome6 name="forward" solid color={theme.colors.text} size={20} />
+          </View>
+        </Button>
+
+        <Text tx="welcomeScreen:skipDescription" style={themed($skipDescription)} />
 
         {isLoading && <Text tx="welcomeScreen:loadingMessage" style={themed($loadingText)} />}
       </View>
@@ -180,7 +220,19 @@ const $description: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
 
 const $signInButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
-  minWidth: 200,
+  width: 200,
+});
+
+const $skipButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  marginBottom: spacing.sm,
+  width: 200,
+});
+
+const $skipDescription: ThemedStyle<TextStyle> = ({ spacing, colors }) => ({
+  textAlign: "center",
+  color: colors.textDim,
+  fontSize: 14,
+  marginBottom: spacing.lg,
 });
 
 const $loadingText: ThemedStyle<TextStyle> = ({ colors }) => ({

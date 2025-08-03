@@ -11,6 +11,7 @@ import type { MatchesStackScreenProps } from "@/navigators/MatchesNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
+import { hasSteamId } from "@/utils/steamAuth";
 
 const RENDER_STEP_SIZE = 30;
 
@@ -39,7 +40,12 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
             <MatchItem match={item} onPress={() => props.navigation.navigate("Details", { matchId: item.match_id })} />
           )}
           keyExtractor={(item) => item.match_id.toString()}
-          ListEmptyComponent={() => <Text style={themed($noDataText)} tx="matchesListScreen:noMatchesFound" />}
+          ListEmptyComponent={() => (
+            <Text
+              style={themed($noDataText)}
+              tx={!hasSteamId() ? "matchesListScreen:noSteamAccountLinked" : "matchesListScreen:noMatchesFound"}
+            />
+          )}
           maxToRenderPerBatch={RENDER_STEP_SIZE}
           style={{
             borderRadius: 12,
@@ -52,7 +58,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text tx="matchesListScreen:noMatchesFound" />
+          <Text tx={!hasSteamId() ? "matchesListScreen:noSteamAccountLinked" : "matchesListScreen:noMatchesFound"} />
         </View>
       )}
     </Screen>

@@ -99,13 +99,18 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
                 <Text style={themed($noResultsText)} tx="playerSearchScreen:noPlayersFound" />
-                <Text style={[themed($noResultsSubtext), { color: theme.colors.textDim }]} tx="playerSearchScreen:tryCheckingSpelling" />
+                <Text
+                  style={[themed($noResultsSubtext), { color: theme.colors.textDim }]}
+                  tx="playerSearchScreen:tryCheckingSpelling"
+                />
               </View>
             )}
           </View>
         ) : (
           <View>
-            {recentSearches && recentSearches.length > 0 && <Text preset="subheading" tx="playerSearchScreen:recentSearches" />}
+            {recentSearches && recentSearches.length > 0 && (
+              <Text preset="subheading" tx="playerSearchScreen:recentSearches" />
+            )}
             {recentSearches.map((player) => (
               <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
             ))}
