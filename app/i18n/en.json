@@ -1,0 +1,91 @@
+{
+  "common": {
+    "ok": "OK!",
+    "cancel": "Cancel",
+    "back": "Back",
+    "logOut": "Log Out"
+  },
+  "errorScreen": {
+    "title": "Something went wrong!",
+    "friendlySubtitle": "Something went wrong.",
+    "reset": "RESET APP",
+    "traceTitle": "Error from %{name} stack"
+  },
+  "emptyStateComponent": {
+    "generic": {
+      "heading": "So empty... so sad",
+      "content": "No data found yet. Try clicking the button to refresh or reload the app.",
+      "button": "Let's try this again"
+    }
+  },
+  "mainNavigator": {
+    "dashboardTab": "Dashboard",
+    "matchesTab": "Matches",
+    "heroesTab": "Heroes",
+    "profileTab": "Profile",
+    "settingsTab": "Settings"
+  },
+  "welcomeScreen": {
+    "title": "Welcome to DeadlockStats",
+    "subtitle": "Track your Deadlock game statistics and performance",
+    "description": "Sign in with your Steam account to get started and view your detailed game analytics.",
+    "signInButton": "Sign in with Steam",
+    "signInButtonLoading": "Signing in...",
+    "errorTitle": "Authentication Error",
+    "errorMessage": "Failed to authenticate with Steam. Please try again.",
+    "errorRetryButton": "Try Again",
+    "loadingMessage": "Authenticating with Steam..."
+  },
+  "dashboardScreen": {
+    "recentMatches": "Recent Matches",
+    "viewAllMatches": "View All Matches",
+    "loadingMatchHistory": "Loading match history...",
+    "failedToLoadMatchHistory": "Failed to load match history",
+    "noMatchesFound": "No matches found",
+    "winRate7Days": "Win Rate (7 Days)",
+    "avgKda7Days": "Avg KDA (7 Days)",
+    "mainHeroOverall": "Main Hero (Overall)",
+    "bestHeroOverall": "Best Hero (Overall)"
+  },
+  "playerSearchScreen": {
+    "title": "Search Player",
+    "searchPlaceholder": "Enter steam name...",
+    "searchResults": "Search Results",
+    "noPlayersFound": "No players found",
+    "tryCheckingSpelling": "Try checking the spelling",
+    "recentSearches": "Recent Searches"
+  },
+  "heroesStatsScreen": {
+    "loadingHeroStats": "Loading hero stats...",
+    "noHeroStatsFound": "No hero stats found"
+  },
+  "matchesListScreen": {
+    "loadingMatchHistory": "Loading match history...",
+    "noMatchesFound": "No matches found"
+  },
+  "timeRangeSelect": {
+    "label24h": "24h",
+    "label7d": "7d",
+    "label30d": "30d",
+    "labelAll": "all"
+  },
+  "matchItem": {
+    "victory": "Victory",
+    "defeat": "Defeat"
+  },
+  "settingsScreen": {
+    "title": "Settings",
+    "appearanceSection": "Appearance",
+    "darkMode": "Dark Mode",
+    "useDarkTheme": "Use dark theme",
+    "supportSection": "Support",
+    "contactUs": "Contact us",
+    "joinDiscordServer": "Join our Discord server",
+    "privacyPolicy": "Privacy Policy",
+    "readPrivacyPolicy": "Read our privacy policy",
+    "accountSection": "Account",
+    "signOut": "Sign Out",
+    "logOutOfAccount": "Log out of your account",
+    "version": "Version"
+  }
+}

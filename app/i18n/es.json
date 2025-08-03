@@ -1,0 +1,91 @@
+{
+    "common": {
+        "back": "Volver",
+        "cancel": "Cancelar",
+        "logOut": "Cerrar sesión",
+        "ok": "¡OK!"
+    },
+    "dashboardScreen": {
+        "avgKda7Days": "KDA promedio (7 Días)",
+        "bestHeroOverall": "Mejor héroe (General)",
+        "failedToLoadMatchHistory": "Falló la carga del historial de partidas",
+        "loadingMatchHistory": "Cargando historial de partidas...",
+        "mainHeroOverall": "Héroe principal (General)",
+        "noMatchesFound": "No se encontraron partidas",
+        "recentMatches": "Partidas recientes",
+        "viewAllMatches": "Ver todas las partidas",
+        "winRate7Days": "Tasa de victorias (7 Días)"
+    },
+    "emptyStateComponent": {
+        "generic": {
+            "button": "Intentemos esto de nuevo",
+            "content": "Aún no se encontraron datos. Intenta hacer clic en el botón para actualizar o recargar la aplicación.",
+            "heading": "Tan vacío... tan triste"
+        }
+    },
+    "errorScreen": {
+        "friendlySubtitle": "Algo salió mal.",
+        "reset": "REINICIAR APLICACIÓN",
+        "title": "¡Algo salió mal!",
+        "traceTitle": "Error de la pila de %{name}"
+    },
+    "heroesStatsScreen": {
+        "loadingHeroStats": "Cargando estadísticas de héroes...",
+        "noHeroStatsFound": "No se encontraron estadísticas de héroes"
+    },
+    "mainNavigator": {
+        "dashboardTab": "Panel",
+        "heroesTab": "Héroes",
+        "matchesTab": "Partidas",
+        "profileTab": "Perfil",
+        "settingsTab": "Configuración"
+    },
+    "matchItem": {
+        "defeat": "Derrota",
+        "victory": "Victoria"
+    },
+    "matchesListScreen": {
+        "loadingMatchHistory": "Cargando historial de partidas...",
+        "noMatchesFound": "No se encontraron partidas"
+    },
+    "playerSearchScreen": {
+        "noPlayersFound": "No se encontraron jugadores",
+        "recentSearches": "Búsquedas recientes",
+        "searchPlaceholder": "Introduce el nombre de Steam...",
+        "searchResults": "Resultados de búsqueda",
+        "title": "Buscar jugador",
+        "tryCheckingSpelling": "Intenta revisar la ortografía"
+    },
+    "settingsScreen": {
+        "accountSection": "Cuenta",
+        "appearanceSection": "Apariencia",
+        "contactUs": "Contáctanos",
+        "darkMode": "Modo oscuro",
+        "joinDiscordServer": "Únete a nuestro servidor de Discord",
+        "logOutOfAccount": "Cerrar sesión de tu cuenta",
+        "privacyPolicy": "Política de privacidad",
+        "readPrivacyPolicy": "Lee nuestra política de privacidad",
+        "signOut": "Cerrar sesión",
+        "supportSection": "Soporte",
+        "title": "Configuración",
+        "useDarkTheme": "Usar tema oscuro",
+        "version": "Versión"
+    },
+    "timeRangeSelect": {
+        "label24h": "24h",
+        "label30d": "30d",
+        "label7d": "7d",
+        "labelAll": "todos"
+    },
+    "welcomeScreen": {
+        "description": "Inicia sesión con tu cuenta de Steam para empezar y ver tus análisis detallados del juego.",
+        "errorMessage": "Falló la autenticación con Steam. Por favor, intenta de nuevo.",
+        "errorRetryButton": "Intentar de nuevo",
+        "errorTitle": "Error de autenticación",
+        "loadingMessage": "Autenticando con Steam...",
+        "signInButton": "Iniciar sesión con Steam",
+        "signInButtonLoading": "Iniciando sesión...",
+        "subtitle": "Haz un seguimiento de tus estadísticas y rendimiento en el juego Deadlock",
+        "title": "Bienvenido a DeadlockStats"
+    }
+}

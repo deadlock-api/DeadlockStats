@@ -4,14 +4,15 @@ import { initReactI18next } from "react-i18next";
 import { I18nManager } from "react-native";
 import "intl-pluralrules";
 
-// if English isn't your default language, move Translations to the appropriate language file.
-import en, { type Translations } from "./en";
+import de from "./de.json";
+import en from "./en.json";
+import fr from "./fr.json";
 
 const fallbackLocale = "en-US";
 
 const systemLocales = Localization.getLocales();
 
-const resources = { en };
+const resources = { en, de, fr };
 const supportedTags = Object.keys(resources);
 
 // Checks to see if the device locale matches any of the supported locales
