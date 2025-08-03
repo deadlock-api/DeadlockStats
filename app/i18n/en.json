@@ -42,10 +42,10 @@
     "loadingMatchHistory": "Loading match history...",
     "failedToLoadMatchHistory": "Failed to load match history",
     "noMatchesFound": "No matches found",
-    "winRate7Days": "Win Rate (7 Days)",
-    "avgKda7Days": "Avg KDA (7 Days)",
-    "mainHeroOverall": "Main Hero (Overall)",
-    "bestHeroOverall": "Best Hero (Overall)"
+    "winRate7Days": "Win Rate (7d)",
+    "avgKda7Days": "Avg KDA (7d)",
+    "mainHeroOverall": "Main Hero (All)",
+    "bestHeroOverall": "Best Hero (All)"
   },
   "playerSearchScreen": {
     "title": "Search Player",
@@ -67,7 +67,7 @@
     "label24h": "24h",
     "label7d": "7d",
     "label30d": "30d",
-    "labelAll": "all"
+    "labelAll": "All"
   },
   "matchItem": {
     "victory": "Victory",
