@@ -33,8 +33,6 @@ const $statCard: ThemedStyle<ViewStyle> = (theme) => ({
   width: width / 2 - 32,
   padding: 16,
   borderRadius: 12,
-  borderWidth: 1,
-  borderColor: theme.colors.border,
   elevation: 1,
   shadowColor: "#000",
   shadowOffset: { width: 0, height: 1 },

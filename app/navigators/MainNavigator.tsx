@@ -92,7 +92,7 @@ export function MainNavigator() {
         listeners={({ navigation, route }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate(route.name, { screen: "List" });
+            navigation.navigate(route.name, { screen: "Stats" });
           },
         })}
       />
@@ -111,9 +111,10 @@ export function MainNavigator() {
   );
 }
 
-const $tabBar: ThemedStyle<ViewStyle> = ({ colors }) => ({
+const $tabBar: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   backgroundColor: colors.background,
   borderTopColor: colors.transparent,
+  marginTop: spacing.sm,
 });
 
 const $tabBarItem: ThemedStyle<ViewStyle> = ({ spacing }) => ({

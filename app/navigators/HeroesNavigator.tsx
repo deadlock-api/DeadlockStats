@@ -4,12 +4,14 @@ import type { ComponentProps } from "react";
 import Config from "@/config";
 import { HeroesDetailsScreen } from "@/screens/Heroes/HeroesDetailsScreen";
 import { HeroesListScreen } from "@/screens/Heroes/HeroesListScreen";
+import { HeroesStatsScreen } from "@/screens/Heroes/HeroesStatsScreen";
 import { useAppTheme } from "@/theme/context";
 import { useBackButtonHandler } from "./navigationUtilities";
 
 const exitRoutes = Config.exitRoutes;
 
 export type HeroesStackParamList = {
+  Stats: undefined;
   List: undefined;
   Details: { heroId: number };
 };
@@ -36,6 +38,7 @@ export const HeroesNavigator = (_props: NavigationProps) => {
         },
       }}
     >
+      <Stack.Screen name="Stats" component={HeroesStatsScreen} />
       <Stack.Screen name="List" component={HeroesListScreen} />
       <Stack.Screen name="Details" component={HeroesDetailsScreen} />
     </Stack.Navigator>
