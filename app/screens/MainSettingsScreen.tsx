@@ -9,7 +9,7 @@ import type { MainTabScreenProps } from "@/navigators/MainNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
-import { removeSteamId } from "@/utils/steamAuth";
+import { hasSteamId, removeSteamId, removeSkipWelcomePreference } from "@/utils/steamAuth";
 
 export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function MainSettingsScreen({ navigation }) {
   const { setThemeContextOverride, themeContext, themed, theme } = useAppTheme();
@@ -22,11 +22,24 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
   // Handle sign out
   const handleSignOut = useCallback(() => {
     removeSteamId();
+    removeSkipWelcomePreference();
     navigation.getParent()?.reset({
       index: 0,
       routes: [{ name: "Welcome" }],
     });
   }, [navigation]);
+
+  // Handle linking to Steam
+  const handleLinkToSteam = useCallback(() => {
+    removeSkipWelcomePreference();
+    navigation.getParent()?.reset({
+      index: 0,
+      routes: [{ name: "Welcome" }],
+    });
+  }, [navigation]);
+
+  // Check if user has Steam account linked
+  const hasLinkedSteam = hasSteamId();
 
   return (
     <Screen preset="scroll" contentContainerStyle={[$styles.container, themed($container)]}>
@@ -64,13 +77,25 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
       </SettingsSection>
 
       <SettingsSection title={translate("settingsScreen:accountSection")}>
-        <SettingsItem
-          icon={<FontAwesome6 name="arrow-right-from-bracket" solid color={theme.colors.palette.angry500} size={20} />}
-          title={translate("settingsScreen:signOut")}
-          subtitle={translate("settingsScreen:logOutOfAccount")}
-          onPress={handleSignOut}
-          rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.palette.angry500} size={20} />}
-        />
+        {hasLinkedSteam ? (
+          <SettingsItem
+            icon={
+              <FontAwesome6 name="arrow-right-from-bracket" solid color={theme.colors.palette.angry500} size={20} />
+            }
+            title={translate("settingsScreen:signOut")}
+            subtitle={translate("settingsScreen:logOutOfAccount")}
+            onPress={handleSignOut}
+            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.palette.angry500} size={20} />}
+          />
+        ) : (
+          <SettingsItem
+            icon={<FontAwesome6 name="steam" solid color={theme.colors.palette.primary500} size={20} />}
+            title={translate("settingsScreen:linkToSteam")}
+            subtitle={translate("settingsScreen:linkSteamAccount")}
+            onPress={handleLinkToSteam}
+            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.palette.primary500} size={20} />}
+          />
+        )}
       </SettingsSection>
 
       <Text style={themed($version)}>

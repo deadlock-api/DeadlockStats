@@ -1,6 +1,7 @@
 import { loadString, remove, saveString } from "./storage";
 
 export const STEAM_ID_STORAGE_KEY = "steamId";
+export const SKIP_WELCOME_STORAGE_KEY = "skipWelcomeScreen";
 
 /**
  * Converts a Steam64 ID to SteamID3 format
@@ -28,7 +29,12 @@ export function extractSteamIdFromUrl(url: string): string | null {
  * @returns The stored Steam ID or null if not found
  */
 export function getSteamId(): number | null {
-  return Number(loadString(STEAM_ID_STORAGE_KEY));
+  const steamIdString = loadString(STEAM_ID_STORAGE_KEY);
+  if (!steamIdString) {
+    return null;
+  }
+  const steamId = Number(steamIdString);
+  return isNaN(steamId) ? null : steamId;
 }
 
 /**
@@ -53,4 +59,29 @@ export function removeSteamId(): void {
  */
 export function hasSteamId(): boolean {
   return !!getSteamId();
+}
+
+/**
+ * Gets the skip welcome screen preference
+ * @returns True if user wants to skip welcome screen, false otherwise
+ */
+export function getSkipWelcomePreference(): boolean {
+  const preference = loadString(SKIP_WELCOME_STORAGE_KEY);
+  return preference === "true";
+}
+
+/**
+ * Saves the skip welcome screen preference
+ * @param skip - Whether to skip the welcome screen
+ * @returns True if saved successfully, false otherwise
+ */
+export function saveSkipWelcomePreference(skip: boolean): boolean {
+  return saveString(SKIP_WELCOME_STORAGE_KEY, skip.toString());
+}
+
+/**
+ * Removes the skip welcome screen preference
+ */
+export function removeSkipWelcomePreference(): void {
+  remove(SKIP_WELCOME_STORAGE_KEY);
 }

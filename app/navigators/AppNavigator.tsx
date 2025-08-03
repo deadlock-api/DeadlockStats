@@ -7,7 +7,7 @@ import Config from "@/config";
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary";
 import { WelcomeScreen } from "@/screens/WelcomeScreen";
 import { useAppTheme } from "@/theme/context";
-import { hasSteamId, saveSteamId } from "@/utils/steamAuth";
+import { getSkipWelcomePreference, hasSteamId, saveSteamId } from "@/utils/steamAuth";
 
 import { MainNavigator, type MainTabParamList } from "./MainNavigator";
 import { navigationRef, useBackButtonHandler } from "./navigationUtilities";
@@ -35,11 +35,13 @@ const AppStack = () => {
     setHasStoredSteamId(true);
   }
 
-  // Check if user has Steam ID stored
+  // Check if user has Steam ID stored or has chosen to skip welcome
   useEffect(() => {
     const checkSteamId = () => {
       const steamIdExists = hasSteamId();
-      setHasStoredSteamId(steamIdExists);
+      const skipWelcome = getSkipWelcomePreference();
+      // User can proceed to main app if they have Steam ID OR have chosen to skip
+      setHasStoredSteamId(steamIdExists || skipWelcome);
     };
 
     checkSteamId();

@@ -1,12 +1,12 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import type React from "react";
 import { useEffect } from "react";
 import { TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Text } from "@/components/ui/Text";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
+import { translate } from "@/i18n/translate";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 import { getSteamId } from "@/utils/steamAuth";
@@ -27,13 +27,30 @@ export const AccountSelector = () => {
   return (
     <View style={themed($header)}>
       <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
-        {player?.avatar && (
-          <AutoImage source={{ uri: player?.avatar }} style={{ width: 48, height: 48, borderRadius: 24 }} />
+        {(player?.avatar || (!steamId && !player)) && (
+          <View
+            style={{
+              width: 48,
+              height: 48,
+              borderRadius: 24,
+              backgroundColor: theme.colors.palette.neutral300,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {player?.avatar ? (
+              <AutoImage source={{ uri: player.avatar }} style={{ width: 48, height: 48, borderRadius: 24 }} />
+            ) : (
+              <FontAwesome6 name="user" solid color={theme.colors.textDim} size={24} />
+            )}
+          </View>
         )}
-        <Text numberOfLines={1} preset="subheading" style={{ flex: 1, maxWidth: 150 }}>
-          {player && player.account_id !== steamId
-            ? (player?.personaname ?? player?.realname ?? player?.account_id)
-            : (userProfile?.personaname ?? userProfile?.realname ?? userProfile?.account_id)}
+        <Text numberOfLines={1} preset="subheading" style={{ flex: 1, maxWidth: 170 }}>
+          {!steamId && !player && !userProfile
+            ? translate("common:noSteamAccount")
+            : player && player.account_id !== steamId
+              ? (player?.personaname ?? player?.realname ?? player?.account_id)
+              : (userProfile?.personaname ?? userProfile?.realname ?? userProfile?.account_id ?? "Loading...")}
         </Text>
         {player && player.account_id !== steamId && (
           <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>

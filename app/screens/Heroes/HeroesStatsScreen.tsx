@@ -16,6 +16,7 @@ import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { formatRelativeTime } from "@/utils/matchHistoryStats";
 import { scaleColor } from "@/utils/scaleColor";
+import { hasSteamId } from "@/utils/steamAuth";
 
 export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
   const { themed } = useAppTheme();
@@ -49,7 +50,7 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text tx="heroesStatsScreen:noHeroStatsFound" />
+          <Text tx={!hasSteamId() ? "heroesStatsScreen:noSteamAccountLinked" : "heroesStatsScreen:noHeroStatsFound"} />
         </View>
       )}
     </Screen>
