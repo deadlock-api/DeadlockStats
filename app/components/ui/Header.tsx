@@ -5,17 +5,14 @@ import {
   TouchableOpacity,
   type TouchableOpacityProps,
   View,
-  type ViewStyle,
+  type ViewStyle
 } from "react-native";
-
-import { isRTL } from "@/i18n";
 import { translate } from "@/i18n/translate";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { type ExtendedEdge, useSafeAreaInsetsStyle } from "@/utils/useSafeAreaInsetsStyle";
 
-import { type IconTypes, PressableIcon } from "./Icon";
 import { Text, type TextProps } from "./Text";
 
 export interface HeaderProps {
@@ -59,15 +56,6 @@ export interface HeaderProps {
    */
   titleTxOptions?: TextProps["txOptions"];
   /**
-   * Icon that should appear on the left.
-   * Can be used with `onLeftPress`.
-   */
-  leftIcon?: IconTypes;
-  /**
-   * An optional tint color for the left icon
-   */
-  leftIconColor?: string;
-  /**
    * Left action text to display if not using `leftTx`.
    * Can be used with `onLeftPress`. Overrides `leftIcon`.
    */
@@ -91,15 +79,6 @@ export interface HeaderProps {
    * What happens when you press the left icon or text action.
    */
   onLeftPress?: TouchableOpacityProps["onPress"];
-  /**
-   * Icon that should appear on the right.
-   * Can be used with `onRightPress`.
-   */
-  rightIcon?: IconTypes;
-  /**
-   * An optional tint color for the right icon
-   */
-  rightIconColor?: string;
   /**
    * Right action text to display if not using `rightTx`.
    * Can be used with `onRightPress`. Overrides `rightIcon`.
@@ -132,8 +111,6 @@ export interface HeaderProps {
 
 interface HeaderActionProps {
   backgroundColor?: string;
-  icon?: IconTypes;
-  iconColor?: string;
   text?: TextProps["text"];
   tx?: TextProps["tx"];
   txOptions?: TextProps["txOptions"];
@@ -156,16 +133,12 @@ export function Header(props: HeaderProps) {
   const {
     backgroundColor = colors.background,
     LeftActionComponent,
-    leftIcon,
-    leftIconColor,
     leftText,
     leftTx,
     leftTxOptions,
     onLeftPress,
     onRightPress,
     RightActionComponent,
-    rightIcon,
-    rightIconColor,
     rightText,
     rightTx,
     rightTxOptions,
@@ -190,8 +163,6 @@ export function Header(props: HeaderProps) {
         <HeaderAction
           tx={leftTx}
           text={leftText}
-          icon={leftIcon}
-          iconColor={leftIconColor}
           onPress={onLeftPress}
           txOptions={leftTxOptions}
           backgroundColor={backgroundColor}
@@ -214,8 +185,6 @@ export function Header(props: HeaderProps) {
         <HeaderAction
           tx={rightTx}
           text={rightText}
-          icon={rightIcon}
-          iconColor={rightIconColor}
           onPress={onRightPress}
           txOptions={rightTxOptions}
           backgroundColor={backgroundColor}
@@ -231,7 +200,7 @@ export function Header(props: HeaderProps) {
  * @returns {JSX.Element} The rendered `HeaderAction` component.
  */
 function HeaderAction(props: HeaderActionProps) {
-  const { backgroundColor, icon, text, tx, txOptions, onPress, ActionComponent, iconColor } = props;
+  const { backgroundColor, text, tx, txOptions, onPress, ActionComponent } = props;
   const { themed } = useAppTheme();
 
   const content = tx ? translate(tx, txOptions) : text;
@@ -248,19 +217,6 @@ function HeaderAction(props: HeaderActionProps) {
       >
         <Text weight="medium" size="md" text={content} style={themed($actionText)} />
       </TouchableOpacity>
-    );
-  }
-
-  if (icon) {
-    return (
-      <PressableIcon
-        size={24}
-        icon={icon}
-        color={iconColor}
-        onPress={onPress}
-        containerStyle={themed([$actionIconContainer, { backgroundColor }])}
-        style={isRTL ? { transform: [{ rotate: "180deg" }] } : {}}
-      />
     );
   }
 
@@ -292,15 +248,6 @@ const $actionTextContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $actionText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.tint,
-});
-
-const $actionIconContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexGrow: 0,
-  alignItems: "center",
-  justifyContent: "center",
-  height: "100%",
-  paddingHorizontal: spacing.md,
-  zIndex: 2,
 });
 
 const $actionFillerContainer: ViewStyle = {

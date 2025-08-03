@@ -5,14 +5,13 @@ import {
   TouchableOpacity,
   type TouchableOpacityProps,
   View,
-  type ViewStyle,
+  type ViewStyle
 } from "react-native";
 
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 
-import { Icon, type IconTypes } from "./Icon";
 import { Text, type TextProps } from "./Text";
 
 export interface ListItemProps extends TouchableOpacityProps {
@@ -65,17 +64,9 @@ export interface ListItemProps extends TouchableOpacityProps {
    */
   style?: StyleProp<ViewStyle>;
   /**
-   * Icon that should appear on the left.
-   */
-  leftIcon?: IconTypes;
-  /**
    * An optional tint color for the left icon
    */
   leftIconColor?: string;
-  /**
-   * Icon that should appear on the right.
-   */
-  rightIcon?: IconTypes;
   /**
    * An optional tint color for the right icon
    */
@@ -93,11 +84,7 @@ export interface ListItemProps extends TouchableOpacityProps {
 }
 
 interface ListItemActionProps {
-  icon?: IconTypes;
-  iconColor?: string;
   Component?: ReactElement;
-  size: number;
-  side: "left" | "right";
 }
 
 /**
@@ -112,11 +99,7 @@ export const ListItem = forwardRef<View, ListItemProps>(function ListItem(props:
     children,
     height = 56,
     LeftComponent,
-    leftIcon,
-    leftIconColor,
     RightComponent,
-    rightIcon,
-    rightIconColor,
     style,
     text,
     TextProps,
@@ -150,19 +133,13 @@ export const ListItem = forwardRef<View, ListItemProps>(function ListItem(props:
   return (
     <View ref={ref} style={themed($containerStyles)}>
       <Wrapper {...TouchableOpacityProps} style={$touchableStyles}>
-        <ListItemAction side="left" size={height} icon={leftIcon} iconColor={leftIconColor} Component={LeftComponent} />
+        <ListItemAction Component={LeftComponent} />
 
         <Text {...TextProps} tx={tx} text={text} txOptions={txOptions} style={themed($textStyles)}>
           {children}
         </Text>
 
-        <ListItemAction
-          side="right"
-          size={height}
-          icon={rightIcon}
-          iconColor={rightIconColor}
-          Component={RightComponent}
-        />
+        <ListItemAction Component={RightComponent} />
       </Wrapper>
     </View>
   );
@@ -173,29 +150,8 @@ export const ListItem = forwardRef<View, ListItemProps>(function ListItem(props:
  * @returns {JSX.Element | null} The rendered `ListItemAction` component.
  */
 function ListItemAction(props: ListItemActionProps) {
-  const { icon, Component, iconColor, size, side } = props;
-  const { themed } = useAppTheme();
-
-  const $iconContainerStyles = [$iconContainer];
-
+  const { Component } = props;
   if (Component) return Component;
-
-  if (icon !== undefined) {
-    return (
-      <Icon
-        size={24}
-        icon={icon}
-        color={iconColor}
-        containerStyle={themed([
-          $iconContainerStyles,
-          side === "left" && $iconContainerLeft,
-          side === "right" && $iconContainerRight,
-          { height: size },
-        ])}
-      />
-    );
-  }
-
   return null;
 }
 
@@ -219,16 +175,3 @@ const $textStyle: ThemedStyle<TextStyle> = ({ spacing }) => ({
 const $touchableStyle: ViewStyle = {
   alignItems: "flex-start",
 };
-
-const $iconContainer: ViewStyle = {
-  justifyContent: "center",
-  alignItems: "center",
-  flexGrow: 0,
-};
-const $iconContainerLeft: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginEnd: spacing.md,
-});
-
-const $iconContainerRight: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  marginStart: spacing.md,
-});
