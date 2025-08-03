@@ -171,4 +171,5 @@ const $heroNameText: ThemedStyle<TextStyle> = ({ typography }) => ({
 const $heroRoleText: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontSize: 12,
   fontFamily: typography.primary.normal,
+  lineHeight: 14,
 });
