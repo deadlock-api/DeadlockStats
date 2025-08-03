@@ -15,10 +15,6 @@
   "android": {
     "icon": "./assets/images/app-icon-android-legacy.png",
     "package": "com.deadlockapi.deadlockstats",
-    "adaptiveIcon": {
-      "foregroundImage": "./assets/images/app-icon-android-adaptive-foreground.png",
-      "backgroundImage": "./assets/images/app-icon-android-adaptive-background.png"
-    },
     "allowBackup": false,
     "edgeToEdgeEnabled": true,
     "versionCode": 1
@@ -64,6 +60,44 @@
     },
     "eas": {
       "projectId": "74b94e72-decb-4b89-8618-29bfd9ff8362"
+    }
+  },
+  "expo": {
+    "name": "DeadlockStats",
+    "slug": "DeadlockStats",
+    "android": {
+      "package": "com.deadlockapi.deadlockstats",
+      "icon": "./assets/images/app-icon-android-legacy.png",
+      "splash": {
+        "backgroundColor": "#0F172A",
+        "image": "./assets/images/splash-logo-android-universal.png",
+        "resizeMode": "contain"
+      }
+    },
+    "ios": {
+      "icon": "./assets/images/app-icon-ios.png",
+      "privacyManifests": {
+        "NSPrivacyAccessedAPITypes": [
+          {
+            "NSPrivacyAccessedAPIType": "NSPrivacyAccessedAPICategoryUserDefaults",
+            "NSPrivacyAccessedAPITypeReasons": ["CA92.1"]
+          }
+        ]
+      },
+      "bundleIdentifier": "com.deadlockapi.deadlockstats",
+      "splash": {
+        "backgroundColor": "#0F172A",
+        "image": "./assets/images/splash-logo-ios-mobile.png",
+        "resizeMode": "contain"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/app-icon-web-favicon.png",
+      "splash": {
+        "backgroundColor": "#0F172A",
+        "image": "./assets/images/splash-logo-web.png",
+        "resizeMode": "contain"
+      }
     }
   }
 }

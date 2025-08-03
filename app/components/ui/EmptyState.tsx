@@ -1,12 +1,4 @@
-import {
-  Image,
-  type ImageProps,
-  type ImageStyle,
-  type StyleProp,
-  type TextStyle,
-  View,
-  type ViewStyle,
-} from "react-native";
+import { type ImageProps, type ImageStyle, type StyleProp, type TextStyle, View, type ViewStyle } from "react-native";
 
 import { translate } from "@/i18n/translate";
 import { useAppTheme } from "@/theme/context";
@@ -14,8 +6,6 @@ import type { ThemedStyle } from "@/theme/types";
 
 import { Button, type ButtonProps } from "./Button";
 import { Text, type TextProps } from "./Text";
-
-const sadFace = require("@assets/images/sad-face.png");
 
 interface EmptyStateProps {
   /**
@@ -112,7 +102,6 @@ interface EmptyStateProps {
 }
 
 interface EmptyStatePresetItem {
-  imageSource: ImageProps["source"];
   heading: TextProps["text"];
   content: TextProps["text"];
   button: TextProps["text"];
@@ -126,14 +115,12 @@ interface EmptyStatePresetItem {
  */
 export function EmptyState(props: EmptyStateProps) {
   const {
-    theme,
     themed,
     theme: { spacing },
   } = useAppTheme();
 
   const EmptyStatePresets = {
     generic: {
-      imageSource: sadFace,
       heading: translate("emptyStateComponent:generic.heading"),
       content: translate("emptyStateComponent:generic.content"),
       button: translate("emptyStateComponent:generic.button"),
@@ -153,57 +140,37 @@ export function EmptyState(props: EmptyStateProps) {
     heading = preset.heading,
     headingTx,
     headingTxOptions,
-    imageSource = preset.imageSource,
     style: $containerStyleOverride,
     buttonStyle: $buttonStyleOverride,
     buttonTextStyle: $buttonTextStyleOverride,
     contentStyle: $contentStyleOverride,
     headingStyle: $headingStyleOverride,
-    imageStyle: $imageStyleOverride,
     ButtonProps,
     ContentTextProps,
     HeadingTextProps,
-    ImageProps,
   } = props;
 
-  const isImagePresent = !!imageSource;
   const isHeadingPresent = !!(heading || headingTx);
   const isContentPresent = !!(content || contentTx);
   const isButtonPresent = !!(button || buttonTx);
 
   const $containerStyles = [$containerStyleOverride];
-  const $imageStyles = [
-    $image,
-    (isHeadingPresent || isContentPresent || isButtonPresent) && { marginBottom: spacing.xxxs },
-    $imageStyleOverride,
-    ImageProps?.style,
-  ];
   const $headingStyles = [
     themed($heading),
-    isImagePresent && { marginTop: spacing.xxxs },
     (isContentPresent || isButtonPresent) && { marginBottom: spacing.xxxs },
     $headingStyleOverride,
     HeadingTextProps?.style,
   ];
   const $contentStyles = [
     themed($content),
-    (isImagePresent || isHeadingPresent) && { marginTop: spacing.xxxs },
     isButtonPresent && { marginBottom: spacing.xxxs },
     $contentStyleOverride,
     ContentTextProps?.style,
   ];
-  const $buttonStyles = [
-    (isImagePresent || isHeadingPresent || isContentPresent) && { marginTop: spacing.xl },
-    $buttonStyleOverride,
-    ButtonProps?.style,
-  ];
+  const $buttonStyles = [$buttonStyleOverride, ButtonProps?.style];
 
   return (
     <View style={$containerStyles}>
-      {isImagePresent && (
-        <Image source={imageSource} {...ImageProps} style={$imageStyles} tintColor={theme.colors.palette.neutral900} />
-      )}
-
       {isHeadingPresent && (
         <Text
           preset="subheading"
@@ -234,7 +201,6 @@ export function EmptyState(props: EmptyStateProps) {
   );
 }
 
-const $image: ImageStyle = { alignSelf: "center" };
 const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
   textAlign: "center",
   paddingHorizontal: spacing.lg,

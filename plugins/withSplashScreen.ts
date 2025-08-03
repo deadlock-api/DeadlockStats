@@ -57,7 +57,7 @@ const withCustomStringsXml: ConfigPlugin = (config) =>
 const withCustomStylesXml: ConfigPlugin = (config) =>
   withAndroidStyles(config, async (modConfig) => {
     modConfig.modResults = AndroidConfig.Styles.assignStylesValue(modConfig.modResults, {
-      add: true,
+      add: false,
       name: "android:windowIsTranslucent",
       value: "true",
       parent: {
