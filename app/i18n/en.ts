@@ -7,8 +7,7 @@ const en = {
   },
   errorScreen: {
     title: "Something went wrong!",
-    friendlySubtitle:
-      "This is the screen that your users will see in production when an error is thrown. You'll want to customize this message (located in `app/i18n/en.ts`) and probably the layout as well (`app/screens/ErrorScreen`). If you want to remove this entirely, check `app/app.tsx` for the <ErrorBoundary> component.",
+    friendlySubtitle: "Something went wrong.",
     reset: "RESET APP",
     traceTitle: "Error from %{name} stack",
   },
@@ -26,46 +25,6 @@ const en = {
     profileTab: "Profile",
     settingsTab: "Settings",
   },
-  heroesScreen: {
-    title: "Connect with the community",
-    tagLine: "Plug in to Infinite Red's community of React Native engineers and level up your app development with us!",
-    joinUsOnSlackTitle: "Join us on Slack",
-    joinUsOnSlack:
-      "Wish there was a place to connect with React Native engineers around the world? Join the conversation in the Infinite Red Community Slack! Our growing community is a safe space to ask questions, learn from others, and grow your network.",
-    joinSlackLink: "Join the Slack Community",
-    makeIgniteEvenBetterTitle: "Make Ignite even better",
-    makeIgniteEvenBetter:
-      "Have an idea to make Ignite even better? We're happy to hear that! We're always looking for others who want to help us build the best React Native tooling out there. Join us over on GitHub to join us in building the future of Ignite.",
-    contributeToIgniteLink: "Contribute to Ignite",
-    theLatestInReactNativeTitle: "The latest in React Native",
-    theLatestInReactNative: "We're here to keep you current on all React Native has to offer.",
-    reactNativeRadioLink: "React Native Radio",
-    reactNativeNewsletterLink: "React Native Newsletter",
-    reactNativeLiveLink: "React Native Live",
-    chainReactConferenceLink: "Chain React Conference",
-    hireUsTitle: "Hire Infinite Red for your next project",
-    hireUs:
-      "Whether it's running a full project or getting teams up to speed with our hands-on training, Infinite Red can help with just about any React Native project.",
-    hireUsLink: "Send us a message",
-  },
-  componentsScreen: {
-    jumpStart: "Components to jump start your project!",
-    lorem2Sentences:
-      "Nulla cupidatat deserunt amet quis aliquip nostrud do adipisicing. Adipisicing excepteur elit laborum Lorem adipisicing do duis.",
-    demoHeaderTxExample: "Yay",
-    demoViaTxProp: "Via `tx` Prop",
-    demoViaSpecifiedTxProp: "Via `{{prop}}Tx` Prop",
-  },
-  settingsScreen: {
-    title: "Settings",
-    tagLine:
-      "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
-    signOut: "Sign Out",
-    signOutConfirmTitle: "Sign Out",
-    signOutConfirmMessage: "Are you sure you want to sign out? You'll need to sign in again to access your stats.",
-    signOutConfirmButton: "Sign Out",
-    cancel: "Cancel",
-  },
   welcomeScreen: {
     title: "Welcome to DeadlockStats",
     subtitle: "Track your Deadlock game statistics and performance",
@@ -76,6 +35,58 @@ const en = {
     errorMessage: "Failed to authenticate with Steam. Please try again.",
     errorRetryButton: "Try Again",
     loadingMessage: "Authenticating with Steam...",
+  },
+  dashboardScreen: {
+    recentMatches: "Recent Matches",
+    viewAllMatches: "View All Matches",
+    loadingMatchHistory: "Loading match history...",
+    failedToLoadMatchHistory: "Failed to load match history",
+    noMatchesFound: "No matches found",
+    winRate7Days: "Win Rate (7 Days)",
+    avgKda7Days: "Avg KDA (7 Days)",
+    mainHeroOverall: "Main Hero (Overall)",
+    bestHeroOverall: "Best Hero (Overall)",
+  },
+  playerSearchScreen: {
+    title: "Search Player",
+    searchPlaceholder: "Enter steam name...",
+    searchResults: "Search Results",
+    noPlayersFound: "No players found",
+    tryCheckingSpelling: "Try checking the spelling",
+    recentSearches: "Recent Searches",
+  },
+  heroesStatsScreen: {
+    loadingHeroStats: "Loading hero stats...",
+    noHeroStatsFound: "No hero stats found",
+  },
+  matchesListScreen: {
+    loadingMatchHistory: "Loading match history...",
+    noMatchesFound: "No matches found",
+  },
+  timeRangeSelect: {
+    label24h: "24h",
+    label7d: "7d",
+    label30d: "30d",
+    labelAll: "all",
+  },
+  matchItem: {
+    victory: "Victory",
+    defeat: "Defeat",
+  },
+  settingsScreen: {
+    title: "Settings",
+    appearanceSection: "Appearance",
+    darkMode: "Dark Mode",
+    useDarkTheme: "Use dark theme",
+    supportSection: "Support",
+    contactUs: "Contact us",
+    joinDiscordServer: "Join our Discord server",
+    privacyPolicy: "Privacy Policy",
+    readPrivacyPolicy: "Read our privacy policy",
+    accountSection: "Account",
+    signOut: "Sign Out",
+    logOutOfAccount: "Log out of your account",
+    version: "Version",
   },
 };
 

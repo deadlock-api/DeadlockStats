@@ -5,10 +5,10 @@ import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
 const timeRanges = [
-  { label: "24h", value: 24 * 60 * 60 },
-  { label: "7d", value: 7 * 24 * 60 * 60 },
-  { label: "30d", value: 30 * 24 * 60 * 60 },
-  { label: "all", value: null },
+  { labelKey: "timeRangeSelect:label24h", value: 24 * 60 * 60 },
+  { labelKey: "timeRangeSelect:label7d", value: 7 * 24 * 60 * 60 },
+  { labelKey: "timeRangeSelect:label30d", value: 30 * 24 * 60 * 60 },
+  { labelKey: "timeRangeSelect:labelAll", value: null },
 ] as const;
 export type TimeRange = (typeof timeRanges)[number];
 export const DEFAULT_TIME_RANGE = timeRanges[2];
@@ -22,13 +22,11 @@ export const TimeRangeSelect = () => {
     <View style={themed($timeRangeContainer)}>
       {timeRanges.map((range) => (
         <TouchableOpacity
-          key={range.label}
+          key={range.labelKey}
           onPress={() => setTimeRange(range)}
           style={[themed($timeRangeButton), timeRange.value === range.value && themed($timeRangeButtonActive)]}
         >
-          <Text key={range.label} style={themed($timeRangeText)}>
-            {range.label}
-          </Text>
+          <Text key={range.labelKey} style={themed($timeRangeText)} tx={range.labelKey} />
         </TouchableOpacity>
       ))}
     </View>

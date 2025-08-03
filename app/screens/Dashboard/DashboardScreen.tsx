@@ -11,6 +11,7 @@ import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHeroes } from "@/hooks/useAssetsHeroes";
 import { useMatchHistory } from "@/hooks/useMatchHistory";
+import { translate } from "@/i18n/translate";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
 import type { MatchHistory } from "@/services/api/types/match_history";
 import { useAppTheme } from "@/theme/context";
@@ -33,14 +34,12 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
         <>
           <StatDisplays matchHistory={matchHistory} />
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-            <Text preset="subheading" style={{ marginVertical: theme.spacing.md }}>
-              Recent Matches
-            </Text>
+            <Text preset="subheading" style={{ marginVertical: theme.spacing.md }} tx="dashboardScreen:recentMatches" />
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
               onPress={() => props.navigation.navigate("MainMatches", { screen: "MatchesList" })}
             >
-              <Text style={[themed($viewAllText), { color: theme.colors.text }]}>View All Matches</Text>
+              <Text style={[themed($viewAllText), { color: theme.colors.text }]} tx="dashboardScreen:viewAllMatches" />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
             </TouchableOpacity>
           </View>
@@ -62,11 +61,11 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
       ) : (
         <View style={themed($noDataContainer)}>
           {isLoading ? (
-            <Text text="Loading match history..." />
+            <Text tx="dashboardScreen:loadingMatchHistory" />
           ) : error ? (
-            <Text text="Failed to load match history" />
+            <Text tx="dashboardScreen:failedToLoadMatchHistory" />
           ) : (
-            <Text text="No matches found" />
+            <Text tx="dashboardScreen:noMatchesFound" />
           )}
         </View>
       )}
@@ -99,19 +98,19 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
   return (
     <View style={themed($statDisplaysContainer)}>
       <StatCard
-        title="Win Rate (7 Days)"
+        title={translate("dashboardScreen:winRate7Days")}
         value={wins + losses > 0 ? `${winRate}%` : "-"}
         subtitle={`${wins}W ${losses}L`}
         valueColor={scaleColor(winRate, 30, 70)}
       />
       <StatCard
-        title="Avg KDA (7 Days)"
+        title={translate("dashboardScreen:avgKda7Days")}
         value={kda.ratio > 0 ? kda.ratio : "-"}
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
         valueColor={scaleColor(kda.ratio, 0.5, 4)}
       />
       <StatCard
-        title="Main Hero (Overall)"
+        title={translate("dashboardScreen:mainHeroOverall")}
         value={
           <View
             style={{
@@ -131,7 +130,7 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
         valueColor={theme.colors.text}
       />
       <StatCard
-        title="Best Hero (Overall)"
+        title={translate("dashboardScreen:bestHeroOverall")}
         value={
           <View
             style={{
