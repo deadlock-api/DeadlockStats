@@ -61,7 +61,6 @@ const en = {
     title: "Debug",
     tagLine:
       "Congratulations, you've got a very advanced React Native app template here.  Take advantage of this boilerplate!",
-    reportBugs: "Report Bugs",
     signOut: "Sign Out",
     signOutConfirmTitle: "Sign Out",
     signOutConfirmMessage: "Are you sure you want to sign out? You'll need to sign in again to access your stats.",

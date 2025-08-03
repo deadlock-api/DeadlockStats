@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/Button";
 import { ListItem } from "@/components/ui/ListItem";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
-import { isRTL } from "@/i18n";
 import type { MainTabScreenProps } from "@/navigators/MainNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
@@ -52,12 +51,6 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={[$styles.container, themed($container)]}>
-      <Text
-        style={themed($reportBugsLink)}
-        tx="settingsScreen:reportBugs"
-        onPress={() => openLinkInBrowser("https://github.com/infinitered/ignite/issues")}
-      />
-
       <Text style={themed($title)} preset="heading" tx="settingsScreen:title" />
       <Text preset="bold">Current system theme: {colorScheme}</Text>
       <Text preset="bold">Current app theme: {themeContext}</Text>
@@ -130,12 +123,6 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $title: ThemedStyle<TextStyle> = ({ spacing }) => ({
   marginBottom: spacing.xxl,
-});
-
-const $reportBugsLink: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
-  color: colors.tint,
-  marginBottom: spacing.lg,
-  alignSelf: isRTL ? "flex-start" : "flex-end",
 });
 
 const $item: ThemedStyle<ViewStyle> = ({ spacing }) => ({
