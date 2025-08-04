@@ -1,4 +1,5 @@
 import { FontAwesome6 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import type { FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
@@ -80,6 +81,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
 
 export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] }) => {
   const { themed, theme } = useAppTheme();
+  const navigation = useNavigation();
 
   const { data: assetsHeroes } = useAssetsHeroes();
   const heroIds = assetsHeroes?.map((h) => h.id) ?? [];
@@ -114,46 +116,50 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
         valueColor={scaleColor(kda.ratio, 0.5, 4)}
       />
-      <StatCard
-        title={translate("dashboardScreen:mainHeroOverall")}
-        value={
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-              marginBottom: theme.spacing.xxs,
-            }}
-          >
-            <HeroImage heroId={mostPlayedHero.heroId} size={30} />
-            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName heroId={mostPlayedHero.heroId} />
-            </Text>
-          </View>
-        }
-        subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
-        valueColor={theme.colors.text}
-      />
-      <StatCard
-        title={translate("dashboardScreen:bestHeroOverall")}
-        value={
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-              marginBottom: theme.spacing.xxs,
-            }}
-          >
-            <HeroImage heroId={highestWinRateHero.heroId} size={30} />
-            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName heroId={highestWinRateHero.heroId} />
-            </Text>
-          </View>
-        }
-        subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
-        valueColor={theme.colors.text}
-      />
+      <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
+        <StatCard
+          title={translate("dashboardScreen:mainHeroOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <HeroImage heroId={mostPlayedHero.heroId} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+                <HeroName heroId={mostPlayedHero.heroId} />
+              </Text>
+            </View>
+          }
+          subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
+          valueColor={theme.colors.text}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
+        <StatCard
+          title={translate("dashboardScreen:bestHeroOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <HeroImage heroId={highestWinRateHero.heroId} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+                <HeroName heroId={highestWinRateHero.heroId} />
+              </Text>
+            </View>
+          }
+          subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
+          valueColor={theme.colors.text}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
