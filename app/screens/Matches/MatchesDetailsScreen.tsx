@@ -306,26 +306,26 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ teamName, badge, isWinner, st
   const kdaValue = `${stats.kills}/${stats.deaths}/${stats.assists}`;
   const kda = isLeft ? (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{kdaLabel}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{kdaValue}</Text>
+      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{kdaValue}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{kdaLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
+      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
     </View>
   );
   const netWorthLabel = translate("matchDetailsScreen:playerSoulsLabel");
   const netWorthValue = `${(stats.netWorth / 1000).toFixed(0).toLocaleString()}k`;
   const netWorth = isLeft ? (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{netWorthLabel}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{netWorthValue}</Text>
+      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{netWorthValue}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{netWorthLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
+      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
     </View>
   );
 
@@ -333,13 +333,13 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ teamName, badge, isWinner, st
   const playerDamageValue = `${(stats.playerDamage / 1000).toFixed(0).toLocaleString()}k`;
   const playerDamage = isLeft ? (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{playerDamageLabel}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{playerDamageValue}</Text>
+      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{playerDamageValue}</Text>
-      <Text style={{ color: theme.colors.textDim, fontSize: 14 }}>{playerDamageLabel}</Text>
+      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
+      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
     </View>
   );
 
