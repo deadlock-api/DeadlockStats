@@ -31,7 +31,7 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
               { color: isMatchWon(match) ? theme.colors.palette.success500 : theme.colors.palette.failure500 },
             ]}
           >
-            {isMatchWon(match) ? translate("matchItem:victory") : translate("matchItem:defeat")}
+            {isMatchWon(match) ? translate("common:victory") : translate("common:defeat")}
           </Text>
           <Text style={themed($timeText)}>{formatMatchDuration(match.match_duration_s)}</Text>
           <Text style={themed($timeText)}>{formatRelativeTime(match.start_time)}</Text>

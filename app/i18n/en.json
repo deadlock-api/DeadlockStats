@@ -6,7 +6,9 @@
     "logOut": "Log Out",
     "noSteamAccount": "No Account",
     "linkSteamAccount": "Link your Steam account to view stats",
-    "steamNotLinked": "Steam account not linked"
+    "steamNotLinked": "Steam account not linked",
+    "victory": "Victory",
+    "defeat": "Defeat"
   },
   "errorScreen": {
     "title": "Something went wrong!",
@@ -77,9 +79,32 @@
     "label30d": "30d",
     "labelAll": "All"
   },
-  "matchItem": {
-    "victory": "Victory",
-    "defeat": "Defeat"
+  "matchDetailsScreen": {
+    "title": "Match",
+    "loadingMessage": "Loading match details...",
+    "errorTitle": "Error",
+    "errorMessage": "Failed to load match details. Please try again.",
+    "duration": "Duration",
+    "teamAmber": "Team Amber",
+    "teamSapphire": "Team Sapphire",
+    "teamAverage": "Team Average",
+    "unranked": "Unranked",
+    "playerNameLabel": "Name",
+    "playerKdaLabel": "KDA",
+    "playerSoulsLabel": "Souls",
+    "playerDamageLabel": "Damage",
+    "playerSoulsLabelShort": "NET",
+    "playerDamageLabelShort": "DMG",
+    "kills": "K",
+    "deaths": "D",
+    "assists": "A",
+    "netWorth": "Net Worth",
+    "level": "Lvl",
+    "denies": "D",
+    "lastHits": "LH",
+    "loadingPlayer": "Loading...",
+    "player": "Player",
+    "hero": "Hero"
   },
   "settingsScreen": {
     "title": "Settings",

@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
 
-export const useSteamProfile = (steamId: number | null) => {
+export const useSteamProfile = (steamId?: number | null) => {
   return useQuery({
     queryKey: ["api-steam-profile", steamId],
     queryFn: async () => {

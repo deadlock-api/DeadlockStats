@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   type TouchableOpacityProps,
   View,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 import { translate } from "@/i18n/translate";
 import { useAppTheme } from "@/theme/context";

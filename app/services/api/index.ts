@@ -4,6 +4,7 @@ import Config from "@/config";
 import type { HeroStats } from "@/services/api/types/hero_stats";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
 import type { MatchHistory } from "./types/match_history";
+import type { MatchMetadata } from "./types/match_metadata";
 
 export interface ApiConfig {
   apiUrl: string;
@@ -46,6 +47,10 @@ export class AssetsApi {
     return await this.api.get(`v1/players/${playerId}/hero-stats`, {
       min_unix_timestamp: minUnixTimestamp,
     });
+  }
+
+  async getMatchMetadata(matchId: number): Promise<ApiResponse<MatchMetadata>> {
+    return await this.api.get(`v1/matches/${matchId}/metadata`);
   }
 }
 

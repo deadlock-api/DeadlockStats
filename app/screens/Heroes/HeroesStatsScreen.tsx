@@ -1,7 +1,6 @@
 import type { FC } from "react";
 import { ActivityIndicator, ScrollView, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
-import { HeroDescriptionRole } from "@/components/heroes/HeroDescriptionRole";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { AccountSelector } from "@/components/profile/AccountSelector";
@@ -79,9 +78,6 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
         <View style={themed($heroesNameContainer)}>
           <Text numberOfLines={1} style={themed($heroNameText)}>
             <HeroName heroId={heroStat.hero_id} />
-          </Text>
-          <Text numberOfLines={2} style={themed($heroRoleText)}>
-            <HeroDescriptionRole heroId={heroStat.hero_id} />
           </Text>
         </View>
       </View>
