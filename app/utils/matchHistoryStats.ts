@@ -207,7 +207,7 @@ export function formatRelativeTime(timestamp: number): string {
   return date.toLocaleDateString();
 }
 
-export function parseMatchMode(matchMode: number): string {
+export function parseMatchMode(matchMode?: number): string {
   switch (matchMode) {
     case 1:
       return "Unranked";

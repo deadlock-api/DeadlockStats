@@ -4,17 +4,14 @@ import type { ComponentProps } from "react";
 import Config from "@/config";
 import { MatchesDetailsScreen } from "@/screens/Matches/MatchesDetailsScreen";
 import { MatchesListScreen } from "@/screens/Matches/MatchesListScreen";
-import type { SteamProfile } from "@/services/api/types/steam_profile";
 import { useAppTheme } from "@/theme/context";
 import { useBackButtonHandler } from "./navigationUtilities";
 
 const exitRoutes = Config.exitRoutes;
 
 export type MatchesStackParamList = {
-  List: {
-    selectedPlayer?: SteamProfile;
-  };
-  Details: { matchId: number; selectedPlayer?: SteamProfile };
+  List: undefined;
+  Details: { matchId?: number };
 };
 export type MatchesStackScreenProps<T extends keyof MatchesStackParamList> = NativeStackScreenProps<
   MatchesStackParamList,

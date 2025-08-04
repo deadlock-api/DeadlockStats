@@ -2,8 +2,10 @@ import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
 import Config from "@/config";
 import { deadlock_locale } from "@/i18n";
+import type { AssetsMap } from "@/services/assets-api/types/assetsMap";
 import type { Hero } from "@/services/assets-api/types/hero";
 import type { Ability, Item, Upgrade, Weapon } from "@/services/assets-api/types/item";
+import type { Rank } from "@/services/assets-api/types/rank";
 
 export interface AssetsApiConfig {
   apiUrl: string;
@@ -27,6 +29,16 @@ export class AssetsApi {
       headers: {
         Accept: "application/json",
       },
+    });
+  }
+
+  async getMap(): Promise<ApiResponse<AssetsMap>> {
+    return await this.api.get(`v1/map`, {});
+  }
+
+  async getRanks(): Promise<ApiResponse<Rank[]>> {
+    return await this.api.get(`v2/ranks`, {
+      language: deadlock_locale,
     });
   }
 

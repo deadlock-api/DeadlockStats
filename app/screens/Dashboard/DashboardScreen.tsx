@@ -51,8 +51,10 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
                 match={match}
                 onPress={() =>
                   props.navigation.navigate("MainMatches", {
-                    screen: "MatchDetails",
-                    matchId: match.match_id,
+                    screen: "Details",
+                    params: {
+                      matchId: match.match_id,
+                    },
                   })
                 }
               />

@@ -78,6 +78,12 @@ export function MainNavigator() {
             <FontAwesome6 name="bar-chart" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate(route.name, { screen: "List" });
+          },
+        })}
       />
 
       <Tab.Screen
