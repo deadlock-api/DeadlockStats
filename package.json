@@ -98,6 +98,15 @@
       "exclude": [
         "@shopify/flash-list"
       ]
+    },
+    "doctor": {
+      "reactNativeDirectoryCheck": {
+        "exclude": [
+          "intl-pluralrules",
+          "react-native-global-state-hooks",
+          "services"
+        ]
+      }
     }
   }
 }
