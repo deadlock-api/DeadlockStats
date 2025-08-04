@@ -98,6 +98,11 @@
         "image": "./assets/images/splash-logo-web.png",
         "resizeMode": "contain"
       }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "74b94e72-decb-4b89-8618-29bfd9ff8362"
+      }
     }
   }
 }
