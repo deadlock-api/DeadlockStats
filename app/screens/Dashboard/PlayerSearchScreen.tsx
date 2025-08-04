@@ -1,5 +1,4 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { FlashList } from "@shopify/flash-list";
 import { useQuery } from "@tanstack/react-query";
 import { type FC, useState } from "react";
 import { type ImageStyle, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
@@ -89,12 +88,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
           <View>
             <Text preset="subheading" tx="playerSearchScreen:searchResults" />
             {profiles && profiles.length > 0 ? (
-              <FlashList
-                data={profiles}
-                renderItem={({ item }) => <PlayerResult onPress={handlePress} player={item} />}
-                keyExtractor={(item) => item.account_id.toString()}
-                showsVerticalScrollIndicator={false}
-              />
+              profiles?.map((item) => <PlayerResult key={item.account_id} onPress={handlePress} player={item} />)
             ) : (
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
