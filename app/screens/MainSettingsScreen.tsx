@@ -9,7 +9,7 @@ import type { MainTabScreenProps } from "@/navigators/MainNavigator";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
-import { hasSteamId, removeSteamId, removeSkipWelcomePreference } from "@/utils/steamAuth";
+import { hasSteamId, removeSkipWelcomePreference, removeSteamId } from "@/utils/steamAuth";
 
 export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function MainSettingsScreen({ navigation }) {
   const { setThemeContextOverride, themeContext, themed, theme } = useAppTheme();
@@ -89,11 +89,11 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
           />
         ) : (
           <SettingsItem
-            icon={<FontAwesome6 name="steam" solid color={theme.colors.palette.primary500} size={20} />}
+            icon={<FontAwesome6 name="steam" solid color={theme.colors.text} size={20} />}
             title={translate("settingsScreen:linkToSteam")}
             subtitle={translate("settingsScreen:linkSteamAccount")}
             onPress={handleLinkToSteam}
-            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.palette.primary500} size={20} />}
+            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={20} />}
           />
         )}
       </SettingsSection>
