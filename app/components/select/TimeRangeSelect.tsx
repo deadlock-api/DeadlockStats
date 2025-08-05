@@ -34,6 +34,7 @@ export const TimeRangeSelect = () => {
 };
 const $timeRangeContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
+  justifyContent: "space-evenly",
   alignItems: "center",
   gap: spacing.sm,
   marginBottom: spacing.sm,
