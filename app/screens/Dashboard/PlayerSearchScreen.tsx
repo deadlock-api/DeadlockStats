@@ -1,11 +1,20 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { type FC, useState } from "react";
-import { type ImageStyle, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import {
+  ActivityIndicator,
+  type ImageStyle,
+  TextInput,
+  type TextStyle,
+  TouchableOpacity,
+  View,
+  type ViewStyle,
+} from "react-native";
 import { usePlayerSelected } from "@/app";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
+import { useDebounce } from "@/hooks/useDebounce";
 import { translate } from "@/i18n/translate";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
 import { api } from "@/services/api";
@@ -20,6 +29,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
   const [searchQuery, setSearchQuery] = useState("");
   const [_, setPlayer] = usePlayerSelected();
   const [recentSearches, setRecentSearches] = useState<SteamProfile[]>(load("recentSearches") ?? []);
+  const debounceSearchQuery = useDebounce(searchQuery);
 
   const handlePress = (player: SteamProfile) => {
     let newSearches: SteamProfile[];
@@ -35,13 +45,13 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
     props.navigation.goBack();
   };
 
-  const { data: profiles } = useQuery({
-    queryKey: ["api-steam-profile-search", searchQuery],
+  const { data: profiles, isLoading } = useQuery({
+    queryKey: ["api-steam-profile-search", debounceSearchQuery],
     queryFn: async () => {
-      if (!searchQuery || searchQuery.length < 3) {
+      if (!debounceSearchQuery || debounceSearchQuery.length < 3) {
         return [];
       }
-      const response = await api.searchSteamProfile(searchQuery);
+      const response = await api.searchSteamProfile(debounceSearchQuery);
       if (response.ok) {
         return response.data?.slice(0, 5);
       } else {
@@ -89,6 +99,11 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
             <Text preset="subheading" tx="playerSearchScreen:searchResults" />
             {profiles && profiles.length > 0 ? (
               profiles?.map((item) => <PlayerResult key={item.account_id} onPress={handlePress} player={item} />)
+            ) : isLoading ? (
+              <View style={[themed($loadingResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
+                <ActivityIndicator size="large" color={theme.colors.tint} />
+                <Text style={themed($loadingResultsText)} tx="common:loading" />
+              </View>
             ) : (
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
@@ -203,6 +218,19 @@ const $noResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $noResultsSubtext: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   fontSize: 14,
+  marginBottom: spacing.md,
+});
+
+const $loadingResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingVertical: spacing.xl,
+});
+
+const $loadingResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  fontSize: 16,
+  fontWeight: "bold",
   marginBottom: spacing.md,
 });
 

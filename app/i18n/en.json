@@ -8,7 +8,8 @@
     "linkSteamAccount": "Link your Steam account to view stats",
     "steamNotLinked": "Steam account not linked",
     "victory": "Victory",
-    "defeat": "Defeat"
+    "defeat": "Defeat",
+    "loading": "Loading..."
   },
   "errorScreen": {
     "title": "Something went wrong!",
