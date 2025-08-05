@@ -67,7 +67,8 @@
   "heroesStatsScreen": {
     "loadingHeroStats": "Loading hero stats...",
     "noHeroStatsFound": "No hero stats found",
-    "noSteamAccountLinked": "Link your Steam account to view your hero statistics"
+    "noSteamAccountLinked": "Link your Steam account to view your hero statistics",
+    "viewHeroMatches": "View Matches"
   },
   "matchesListScreen": {
     "loadingMatchHistory": "Loading match history...",
