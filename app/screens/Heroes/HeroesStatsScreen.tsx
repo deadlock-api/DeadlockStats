@@ -27,7 +27,7 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
 
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
-  const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : null;
+  const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : 0;
   let { data: heroStats, isLoading } = useHeroStats(player?.account_id ?? null, minUnixTimestamp);
   heroStats = heroStats
     ?.filter((heroStat) => heroStat.matches_played > 0)
