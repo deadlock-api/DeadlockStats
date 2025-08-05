@@ -53,8 +53,12 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
           <Text style={themed($statsValue)}>{match.denies}</Text>
         </View>
         <View style={themed($statsColumn)}>
+          <Text style={themed($statsLabel)}>Level</Text>
+          <Text style={themed($statsValue)}>{match.hero_level}</Text>
+        </View>
+        <View style={themed($statsColumn)}>
           <Text style={themed($statsLabel)}>Net Worth</Text>
-          <Text style={themed($statsValue)}>{match.net_worth.toLocaleString()}</Text>
+          <Text style={themed($statsValue)}>{(match.net_worth / 1000).toFixed(0).toLocaleString()}k</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -63,9 +67,9 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
 
 const $statsRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
-  justifyContent: "space-evenly",
+  justifyContent: "space-between",
   width: "100%",
-  padding: spacing.xxs,
+  paddingBottom: spacing.xxs,
 });
 
 const $statsColumn: ThemedStyle<ViewStyle> = () => ({
@@ -102,7 +106,7 @@ const $matchHero: ThemedStyle<ViewStyle> = () => ({
 
 const $matchInfo: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1,
-  marginLeft: spacing.md,
+  marginLeft: spacing.sm,
 });
 
 const $matchStats: ThemedStyle<ViewStyle> = () => ({
@@ -110,7 +114,7 @@ const $matchStats: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $matchResult: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 14,
+  fontSize: 16,
   fontFamily: typography.primary.bold,
 });
 
@@ -133,5 +137,5 @@ const $headerRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: spacing.md,
+  marginBottom: spacing.sm,
 });
