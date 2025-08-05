@@ -47,7 +47,7 @@ const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
   marginBottom: 8,
 });
 
-const $statValue: ThemedStyle<TextStyle> = (theme) => ({
+export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 26,
   fontFamily: "Inter-Bold",
   color: theme.colors.text,
