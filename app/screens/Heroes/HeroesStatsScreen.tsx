@@ -1,5 +1,7 @@
+import { FontAwesome6 } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 import type { FC } from "react";
-import { ActivityIndicator, ScrollView, type TextStyle, View, type ViewStyle } from "react-native";
+import { ActivityIndicator, ScrollView, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
@@ -13,7 +15,7 @@ import type { HeroStats } from "@/services/api/types/hero_stats";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
-import { formatRelativeTime } from "@/utils/matchHistoryStats";
+import { formatRelativeTime, formatTimePlayed } from "@/utils/matchHistoryStats";
 import { scaleColor } from "@/utils/scaleColor";
 import { hasSteamId } from "@/utils/steamAuth";
 
@@ -63,6 +65,7 @@ const $heroesContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
   const { themed, theme } = useAppTheme();
+  const navigation = useNavigation();
 
   const winrate = Math.round((100 * heroStat.wins) / heroStat.matches_played);
   const avgKills = Math.round((10 * heroStat.kills) / heroStat.matches_played) / 10;
@@ -70,6 +73,7 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
   const avgAssists = Math.round((10 * heroStat.assists) / heroStat.matches_played) / 10;
   const avgKd = Math.round((10 * (heroStat.kills + heroStat.assists)) / heroStat.deaths) / 10;
   const lastPlayed = formatRelativeTime(heroStat.last_played);
+  const timePlayed = formatTimePlayed(heroStat.time_played);
 
   return (
     <View style={themed($heroStats)}>
@@ -83,38 +87,53 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
           </View>
         </View>
         <View style={themed($heroStatsTopRowRight)}>
-          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>Last played</Text>
-          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{lastPlayed}</Text>
+          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{timePlayed} playtime</Text>
+          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{lastPlayed} last</Text>
         </View>
       </View>
       <View style={themed($heroStatsContent)}>
-        <View style={themed($heroStatsContentStat)}>
-          <Text>Games Played</Text>
-          <Text>{heroStat.matches_played}</Text>
-        </View>
-        <View style={themed($heroStatsContentStat)}>
-          <Text>Win Rate</Text>
-          <Text style={{ color: scaleColor(winrate, 30, 70) }}>{winrate}%</Text>
-        </View>
-        <View style={themed($heroStatsContentStat)}>
-          <Text>KDA</Text>
-          <Text style={{ color: scaleColor(avgKd, 0.5, 4) }}>
-            {avgKills}/{avgDeaths}/{avgAssists}
-          </Text>
-        </View>
-        <View style={themed($heroStatsContentStat)}>
-          <Text>Accuracy</Text>
-          <Text style={{ color: scaleColor(heroStat.accuracy, 0.45, 0.7) }}>
-            {Math.round(100 * heroStat.accuracy)}%
-          </Text>
-        </View>
-        <View style={themed($heroStatsContentStat)}>
-          <Text>Headshot Rate</Text>
-          <Text style={{ color: scaleColor(heroStat.crit_shot_rate, 0.08, 0.22) }}>
-            {Math.round(100 * heroStat.crit_shot_rate)}%
-          </Text>
-        </View>
+        <HeroStatItemBox label="Games" value={heroStat.matches_played} />
+        <HeroStatItemBox label="WR" value={`${winrate}%`} valueColor={scaleColor(winrate, 30, 70)} />
+        <HeroStatItemBox
+          label="KDA"
+          value={`${avgKills.toFixed(1)}/${avgDeaths.toFixed(1)}/${avgAssists.toFixed(1)}`}
+          valueColor={scaleColor(avgKd, 0.5, 4)}
+        />
+        <HeroStatItemBox
+          label="Accuracy (Head)"
+          value={`${Math.round(100 * heroStat.accuracy)}% (${Math.round(100 * heroStat.crit_shot_rate)}%)`}
+          valueColor={scaleColor(heroStat.accuracy, 0.45, 0.7)}
+        />
       </View>
+      <View style={themed($bottomRow)}>
+        <TouchableOpacity
+          style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
+          onPress={() => navigation.navigate("MainMatches", { screen: "List", params: { matchIds: heroStat.matches } })}
+        >
+          <Text
+            style={{ color: theme.colors.textDim, fontSize: 14, lineHeight: 16 }}
+            tx="heroesStatsScreen:viewHeroMatches"
+          />
+          <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={14} />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
+const HeroStatItemBox = (item: { label: string; value: string | number; valueColor?: string }) => {
+  const { themed } = useAppTheme();
+  return (
+    <View style={themed($heroStatsContentStat)}>
+      <Text numberOfLines={1} style={themed($heroStatsContentStatLabel)}>
+        {item.label}
+      </Text>
+      <Text
+        numberOfLines={1}
+        style={[themed($heroStatsContentStatValue), item.valueColor && { color: item.valueColor }]}
+      >
+        {item.value}
+      </Text>
     </View>
   );
 };
@@ -122,7 +141,7 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
 const $heroStats: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   backgroundColor: colors.palette.neutral100,
   borderRadius: 12,
-  padding: spacing.md,
+  padding: spacing.sm,
   gap: spacing.sm,
   marginVertical: spacing.xxs,
   elevation: 1,
@@ -147,16 +166,43 @@ const $heroStatsTopRowLeft: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $heroStatsTopRowRight: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "column",
   justifyContent: "space-around",
+  alignItems: "flex-end",
   gap: spacing.xxs,
 });
 
-const $heroStatsContent: ThemedStyle<ViewStyle> = () => ({});
-
-const $heroStatsContentStat: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $heroStatsContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
+  flexWrap: "wrap",
+  gap: spacing.sm,
+});
+
+const $bottomRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  justifyContent: "flex-end",
   alignItems: "center",
-  gap: spacing.md,
+  gap: spacing.xs,
+  marginTop: spacing.xxs,
+});
+
+const $heroStatsContentStat: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: spacing.xxs,
+});
+
+const $heroStatsContentStatLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
+  color: colors.textDim,
+  fontSize: 12,
+  lineHeight: 14,
+});
+
+const $heroStatsContentStatValue: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
+  color: colors.text,
+  fontSize: 14,
+  lineHeight: 16,
+  fontFamily: typography.primary.semiBold,
 });
 
 const $heroNameText: ThemedStyle<TextStyle> = ({ typography }) => ({

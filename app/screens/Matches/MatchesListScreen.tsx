@@ -1,5 +1,6 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import type { FC } from "react";
-import { ActivityIndicator, FlatList, type TextStyle, View } from "react-native";
+import { ActivityIndicator, FlatList, type TextStyle, TouchableOpacity, View } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { MatchItem } from "@/components/matches/MatchItem";
 import { AccountSelector } from "@/components/profile/AccountSelector";
@@ -16,7 +17,7 @@ import { hasSteamId } from "@/utils/steamAuth";
 const RENDER_STEP_SIZE = 30;
 
 export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) => {
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
 
   const [timeRange, _1] = useTimeRangeSelected();
   const [player, _2] = usePlayerSelected();
@@ -27,12 +28,29 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
 
   let { data: matchHistory, isLoading } = useMatchHistory(player?.account_id ?? null);
 
-  matchHistory = matchHistory?.filter((match) => !minUnixTimestamp || match.start_time >= minUnixTimestamp) ?? [];
+  const filterMatchIds = props.route.params?.matchIds;
+  if (filterMatchIds) {
+    matchHistory = matchHistory?.filter((match) => filterMatchIds?.includes(match.match_id)) ?? [];
+  } else {
+    matchHistory = matchHistory?.filter((match) => !minUnixTimestamp || match.start_time >= minUnixTimestamp) ?? [];
+  }
 
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
-      <AccountSelector />
-      <TimeRangeSelect />
+      {!filterMatchIds && (
+        <>
+          <AccountSelector />
+          <TimeRangeSelect />
+        </>
+      )}
+      {filterMatchIds && (
+        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+          <Text>Filtered for {filterMatchIds.length} matches</Text>
+          <TouchableOpacity onPress={() => props.navigation.navigate("List")}>
+            <FontAwesome6 name="circle-xmark" solid color={theme.colors.palette.angry500} size={24} />
+          </TouchableOpacity>
+        </View>
+      )}
       {matchHistory ? (
         <FlatList
           data={matchHistory}

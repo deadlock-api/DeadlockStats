@@ -10,7 +10,7 @@ import { useBackButtonHandler } from "./navigationUtilities";
 const exitRoutes = Config.exitRoutes;
 
 export type MatchesStackParamList = {
-  List: undefined;
+  List: { matchIds?: number[] };
   Details: { matchId?: number };
 };
 export type MatchesStackScreenProps<T extends keyof MatchesStackParamList> = NativeStackScreenProps<

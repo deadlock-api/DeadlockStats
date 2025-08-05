@@ -207,6 +207,25 @@ export function formatRelativeTime(timestamp: number): string {
   return date.toLocaleDateString();
 }
 
+/**
+ * Formats time played in seconds to a readable string
+ * @param seconds Time played in seconds
+ * @returns Formatted time played string (e.g., "2d 3h", "1h 30m", "30m")
+ */
+export function formatTimePlayed(seconds: number): string {
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
+
+  if (days > 0) {
+    return hours % 24 === 0 ? `${days}d` : `${days}d ${hours % 24}h`;
+  } else if (hours > 0) {
+    return minutes % 60 === 0 ? `${hours}h` : `${hours}h ${minutes % 60}m`;
+  } else {
+    return `${minutes}m`;
+  }
+}
+
 export function parseMatchMode(matchMode?: number): string {
   switch (matchMode) {
     case 1:
