@@ -53,7 +53,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
       }
       const response = await api.searchSteamProfile(debounceSearchQuery);
       if (response.ok) {
-        return response.data?.slice(0, 5);
+        return response.data;
       } else {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
@@ -94,7 +94,16 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
       </View>
 
       <View style={themed($resultsSection)}>
-        {searchQuery ? (
+        {!searchQuery ? (
+          <View>
+            {recentSearches && recentSearches.length > 0 && (
+              <Text preset="subheading" tx="playerSearchScreen:recentSearches" />
+            )}
+            {recentSearches.map((player) => (
+              <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
+            ))}
+          </View>
+        ) : (
           <View>
             <Text preset="subheading" tx="playerSearchScreen:searchResults" />
             {profiles && profiles.length > 0 ? (
@@ -115,15 +124,6 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
               </View>
             )}
           </View>
-        ) : (
-          <View>
-            {recentSearches && recentSearches.length > 0 && (
-              <Text preset="subheading" tx="playerSearchScreen:recentSearches" />
-            )}
-            {recentSearches.map((player) => (
-              <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
-            ))}
-          </View>
         )}
       </View>
     </Screen>
@@ -141,7 +141,7 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
         {player.avatar ? (
           <AutoImage source={{ uri: player.avatar }} style={themed($avatarImage)} />
         ) : (
-          <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
+          <FontAwesome6 name="user" solid color={theme.colors.text} size={16} />
         )}
       </View>
       <View style={{ flex: 1 }}>
@@ -234,22 +234,18 @@ const $loadingResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
 });
 
-const $playerResult: ThemedStyle<ViewStyle> = () => ({
+const $playerResult: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   alignItems: "center",
-  padding: 16,
+  paddingHorizontal: spacing.sm,
+  paddingVertical: spacing.xs,
   borderRadius: 12,
-  marginBottom: 12,
-  elevation: 2,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 2 },
-  shadowOpacity: 0.1,
-  shadowRadius: 8,
+  marginBottom: spacing.xs,
 });
 
 const $playerAvatar: ThemedStyle<ViewStyle> = () => ({
-  width: 48,
-  height: 48,
+  width: 32,
+  height: 32,
   borderRadius: 24,
   justifyContent: "center",
   alignItems: "center",
@@ -257,8 +253,8 @@ const $playerAvatar: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $avatarImage: ThemedStyle<ImageStyle> = () => ({
-  width: 48,
-  height: 48,
+  width: 32,
+  height: 32,
   borderRadius: 12,
 });
 
