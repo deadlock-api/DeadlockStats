@@ -35,8 +35,15 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
       {matchHistory && matchHistory.length > 0 ? (
         <>
           <StatDisplays matchHistory={matchHistory} />
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-            <Text preset="subheading" style={{ marginVertical: theme.spacing.md }} tx="dashboardScreen:recentMatches" />
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: theme.spacing.md,
+            }}
+          >
+            <Text preset="subheading" tx="dashboardScreen:recentMatches" />
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
               onPress={() => props.navigation.navigate("MainMatches", { screen: "MatchesList" })}
