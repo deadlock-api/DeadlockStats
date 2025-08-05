@@ -7,7 +7,7 @@ import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { MatchItem } from "@/components/matches/MatchItem";
 import { AccountSelector } from "@/components/profile/AccountSelector";
-import { StatCard } from "@/components/profile/StatCard";
+import { $statValue, StatCard } from "@/components/profile/StatCard";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHeroes } from "@/hooks/useAssetsHeroes";
@@ -109,13 +109,40 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
     .filter((stats) => stats.playCount >= avgMatchesPerHero)
     .sort((a, b) => b.winRate - a.winRate)[0];
 
+  const winLossDiff = wins - losses;
+  const winRateColor = scaleColor(winRate, 30, 70);
+  const winRateColorHard = winRate >= 50 ? theme.colors.palette.success500 : theme.colors.palette.failure500;
+
+  let winRateField = <Text>-</Text>;
+  if (wins + losses > 0) {
+    const winrateValue = `${winRate}%`;
+    const icon = winLossDiff > 0 ? "caret-up" : winLossDiff < 0 ? "caret-down" : null;
+    winRateField = (
+      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
+        <Text style={[themed($statValue), { color: winRateColor }]}>{winrateValue}</Text>
+        {icon && (
+          <FontAwesome6
+            style={{ color: winRateColorHard, marginLeft: theme.spacing.xxs }}
+            name={icon}
+            solid
+            size={16}
+          />
+        )}
+        {winLossDiff !== 0 && (
+          <Text size="md" style={{ color: winRateColorHard }}>
+            {Math.abs(winLossDiff)}
+          </Text>
+        )}
+      </View>
+    );
+  }
+
   return (
     <View style={themed($statDisplaysContainer)}>
       <StatCard
         title={translate("dashboardScreen:winRate7Days")}
-        value={wins + losses > 0 ? `${winRate}%` : "-"}
+        value={winRateField}
         subtitle={`${wins}W ${losses}L`}
-        valueColor={scaleColor(winRate, 30, 70)}
       />
       <StatCard
         title={translate("dashboardScreen:avgKda7Days")}
