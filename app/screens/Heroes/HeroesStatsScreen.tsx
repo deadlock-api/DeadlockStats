@@ -74,11 +74,17 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
   return (
     <View style={themed($heroStats)}>
       <View style={themed($heroStatTopRow)}>
-        <HeroImage heroId={heroStat.hero_id} size={40} />
-        <View style={themed($heroesNameContainer)}>
-          <Text numberOfLines={1} style={themed($heroNameText)}>
-            <HeroName heroId={heroStat.hero_id} />
-          </Text>
+        <View style={themed($heroStatsTopRowLeft)}>
+          <HeroImage heroId={heroStat.hero_id} size={40} />
+          <View>
+            <Text numberOfLines={1} style={themed($heroNameText)}>
+              <HeroName heroId={heroStat.hero_id} />
+            </Text>
+          </View>
+        </View>
+        <View style={themed($heroStatsTopRowRight)}>
+          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>Last played</Text>
+          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{lastPlayed}</Text>
         </View>
       </View>
       <View style={themed($heroStatsContent)}>
@@ -109,9 +115,6 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
           </Text>
         </View>
       </View>
-      <View style={themed($heroStatsBottomRow)}>
-        <Text style={{ color: theme.colors.textDim, fontSize: 13 }}>Last played {lastPlayed}</Text>
-      </View>
     </View>
   );
 };
@@ -129,19 +132,22 @@ const $heroStats: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   shadowRadius: 4,
 });
 
-const $heroStatTopRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $heroStatTopRow: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "row",
+  justifyContent: "space-between",
   alignItems: "center",
-  gap: spacing.md,
 });
 
-const $heroStatsBottomRow: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+const $heroStatsTopRowLeft: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
-  justifyContent: "center",
   alignItems: "center",
-  borderTopWidth: 1,
-  borderTopColor: colors.border,
-  paddingTop: spacing.xs,
+  gap: spacing.xs,
+});
+
+const $heroStatsTopRowRight: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "column",
+  justifyContent: "space-around",
+  gap: spacing.xxs,
 });
 
 const $heroStatsContent: ThemedStyle<ViewStyle> = () => ({});
@@ -153,20 +159,8 @@ const $heroStatsContentStat: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   gap: spacing.md,
 });
 
-const $heroesNameContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
-  gap: spacing.xxs,
-  justifyContent: "center",
-});
-
 const $heroNameText: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontSize: 16,
   fontFamily: typography.primary.semiBold,
   lineHeight: 16,
-});
-
-const $heroRoleText: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 12,
-  fontFamily: typography.primary.normal,
-  lineHeight: 14,
 });
