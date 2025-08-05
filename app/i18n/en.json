@@ -64,6 +64,14 @@
     "tryCheckingSpelling": "Try checking the spelling",
     "recentSearches": "Recent Searches"
   },
+  "profileSharing": {
+    "shareProfile": "Share Profile",
+    "shareMessage": "Check out this Deadlock player profile:",
+    "shareError": "Failed to share profile",
+    "loadingSharedProfile": "Loading shared profile...",
+    "sharedProfileError": "Failed to load shared profile",
+    "invalidProfileLink": "Invalid profile link"
+  },
   "heroesStatsScreen": {
     "loadingHeroStats": "Loading hero stats...",
     "noHeroStatsFound": "No hero stats found",
