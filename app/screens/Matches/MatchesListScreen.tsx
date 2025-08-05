@@ -24,7 +24,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
 
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
-  const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : null;
+  const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : 0;
 
   let { data: matchHistory, isLoading } = useMatchHistory(player?.account_id ?? null);
 
