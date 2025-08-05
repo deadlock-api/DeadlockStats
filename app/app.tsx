@@ -41,6 +41,7 @@ const config = {
   screens: {
     Welcome: "welcome",
     "auth/steam/callback": "auth/steam/callback",
+    "share/:accountId": "share/:accountId",
     Main: {
       screens: {
         Dashboard: "dashboard",

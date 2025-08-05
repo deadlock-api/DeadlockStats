@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import { useEffect, useState } from "react";
 
 import Config from "@/config";
+import { useDeepLinking } from "@/hooks/useDeepLinking";
 import { ErrorBoundary } from "@/screens/ErrorScreen/ErrorBoundary";
 import { WelcomeScreen } from "@/screens/WelcomeScreen";
 import { useAppTheme } from "@/theme/context";
@@ -29,6 +30,9 @@ const AppStack = () => {
     theme: { colors },
   } = useAppTheme();
   const [hasStoredSteamId, setHasStoredSteamId] = useState<boolean | null>(null);
+
+  // Initialize deep linking
+  useDeepLinking();
 
   if (!hasStoredSteamId && __DEV__) {
     saveSteamId(74963221);

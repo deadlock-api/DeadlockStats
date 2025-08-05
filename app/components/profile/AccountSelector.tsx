@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
+import { ShareButton } from "@/components/profile/ShareButton";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Text } from "@/components/ui/Text";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
@@ -45,7 +46,7 @@ export const AccountSelector = () => {
             )}
           </View>
         )}
-        <Text numberOfLines={1} preset="subheading" style={{ flex: 1, maxWidth: 170 }}>
+        <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 170 }}>
           {!steamId && !player && !userProfile
             ? translate("common:noSteamAccount")
             : player && player.account_id !== steamId
@@ -58,12 +59,15 @@ export const AccountSelector = () => {
           </TouchableOpacity>
         )}
       </View>
-      <TouchableOpacity
-        style={[themed($searchButton)]}
-        onPress={() => navigator.navigate("MainDashboard", { screen: "PlayerSearch" })}
-      >
-        <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
-      </TouchableOpacity>
+      <View style={themed($buttonContainer)}>
+        {player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}
+        <TouchableOpacity
+          style={[themed($searchButton)]}
+          onPress={() => navigator.navigate("MainDashboard", { screen: "PlayerSearch" })}
+        >
+          <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -73,6 +77,11 @@ const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: spacing.md,
+});
+
+const $buttonContainer: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  alignItems: "center",
 });
 
 const $searchButton: ThemedStyle<ViewStyle> = ({ colors }) => ({
