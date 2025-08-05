@@ -265,7 +265,6 @@ const $playersContainer: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
 
 const $playersStatsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "column",
-  flexWrap: "wrap",
   gap: spacing.xs,
 });
 
