@@ -86,6 +86,7 @@
     "android": {
       "package": "com.deadlockapi.deadlockstats",
       "icon": "./assets/images/app-icon-android-legacy.png",
+      "edgeToEdgeEnabled": true,
       "intentFilters": [
         {
           "action": "VIEW",
