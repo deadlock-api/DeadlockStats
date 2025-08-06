@@ -46,7 +46,7 @@ export const AccountSelector = () => {
             )}
           </View>
         )}
-        <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 170 }}>
+        <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>
           {!steamId && !player && !userProfile
             ? translate("common:noSteamAccount")
             : player && player.account_id !== steamId
