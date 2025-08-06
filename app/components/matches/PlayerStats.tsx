@@ -1,7 +1,7 @@
-import { ScrollView, type TextStyle, View, type ViewStyle } from "react-native";
+import { FontAwesome6 } from "@expo/vector-icons";
+import { ScrollView, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { StatItem } from "@/components/matches/StatItem";
-import { Button } from "@/components/ui/Button";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
@@ -33,7 +33,7 @@ const PlayerName = ({ accountId }: { accountId?: number }) => {
  * A comprehensive player statistics component that displays detailed match performance data
  */
 export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
   const { data: hero } = useAssetsHero(player.hero_id ?? 0);
 
   // Get the latest stats (end of match)
@@ -69,12 +69,20 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
             <Text style={themed($heroName)} size="md">
               {hero?.name ?? "Unknown Hero"}
             </Text>
-            <Text style={themed($playerLevel)} size="sm">
-              Level {player.level ?? 0}
-            </Text>
+            <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+              <Text style={themed($playerLevel)} size="sm">
+                Level {player.level ?? 0}
+              </Text>
+              <TouchableOpacity
+                style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}
+                onPress={handleViewProfile}
+              >
+                <Text numberOfLines={1} style={[themed($viewProfileText)]} tx="matchDetailsScreen:viewProfile" />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={13} />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-        <Button preset="filled" text="View Profile" style={themed($viewProfileButton)} onPress={handleViewProfile} />
       </View>
 
       <ScrollView>
@@ -137,6 +145,12 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
   );
 }
 
+const $viewProfileText: ThemedStyle<TextStyle> = ({ colors }) => ({
+  fontSize: 13,
+  fontWeight: "bold",
+  lineHeight: 18,
+});
+
 const $playerStatsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "column",
   gap: spacing.xs,
@@ -159,6 +173,7 @@ const $playerBasicInfo: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "column",
   justifyContent: "space-around",
   gap: spacing.xxs,
+  flex: 1,
 });
 
 const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
@@ -166,7 +181,6 @@ const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
   lineHeight: 18,
   fontSize: 18,
   overflow: "hidden",
-  maxWidth: 160,
 });
 
 const $heroName: ThemedStyle<TextStyle> = ({ colors }) => ({
@@ -177,18 +191,11 @@ const $heroName: ThemedStyle<TextStyle> = ({ colors }) => ({
 
 const $playerLevel: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
+  lineHeight: 14,
   fontSize: 14,
-  lineHeight: 16,
 });
 
 const $statsGrid: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "row",
   flexWrap: "wrap",
-});
-
-const $viewProfileButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  height: 32,
-  minWidth: 100,
-  paddingHorizontal: spacing.sm,
-  marginHorizontal: spacing.xs,
 });

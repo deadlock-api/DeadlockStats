@@ -46,7 +46,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
             <Text preset="subheading" tx="dashboardScreen:recentMatches" />
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
-              onPress={() => props.navigation.navigate("MainMatches", { screen: "MatchesList" })}
+              onPress={() => props.navigation.navigate("MainMatches", { screen: "List" })}
             >
               <Text style={[themed($viewAllText), { color: theme.colors.text }]} tx="dashboardScreen:viewAllMatches" />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
