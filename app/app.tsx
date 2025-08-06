@@ -45,10 +45,19 @@ const config = {
     Main: {
       screens: {
         Dashboard: "dashboard",
-        MatchesList: "matches",
-        MatchDetails: "matches/:matchId",
-        HeroesStats: "heroes",
-        HeroesDetails: "heroes/:heroId",
+        MainMatches: {
+          screens: {
+            List: "matches",
+            MatchDetails: "matches/:matchId",
+            PlayerDetails: "matches/:matchId/player/:accountId",
+          },
+        },
+        MainHeroes: {
+          screens: {
+            HeroesStats: "heroes",
+            HeroesDetails: "heroes/:heroId",
+          },
+        },
         Settings: "settings",
       },
     },
