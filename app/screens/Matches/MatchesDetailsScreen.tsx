@@ -1,9 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient";
 import type { FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { usePlayerSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
-import { BadgeDisplay } from "@/components/matches/BadgeDisplay";
+import { TeamDisplay } from "@/components/matches/TeamDisplay";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsMap } from "@/hooks/useAssetsMap";
@@ -11,7 +10,6 @@ import { useMatchMetadata } from "@/hooks/useMatchMetadata";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
 import { translate } from "@/i18n/translate";
 import type { MatchesStackScreenProps } from "@/navigators/MatchesNavigator";
-import { api } from "@/services/api";
 import { LobbyTeam } from "@/services/api/types/match_metadata";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
@@ -23,11 +21,9 @@ const PARTY_COLORS = ["#FBDCA0", "#BDCBFF", "#FFA500", "#00BFFF", "#FFC0CB", "#0
 export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (props) => {
   const { themed, theme } = useAppTheme();
 
-  const [player, setPlayer] = usePlayerSelected();
-
   const matchId = props.route.params.matchId;
   if (!matchId) {
-    props.navigation.navigate("List");
+    props.navigation.navigate({ name: "List", params: {} });
   }
 
   const { data: matchData, isLoading, error } = useMatchMetadata(matchId);
@@ -114,19 +110,6 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
     return mapData?.zipline_paths[laneIdx]?.color ?? "transparent";
   };
 
-  const updatePlayer = (accountId: number) => {
-    api.getSteamProfile(accountId).then((response) => {
-      if (response.ok) {
-        if (response.data) {
-          setPlayer(response.data);
-          props.navigation.navigate("MainDashboard");
-        }
-      } else {
-        throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
-      }
-    });
-  };
-
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       <View style={themed($container)}>
@@ -169,7 +152,13 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             {[...team0Players, ...team1Players].map((player) => (
               <TouchableOpacity
                 key={player.account_id}
-                onPress={() => player.account_id && updatePlayer(player.account_id)}
+                onPress={() => {
+                  player.account_id &&
+                    props.navigation.navigate("PlayerDetails", {
+                      matchId,
+                      accountId: player.account_id,
+                    });
+                }}
               >
                 <View
                   style={{
@@ -257,7 +246,46 @@ const PlayerName = ({ accountId }: { accountId?: number }) => {
   return <>{profile?.personaname ?? profile?.realname ?? profile?.account_id ?? "Loading..."}</>;
 };
 
-const $playersContainer: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingVertical: spacing.xl,
+});
+
+const $errorContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flex: 1,
+  justifyContent: "center",
+  alignItems: "center",
+  paddingVertical: spacing.xl,
+});
+
+const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+  backgroundColor: colors.palette.neutral100,
+  borderRadius: 12,
+  padding: spacing.sm,
+  gap: spacing.md,
+  width: "100%",
+});
+
+const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  borderBottomWidth: 1,
+  borderBottomColor: colors.border,
+  paddingBottom: spacing.sm,
+});
+
+const $teamsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  width: "100%",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginTop: spacing.md,
+});
+
+const $playersContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   gap: spacing.xs,
   justifyContent: "space-between",
@@ -281,176 +309,4 @@ const $playerStat: ThemedStyle<TextStyle> = ({ typography }) => ({
 
 const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.semiBold,
-});
-
-type TeamDisplayProps = {
-  teamName: string;
-  badge?: number;
-  isWinner: boolean;
-  stats: { kills: number; deaths: number; assists: number; netWorth: number; playerDamage: number };
-};
-
-const TeamDisplay: React.FC<TeamDisplayProps> = ({ teamName, badge, isWinner, stats }) => {
-  const { theme, themed } = useAppTheme();
-  const isLeft = teamName === "AMBER";
-
-  const style: ViewStyle = {
-    flexDirection: "row",
-    width: "90%",
-    justifyContent: "space-between",
-    gap: theme.spacing.xs,
-  };
-
-  const kdaLabel = translate("matchDetailsScreen:playerKdaLabel");
-  const kdaValue = `${stats.kills}/${stats.deaths}/${stats.assists}`;
-  const kda = isLeft ? (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
-    </View>
-  ) : (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
-      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
-    </View>
-  );
-  const netWorthLabel = translate("matchDetailsScreen:playerSoulsLabel");
-  const netWorthValue = `${(stats.netWorth / 1000).toFixed(0).toLocaleString()}k`;
-  const netWorth = isLeft ? (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
-    </View>
-  ) : (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
-      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
-    </View>
-  );
-
-  const playerDamageLabel = translate("matchDetailsScreen:playerDamageLabel");
-  const playerDamageValue = `${(stats.playerDamage / 1000).toFixed(0).toLocaleString()}k`;
-  const playerDamage = isLeft ? (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
-    </View>
-  ) : (
-    <View style={style}>
-      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
-      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
-    </View>
-  );
-
-  return (
-    <View style={themed($teamContainer)}>
-      <View style={[themed($teamContainerTop), themed(isLeft ? $teamContainerTopLeft : $teamContainerTopRight)]}>
-        {isLeft && <BadgeDisplay badge={badge} />}
-        <View style={themed(isLeft ? $leftTeamNameContainer : $rightTeamNameContainer)}>
-          <Text style={themed(isLeft ? $leftTeamName : $rightTeamName)}>{teamName}</Text>
-          <Text
-            tx={isWinner ? "common:victory" : "common:defeat"}
-            style={{
-              color: isWinner ? theme.colors.palette.success500 : theme.colors.palette.failure500,
-            }}
-          />
-        </View>
-        {!isLeft && <BadgeDisplay badge={badge} />}
-      </View>
-      <View style={themed(isLeft ? $leftTeamStats : $rightTeamStats)}>
-        {kda}
-        {netWorth}
-        {playerDamage}
-      </View>
-    </View>
-  );
-};
-
-const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-  paddingVertical: spacing.xl,
-});
-
-const $errorContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
-  justifyContent: "center",
-  alignItems: "center",
-  paddingVertical: spacing.xl,
-});
-
-const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  backgroundColor: colors.palette.neutral100,
-  borderRadius: 12,
-  padding: spacing.sm,
-  gap: spacing.md,
-});
-
-const $headerContainer: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  borderBottomWidth: 1,
-  borderBottomColor: colors.border,
-  paddingBottom: spacing.sm,
-});
-
-const $teamsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
-  flexDirection: "row",
-  width: "100%",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginTop: spacing.md,
-});
-
-const $teamContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "column",
-  borderRadius: 12,
-  gap: spacing.xs,
-  width: "50%",
-});
-
-const $teamContainerTop: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  alignItems: "center",
-  borderRadius: 12,
-  gap: spacing.xs,
-});
-
-const $teamContainerTopLeft: ThemedStyle<ViewStyle> = () => ({
-  justifyContent: "flex-start",
-});
-
-const $teamContainerTopRight: ThemedStyle<ViewStyle> = () => ({
-  justifyContent: "flex-end",
-});
-
-const $leftTeamNameContainer: ThemedStyle<ViewStyle> = () => ({
-  alignItems: "flex-start",
-});
-
-const $rightTeamNameContainer: ThemedStyle<ViewStyle> = () => ({
-  alignItems: "flex-end",
-});
-
-const $leftTeamName: ThemedStyle<TextStyle> = ({ isDark }) => ({
-  color: isDark ? "#937600" : "#FBDCA0",
-  textShadowColor: isDark ? "#937600" : "#FBDCA0",
-  textShadowRadius: 5,
-});
-
-const $rightTeamName: ThemedStyle<TextStyle> = ({ isDark }) => ({
-  color: isDark ? "#4156A0" : "#BDCBFF",
-  textShadowColor: isDark ? "#4156A0" : "#BDCBFF",
-  textShadowRadius: 5,
-});
-
-const $leftTeamStats: ThemedStyle<ViewStyle> = () => ({
-  alignItems: "flex-start",
-});
-
-const $rightTeamStats: ThemedStyle<ViewStyle> = () => ({
-  alignItems: "flex-end",
 });

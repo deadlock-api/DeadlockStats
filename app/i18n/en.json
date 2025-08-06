@@ -114,6 +114,7 @@
     "lastHits": "LH",
     "loadingPlayer": "Loading...",
     "player": "Player",
+    "playerStats": "Player Stats",
     "hero": "Hero"
   },
   "settingsScreen": {
