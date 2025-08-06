@@ -15,7 +15,7 @@ import {
   extractSteamIdFromUrl,
   removeSkipWelcomePreference,
   saveSkipWelcomePreference,
-  saveSteamId,
+  saveSteamId
 } from "@/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
@@ -84,7 +84,9 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
             // Remove skip preference since user has now linked Steam
             removeSkipWelcomePreference();
             // Navigate to main app
-            navigation.navigate("Main");
+            navigation.replace("Main", {
+              screen: "MainDashboard",
+            });
           } else {
             throw new Error("Failed to save Steam ID");
           }
@@ -110,7 +112,9 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
    */
   const handleSkip = useCallback(() => {
     saveSkipWelcomePreference(true);
-    navigation.navigate("Main");
+    navigation.replace("Main", {
+      screen: "MainDashboard",
+    });
   }, [navigation]);
 
   /**
