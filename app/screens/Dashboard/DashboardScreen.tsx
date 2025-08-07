@@ -1,6 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import type { FC } from "react";
+import React, { type FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
@@ -152,7 +152,12 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
       />
       <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
         <StatCard
-          title={translate("dashboardScreen:mainHeroOverall")}
+          title={
+            <>
+              <Text tx="dashboardScreen:mainHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+            </>
+          }
           value={
             <View
               style={{
@@ -174,7 +179,12 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
         <StatCard
-          title={translate("dashboardScreen:bestHeroOverall")}
+          title={
+            <>
+              <Text tx="dashboardScreen:bestHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+            </>
+          }
           value={
             <View
               style={{
