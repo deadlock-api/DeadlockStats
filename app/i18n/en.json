@@ -53,6 +53,8 @@
     "noSteamAccountLinked": "Link your Steam account to view your match history and statistics",
     "winRate7Days": "Win Rate (7d)",
     "avgKda7Days": "Avg KDA (7d)",
+    "mainMateOverall": "Main Mate (All)",
+    "bestMateOverall": "Best Mate (All)",
     "mainHeroOverall": "Main Hero (All)",
     "bestHeroOverall": "Best Hero (All)"
   },

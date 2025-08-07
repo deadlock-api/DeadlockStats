@@ -3,11 +3,11 @@ import type { FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { TeamDisplay } from "@/components/matches/TeamDisplay";
+import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsMap } from "@/hooks/useAssetsMap";
 import { useMatchMetadata } from "@/hooks/useMatchMetadata";
-import { useSteamProfile } from "@/hooks/useSteamProfile";
 import { translate } from "@/i18n/translate";
 import type { MatchesStackScreenProps } from "@/navigators/MatchesNavigator";
 import { LobbyTeam } from "@/services/api/types/match_metadata";
@@ -186,7 +186,7 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
                     }}
                   ></View>
                   <Text numberOfLines={1} style={[themed($playerStat), themed($playerName)]} size={"md"}>
-                    <PlayerName accountId={player.account_id} />
+                    {player.account_id && <SteamName accountId={player.account_id} />}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -235,15 +235,6 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
       </View>
     </Screen>
   );
-};
-
-const PlayerName = ({ accountId }: { accountId?: number }) => {
-  const { data: profile } = useSteamProfile(accountId);
-
-  if (!accountId) {
-    return <>Unknown</>;
-  }
-  return <>{profile?.personaname ?? profile?.realname ?? profile?.account_id ?? "Loading..."}</>;
 };
 
 const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({

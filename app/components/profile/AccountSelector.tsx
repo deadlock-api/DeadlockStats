@@ -3,7 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
-import { AutoImage } from "@/components/ui/AutoImage";
+import { SteamImage } from "@/components/profile/SteamImage";
+import { SteamName } from "@/components/profile/SteamName";
 import { Text } from "@/components/ui/Text";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
 import { translate } from "@/i18n/translate";
@@ -38,19 +39,17 @@ export const AccountSelector = () => {
               justifyContent: "center",
             }}
           >
-            {player?.avatar ? (
-              <AutoImage source={{ uri: player.avatar }} style={{ width: 48, height: 48, borderRadius: 24 }} />
-            ) : (
-              <FontAwesome6 name="user" solid color={theme.colors.textDim} size={24} />
-            )}
+            <SteamImage accountId={player?.account_id ?? 0} size={48} />
           </View>
         )}
         <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>
-          {!steamId && !player && !userProfile
-            ? translate("common:noSteamAccount")
-            : player && player.account_id !== steamId
-              ? (player?.personaname ?? player?.realname ?? player?.account_id)
-              : (userProfile?.personaname ?? userProfile?.realname ?? userProfile?.account_id ?? "Loading...")}
+          {!steamId && !player && !userProfile ? (
+            translate("common:noSteamAccount")
+          ) : player && player.account_id !== steamId ? (
+            <SteamName accountId={player.account_id} />
+          ) : (
+            <SteamName accountId={userProfile?.account_id ?? 0} />
+          )}
         </Text>
         {player && player.account_id !== steamId && (
           <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>

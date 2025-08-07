@@ -8,10 +8,13 @@ import { HeroName } from "@/components/heroes/HeroName";
 import { MatchItem } from "@/components/matches/MatchItem";
 import { AccountSelector } from "@/components/profile/AccountSelector";
 import { $statValue, StatCard } from "@/components/profile/StatCard";
+import { SteamImage } from "@/components/profile/SteamImage";
+import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHeroes } from "@/hooks/useAssetsHeroes";
 import { useMatchHistory } from "@/hooks/useMatchHistory";
+import { useMateStats } from "@/hooks/useMateStats";
 import { translate } from "@/i18n/translate";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
 import type { MatchHistory } from "@/services/api/types/match_history";
@@ -34,7 +37,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
       <AccountSelector />
       {matchHistory && matchHistory.length > 0 ? (
         <>
-          <StatDisplays matchHistory={matchHistory} />
+          <StatDisplays accountId={player?.account_id ?? 0} matchHistory={matchHistory} />
           <View
             style={{
               flexDirection: "row",
@@ -53,7 +56,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
             </TouchableOpacity>
           </View>
           <View style={themed($matchesContainer)}>
-            {matchHistory.slice(0, 4).map((match) => (
+            {matchHistory.slice(0, 5).map((match) => (
               <MatchItem
                 key={match.match_id}
                 match={match}
@@ -86,9 +89,14 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
   );
 };
 
-export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] }) => {
+export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; matchHistory: MatchHistory[] }) => {
   const { themed, theme } = useAppTheme();
   const navigation = useNavigation();
+
+  const { data: mateStats } = useMateStats(accountId ?? null, { sameParty: true, minMatchesPlayed: 10 });
+
+  const mostPlayedMate = mateStats?.sort((a, b) => b.matches_played - a.matches_played)[0];
+  const bestMate = mateStats?.sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played)[0];
 
   const { data: assetsHeroes } = useAssetsHeroes();
   const heroIds = assetsHeroes?.map((h) => h.id) ?? [];
@@ -150,6 +158,50 @@ export const StatDisplays = ({ matchHistory }: { matchHistory: MatchHistory[] })
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
         valueColor={scaleColor(kda.ratio, 0.5, 4)}
       />
+      {mostPlayedMate && (
+        <StatCard
+          title={translate("dashboardScreen:mainMateOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <SteamImage accountId={mostPlayedMate?.mate_id ?? 0} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
+                <SteamName accountId={mostPlayedMate?.mate_id ?? 0} />
+              </Text>
+            </View>
+          }
+          subtitle={`${((mostPlayedMate?.wins ?? 0) / (mostPlayedMate?.matches_played ?? 1)).toFixed(2) * 100}% WR | ${mostPlayedMate.matches_played} M`}
+          valueColor={theme.colors.text}
+        />
+      )}
+      {bestMate && (
+        <StatCard
+          title={translate("dashboardScreen:bestMateOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <SteamImage accountId={bestMate?.mate_id ?? 0} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
+                <SteamName accountId={bestMate?.mate_id ?? 0} />
+              </Text>
+            </View>
+          }
+          subtitle={`${((bestMate?.wins ?? 0) / (bestMate?.matches_played ?? 1)).toFixed(2) * 100}% WR | ${bestMate.matches_played} M`}
+          valueColor={theme.colors.text}
+        />
+      )}
       <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
         <StatCard
           title={
@@ -224,9 +276,8 @@ const $noDataContainer: ThemedStyle<TextStyle> = () => ({
 });
 
 const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
   flexDirection: "row",
-  justifyContent: "space-evenly",
+  justifyContent: "space-between",
   flexWrap: "wrap",
-  gap: spacing.md,
+  gap: spacing.sm,
 });
