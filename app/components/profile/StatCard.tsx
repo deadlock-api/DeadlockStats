@@ -30,10 +30,11 @@ export const StatCard = ({ title, value, subtitle, valueColor }: StatCardProps) 
   );
 };
 
-const $statCard: ThemedStyle<ViewStyle> = (theme) => ({
-  backgroundColor: theme.colors.palette.neutral100,
+const $statCard: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
+  backgroundColor: colors.palette.neutral100,
   width: width / 2 - 32,
-  padding: 16,
+  paddingHorizontal: spacing.sm,
+  paddingVertical: spacing.xs,
   borderRadius: 12,
   elevation: 1,
   shadowColor: "#000",
@@ -42,11 +43,11 @@ const $statCard: ThemedStyle<ViewStyle> = (theme) => ({
   shadowRadius: 4,
 });
 
-const $statCardHeader: ThemedStyle<ViewStyle> = () => ({
+const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: 8,
+  marginBottom: spacing.xxs,
 });
 
 const $statTitle: ThemedStyle<TextStyle> = (theme) => ({

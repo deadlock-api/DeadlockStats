@@ -2,9 +2,9 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { ScrollView, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { StatItem } from "@/components/matches/StatItem";
+import { SteamName } from "@/components/profile/SteamName";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
-import { useSteamProfile } from "@/hooks/useSteamProfile";
 import type { Players } from "@/services/api/types/match_metadata";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
@@ -19,15 +19,6 @@ export interface PlayerStatsProps {
    */
   updatePlayer: (accountId: number) => void;
 }
-
-const PlayerName = ({ accountId }: { accountId?: number }) => {
-  const { data: profile } = useSteamProfile(accountId);
-
-  if (!accountId) {
-    return <>Unknown</>;
-  }
-  return <>{profile?.personaname ?? profile?.realname ?? profile?.account_id ?? "Loading..."}</>;
-};
 
 /**
  * A comprehensive player statistics component that displays detailed match performance data
@@ -64,7 +55,7 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
           <HeroImage heroId={player.hero_id ?? 0} size={50} />
           <View style={themed($playerBasicInfo)}>
             <Text numberOfLines={1} style={themed($playerName)} weight="semiBold">
-              <PlayerName accountId={player.account_id} />
+              {player.account_id && <SteamName accountId={player.account_id} />}
             </Text>
             <Text style={themed($heroName)} size="md">
               {hero?.name ?? "Unknown Hero"}

@@ -1,17 +1,10 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useQuery } from "@tanstack/react-query";
 import { type FC, useState } from "react";
-import {
-  ActivityIndicator,
-  type ImageStyle,
-  TextInput,
-  type TextStyle,
-  TouchableOpacity,
-  View,
-  type ViewStyle,
-} from "react-native";
+import { ActivityIndicator, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
-import { AutoImage } from "@/components/ui/AutoImage";
+import { SteamImage } from "@/components/profile/SteamImage";
+import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -138,14 +131,12 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
       onPress={() => onPress(player)}
     >
       <View style={[themed($playerAvatar), { backgroundColor: theme.colors.palette.neutral200 }]}>
-        {player.avatar ? (
-          <AutoImage source={{ uri: player.avatar }} style={themed($avatarImage)} />
-        ) : (
-          <FontAwesome6 name="user" solid color={theme.colors.text} size={16} />
-        )}
+        <SteamImage accountId={player.account_id} size={32} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={themed($playerName)}>{player.personaname ?? player.realname ?? player.account_id}</Text>
+        <Text style={themed($playerName)}>
+          <SteamName accountId={player.account_id} />
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -250,12 +241,6 @@ const $playerAvatar: ThemedStyle<ViewStyle> = () => ({
   justifyContent: "center",
   alignItems: "center",
   marginRight: 12,
-});
-
-const $avatarImage: ThemedStyle<ImageStyle> = () => ({
-  width: 32,
-  height: 32,
-  borderRadius: 12,
 });
 
 const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({

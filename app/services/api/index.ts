@@ -2,6 +2,7 @@ import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
 import Config from "@/config";
 import type { HeroStats } from "@/services/api/types/hero_stats";
+import type { MateStats } from "@/services/api/types/mate_stats";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
 import type { MatchHistory } from "./types/match_history";
 import type { MatchMetadata } from "./types/match_metadata";
@@ -46,6 +47,17 @@ export class AssetsApi {
   async getHeroStats(playerId: number, minUnixTimestamp?: number | null): Promise<ApiResponse<HeroStats[]>> {
     return await this.api.get(`v1/players/${playerId}/hero-stats`, {
       min_unix_timestamp: minUnixTimestamp,
+    });
+  }
+
+  async getMateStats(
+    playerId: number,
+    query?: { min_unix_timestamp?: number; same_party: boolean; min_matches_played?: number },
+  ): Promise<ApiResponse<MateStats[]>> {
+    return await this.api.get(`v1/players/${playerId}/mate-stats`, {
+      min_unix_timestamp: query?.min_unix_timestamp,
+      same_party: query?.same_party,
+      min_matches_played: query?.min_matches_played,
     });
   }
 
