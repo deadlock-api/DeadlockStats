@@ -120,7 +120,6 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
             <StatItem label="Creep Kills" value={`${latestStats?.creep_kills ?? 0}`} />
             <StatItem label="Neutral Kills" value={`${latestStats?.neutral_kills ?? 0}`} />
             <StatItem label="Boss Damage" value={`${((latestStats?.boss_damage ?? 0) / 1000).toFixed(1)}k`} />
-            <StatItem label="Gold Lost" value={`${((latestStats?.gold_death_loss ?? 0) / 1000).toFixed(1)}k`} />
             <StatItem label="Max Health" value={`${latestStats?.max_health ?? 0}`} />
           </View>
         </View>
