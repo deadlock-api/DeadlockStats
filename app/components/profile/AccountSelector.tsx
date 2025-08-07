@@ -3,7 +3,6 @@ import { useNavigation } from "@react-navigation/native";
 import { useEffect } from "react";
 import { TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
-import { ShareButton } from "@/components/profile/ShareButton";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { Text } from "@/components/ui/Text";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
@@ -60,7 +59,7 @@ export const AccountSelector = () => {
         )}
       </View>
       <View style={themed($buttonContainer)}>
-        {player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}
+        {/*{player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}*/}
         <TouchableOpacity
           style={[themed($searchButton)]}
           onPress={() => navigator.navigate("MainDashboard", { screen: "PlayerSearch" })}
