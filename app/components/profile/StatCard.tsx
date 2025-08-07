@@ -7,7 +7,7 @@ import type { ThemedStyle } from "@/theme/types";
 const { width } = Dimensions.get("window");
 
 export interface StatCardProps {
-  title: string;
+  title: string | React.ReactNode;
   value: string | number | React.ReactNode;
   valueColor?: string;
   subtitle?: string;
@@ -17,7 +17,9 @@ export const StatCard = ({ title, value, subtitle, valueColor }: StatCardProps) 
   const { themed } = useAppTheme();
   return (
     <View style={themed($statCard)}>
-      <Text style={themed($statTitle)}>{title}</Text>
+      <View style={themed($statCardHeader)}>
+        {React.isValidElement(title) ? title : <Text style={themed($statTitle)}>{title}</Text>}
+      </View>
       {React.isValidElement(value) ? (
         value
       ) : (
@@ -40,11 +42,16 @@ const $statCard: ThemedStyle<ViewStyle> = (theme) => ({
   shadowRadius: 4,
 });
 
+const $statCardHeader: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 8,
+});
+
 const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
   fontSize: 14,
-  fontFamily: "Inter-Regular",
   color: theme.colors.textDim,
-  marginBottom: 8,
 });
 
 export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
