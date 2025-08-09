@@ -3,6 +3,7 @@ import { createNativeStackNavigator, type NativeStackScreenProps } from "@react-
 import type { ComponentProps } from "react";
 import Config from "@/config";
 import { HeroesStatsScreen } from "@/screens/Heroes/HeroesStatsScreen";
+import { HeroDetailsScreen } from "@/screens/Heroes/HeroDetailsScreen";
 import { useAppTheme } from "@/theme/context";
 import { useBackButtonHandler } from "./navigationUtilities";
 
@@ -10,7 +11,6 @@ const exitRoutes = Config.exitRoutes;
 
 export type HeroesStackParamList = {
   Stats: undefined;
-  List: undefined;
   Details: { heroId: number };
 };
 export type HeroesStackScreenProps<T extends keyof HeroesStackParamList> = NativeStackScreenProps<
@@ -37,6 +37,7 @@ export const HeroesNavigator = (_props: NavigationProps) => {
       }}
     >
       <Stack.Screen name="Stats" component={HeroesStatsScreen} />
+      <Stack.Screen name="Details" component={HeroDetailsScreen} />
     </Stack.Navigator>
   );
 };

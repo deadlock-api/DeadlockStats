@@ -61,7 +61,7 @@ export const AccountSelector = () => {
         {/*{player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}*/}
         <TouchableOpacity
           style={[themed($searchButton)]}
-          onPress={() => navigator.navigate("MainDashboard", { screen: "PlayerSearch" })}
+          onPress={() => (navigator as any).navigate("MainDashboard", { screen: "PlayerSearch" })}
         >
           <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
         </TouchableOpacity>

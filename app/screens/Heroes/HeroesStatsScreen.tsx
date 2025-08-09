@@ -5,7 +5,6 @@ import { ActivityIndicator, ScrollView, type TextStyle, TouchableOpacity, View, 
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
-import { AccountSelector } from "@/components/profile/AccountSelector";
 import { TimeRangeSelect } from "@/components/select/TimeRangeSelect";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -21,6 +20,7 @@ import { hasSteamId } from "@/utils/steamAuth";
 
 export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
   const { themed } = useAppTheme();
+  const navigator = useNavigation();
 
   const [timeRange, _1] = useTimeRangeSelected();
   const [player, _2] = usePlayerSelected();
@@ -35,13 +35,17 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
 
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
-      <AccountSelector />
       <TimeRangeSelect />
 
       {heroStats && heroStats.length > 0 ? (
         <ScrollView style={themed($heroesContainer)}>
           {heroStats.map((h) => (
-            <HeroStatItem key={h.hero_id} heroStat={h} />
+            <TouchableOpacity
+              key={h.hero_id}
+              onPress={() => navigator.navigate("MainHeroes", { screen: "Details", params: { heroId: h.hero_id } })}
+            >
+              <HeroStatItem heroStat={h} />
+            </TouchableOpacity>
           ))}
         </ScrollView>
       ) : isLoading ? (
@@ -66,6 +70,7 @@ const $heroesContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
   const { themed, theme } = useAppTheme();
   const navigation = useNavigation();
+  const navigateAny: any = navigation as any;
 
   const winrate = Math.round((100 * heroStat.wins) / heroStat.matches_played);
   const avgKills = Math.round((10 * heroStat.kills) / heroStat.matches_played) / 10;
@@ -108,12 +113,11 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
       <View style={themed($bottomRow)}>
         <TouchableOpacity
           style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
-          onPress={() => navigation.navigate("MainMatches", { screen: "List", params: { matchIds: heroStat.matches } })}
+          onPress={() =>
+            navigateAny.navigate("MainHeroes", { screen: "Details", params: { heroId: heroStat.hero_id } })
+          }
         >
-          <Text
-            style={{ color: theme.colors.textDim, fontSize: 14, lineHeight: 16 }}
-            tx="heroesStatsScreen:viewHeroMatches"
-          />
+          <Text style={{ color: theme.colors.textDim, fontSize: 14, lineHeight: 16 }}>View details</Text>
           <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={14} />
         </TouchableOpacity>
       </View>
@@ -181,7 +185,7 @@ const $bottomRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "flex-end",
   alignItems: "center",
-  gap: spacing.xs,
+  gap: spacing.sm,
   marginTop: spacing.xxs,
 });
 

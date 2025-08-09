@@ -1,29 +1,31 @@
 import React from "react";
-import { Dimensions, type TextStyle, View, type ViewStyle } from "react-native";
+import { Dimensions, type DimensionValue, type TextStyle, View, type ViewStyle } from "react-native";
 import { Text } from "@/components/ui/Text";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
-const { width } = Dimensions.get("window");
+const { width: screenWidth } = Dimensions.get("window");
 
 export interface StatCardProps {
   title: string | React.ReactNode;
   value: string | number | React.ReactNode;
   valueColor?: string;
   subtitle?: string;
+  width?: DimensionValue;
+  size?: number;
 }
 
-export const StatCard = ({ title, value, subtitle, valueColor }: StatCardProps) => {
+export const StatCard = ({ title, value, subtitle, valueColor, width, size }: StatCardProps) => {
   const { themed } = useAppTheme();
   return (
-    <View style={themed($statCard)}>
+    <View style={[themed($statCard), { width: width ?? screenWidth / 2 - 32 }]}>
       <View style={themed($statCardHeader)}>
         {React.isValidElement(title) ? title : <Text style={themed($statTitle)}>{title}</Text>}
       </View>
       {React.isValidElement(value) ? (
         value
       ) : (
-        <Text style={[themed($statValue), valueColor && { color: valueColor }]}>{value}</Text>
+        <Text style={[themed($statValue), valueColor && { color: valueColor }, { fontSize: size ?? 26 }]}>{value}</Text>
       )}
       {subtitle && <Text style={themed($statSubtitleText)}>{subtitle}</Text>}
     </View>
@@ -32,7 +34,6 @@ export const StatCard = ({ title, value, subtitle, valueColor }: StatCardProps) 
 
 const $statCard: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   backgroundColor: colors.palette.neutral100,
-  width: width / 2 - 32,
   paddingHorizontal: spacing.sm,
   paddingVertical: spacing.xs,
   borderRadius: 12,
@@ -56,7 +57,6 @@ const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
 });
 
 export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
-  fontSize: 26,
   fontFamily: "Inter-Bold",
   color: theme.colors.text,
   marginBottom: 4,
