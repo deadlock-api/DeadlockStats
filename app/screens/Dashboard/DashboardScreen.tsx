@@ -50,7 +50,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
             <Text preset="subheading" tx="dashboardScreen:recentMatches" />
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
-              onPress={() => props.navigation.navigate("MainMatches", { screen: "List" })}
+              onPress={() => (props.navigation as any).navigate("MainMatches", { screen: "List" })}
             >
               <Text style={[themed($viewAllText), { color: theme.colors.text }]} tx="dashboardScreen:viewAllMatches" />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
@@ -238,7 +238,12 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           />
         </TouchableOpacity>
       )}
-      <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
+      <TouchableOpacity
+        // @ts-expect-error navigating into tab child stack
+        onPress={() =>
+          (navigation as any).navigate("MainHeroes", { screen: "Details", params: { heroId: mostPlayedHero.heroId } })
+        }
+      >
         <StatCard
           title={
             <>
@@ -265,7 +270,15 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           valueColor={theme.colors.text}
         />
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("MainHeroes")}>
+      <TouchableOpacity
+        // @ts-expect-error navigating into tab child stack
+        onPress={() =>
+          (navigation as any).navigate("MainHeroes", {
+            screen: "Details",
+            params: { heroId: highestWinRateHero.heroId },
+          })
+        }
+      >
         <StatCard
           title={
             <>

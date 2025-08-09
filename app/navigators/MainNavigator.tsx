@@ -81,7 +81,7 @@ export function MainNavigator() {
         listeners={({ navigation, route }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate(route.name, { screen: "List" });
+            (navigation as any).navigate(route.name, { screen: "List" });
           },
         })}
       />
@@ -98,7 +98,7 @@ export function MainNavigator() {
         listeners={({ navigation, route }) => ({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate(route.name, { screen: "Stats" });
+            (navigation as any).navigate(route.name, { screen: "Stats" });
           },
         })}
       />
