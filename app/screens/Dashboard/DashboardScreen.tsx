@@ -13,6 +13,7 @@ import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHeroes } from "@/hooks/useAssetsHeroes";
+import { useEnemyStats } from "@/hooks/useEnemyStats";
 import { useMatchHistory } from "@/hooks/useMatchHistory";
 import { useMateStats } from "@/hooks/useMateStats";
 import { translate } from "@/i18n/translate";
@@ -104,9 +105,13 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     minMatchesPlayed: 10,
     minUnixTimestamp,
   });
-
-  const mostPlayedMate = mateStats?.sort((a, b) => b.matches_played - a.matches_played)[0];
   const bestMate = mateStats?.sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played)[0];
+
+  const { data: enemyStats } = useEnemyStats(accountId ?? null, {
+    minMatchesPlayed: 3,
+    minUnixTimestamp,
+  });
+  const worstEnemy = enemyStats?.sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played)[0];
 
   const { data: assetsHeroes } = useAssetsHeroes();
   const heroIds = assetsHeroes?.map((h) => h.id) ?? [];
@@ -180,35 +185,6 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
         valueColor={scaleColor(kda.ratio, 0.5, 4)}
       />
-      {mostPlayedMate && (
-        <TouchableOpacity onPress={() => updatePlayer(mostPlayedMate.mate_id)}>
-          <StatCard
-            title={
-              <>
-                <Text tx="dashboardScreen:mainMate30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
-              </>
-            }
-            value={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: theme.spacing.xs,
-                  marginBottom: theme.spacing.xxs,
-                }}
-              >
-                <SteamImage accountId={mostPlayedMate?.mate_id ?? 0} size={30} />
-                <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
-                  <SteamName accountId={mostPlayedMate?.mate_id ?? 0} />
-                </Text>
-              </View>
-            }
-            subtitle={`${((100 * (mostPlayedMate?.wins ?? 0)) / (mostPlayedMate?.matches_played ?? 1)).toFixed(0)}% WR | ${mostPlayedMate.matches_played} M`}
-            valueColor={theme.colors.text}
-          />
-        </TouchableOpacity>
-      )}
       {bestMate && (
         <TouchableOpacity onPress={() => updatePlayer(bestMate.mate_id)}>
           <StatCard
@@ -234,6 +210,35 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
               </View>
             }
             subtitle={`${((100 * (bestMate?.wins ?? 0)) / (bestMate?.matches_played ?? 1)).toFixed(0)}% WR | ${bestMate.matches_played} M`}
+            valueColor={theme.colors.text}
+          />
+        </TouchableOpacity>
+      )}
+      {worstEnemy && (
+        <TouchableOpacity onPress={() => updatePlayer(worstEnemy.enemy_id)}>
+          <StatCard
+            title={
+              <>
+                <Text tx="dashboardScreen:worstEnemy30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+              </>
+            }
+            value={
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  gap: theme.spacing.xs,
+                  marginBottom: theme.spacing.xxs,
+                }}
+              >
+                <SteamImage accountId={worstEnemy?.enemy_id ?? 0} size={30} />
+                <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
+                  <SteamName accountId={worstEnemy?.enemy_id ?? 0} />
+                </Text>
+              </View>
+            }
+            subtitle={`${((100 * (worstEnemy?.wins ?? 0)) / (worstEnemy?.matches_played ?? 1)).toFixed(0)}% WR | ${worstEnemy.matches_played} M`}
             valueColor={theme.colors.text}
           />
         </TouchableOpacity>
