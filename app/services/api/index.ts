@@ -1,6 +1,7 @@
 import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
 import Config from "@/config";
+import type { EnemyStats } from "@/services/api/types/enemy_stats";
 import type { HeroStats } from "@/services/api/types/hero_stats";
 import type { MateStats } from "@/services/api/types/mate_stats";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
@@ -47,6 +48,16 @@ export class AssetsApi {
   async getHeroStats(playerId: number, minUnixTimestamp?: number | null): Promise<ApiResponse<HeroStats[]>> {
     return await this.api.get(`v1/players/${playerId}/hero-stats`, {
       min_unix_timestamp: minUnixTimestamp,
+    });
+  }
+
+  async getEnemyStats(
+    playerId: number,
+    query?: { min_unix_timestamp?: number; min_matches_played?: number },
+  ): Promise<ApiResponse<EnemyStats[]>> {
+    return await this.api.get(`v1/players/${playerId}/enemy-stats`, {
+      min_unix_timestamp: query?.min_unix_timestamp,
+      min_matches_played: query?.min_matches_played,
     });
   }
 
