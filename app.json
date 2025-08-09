@@ -44,6 +44,7 @@
     "bundler": "metro"
   },
   "plugins": [
+    "react-native-edge-to-edge",
     "expo-localization",
     "expo-font",
     [
