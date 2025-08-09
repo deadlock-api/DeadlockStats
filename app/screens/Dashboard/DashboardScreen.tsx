@@ -109,13 +109,22 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     minMatchesPlayed: 10,
     minUnixTimestamp,
   });
-  const bestMate = mateStats?.sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played)[0];
+  const uniqueMatchesPlayedMates = [...new Set(mateStats?.map((m) => m.matches_played))];
+  const avgMatchesPlayedMates =
+    uniqueMatchesPlayedMates.reduce((sum, val) => sum + val, 0) / uniqueMatchesPlayedMates.length;
+  const bestMate = mateStats
+    ?.filter((m) => m.matches_played >= avgMatchesPlayedMates)
+    .sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played)[0];
 
   const { data: enemyStats } = useEnemyStats(accountId ?? null, {
-    minMatchesPlayed: 3,
     minUnixTimestamp,
   });
-  const worstEnemy = enemyStats?.sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played)[0];
+  const uniqueMatchesPlayedEnemies = [...new Set(enemyStats?.map((m) => m.matches_played))];
+  const avgMatchesPlayedEnemies =
+    uniqueMatchesPlayedEnemies.reduce((acc, m) => acc + m, 0) / uniqueMatchesPlayedEnemies.length;
+  const worstEnemy = enemyStats
+    ?.filter((m) => m.matches_played >= avgMatchesPlayedEnemies)
+    .sort((a, b) => a.wins / a.matches_played - b.wins / b.matches_played)[0];
 
   const { data: assetsHeroes } = useAssetsHeroes();
   const heroIds = assetsHeroes?.map((h) => h.id) ?? [];
