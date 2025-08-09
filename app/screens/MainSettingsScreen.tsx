@@ -93,7 +93,7 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
             title={translate("settingsScreen:linkToSteam")}
             subtitle={translate("settingsScreen:linkSteamAccount")}
             onPress={handleLinkToSteam}
-            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={20} />}
+            rightElement={<FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={20} />}
           />
         )}
       </SettingsSection>
@@ -143,7 +143,7 @@ const SettingsItem = ({
         </View>
       </View>
       <View style={themed($settingsRight)}>
-        {rightElement || <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={20} />}
+        {rightElement || <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={20} />}
       </View>
     </TouchableOpacity>
   );

@@ -151,6 +151,7 @@ export function Card(props: CardProps) {
     ContentTextProps,
     HeadingTextProps,
     FooterTextProps,
+    children,
     ...WrapperProps
   } = props;
 
@@ -166,25 +167,24 @@ export function Card(props: CardProps) {
   const isFooterPresent = !!(FooterComponent || footer || footerTx);
 
   const Wrapper = (isPressable ? TouchableOpacity : View) as ComponentType<TouchableOpacityProps | ViewProps>;
-  const HeaderContentWrapper = verticalAlignment === "force-footer-bottom" ? View : Fragment;
 
   const $containerStyle: StyleProp<ViewStyle> = [themed($containerPresets[preset]), $containerStyleOverride];
   const $headingStyle = [
     themed($headingPresets[preset]),
-    (isFooterPresent || isContentPresent) && { marginBottom: spacing.xxxs },
+    (isFooterPresent || isContentPresent || !!children) && { marginBottom: spacing.xs },
     $headingStyleOverride,
     HeadingTextProps?.style,
   ];
   const $contentStyle = [
     themed($contentPresets[preset]),
-    isHeadingPresent && { marginTop: spacing.xxxs },
-    isFooterPresent && { marginBottom: spacing.xxxs },
+    isHeadingPresent && { marginTop: spacing.xs },
+    (isFooterPresent || !!children) && { marginBottom: spacing.xs },
     $contentStyleOverride,
     ContentTextProps?.style,
   ];
   const $footerStyle = [
     themed($footerPresets[preset]),
-    (isHeadingPresent || isContentPresent) && { marginTop: spacing.xxxs },
+    (isHeadingPresent || isContentPresent || !!children) && { marginTop: spacing.xs },
     $footerStyleOverride,
     FooterTextProps?.style,
   ];
@@ -198,38 +198,38 @@ export function Card(props: CardProps) {
   return (
     <Wrapper
       style={$containerStyle}
-      activeOpacity={0.8}
+      activeOpacity={0.7}
       accessibilityRole={isPressable ? "button" : undefined}
       {...WrapperProps}
     >
       {LeftComponent}
 
       <View style={$alignmentWrapperStyle}>
-        <HeaderContentWrapper>
-          {HeadingComponent ||
-            (isHeadingPresent && (
-              <Text
-                weight="bold"
-                text={heading}
-                tx={headingTx}
-                txOptions={headingTxOptions}
-                {...HeadingTextProps}
-                style={$headingStyle}
-              />
-            ))}
+        {HeadingComponent ||
+          (isHeadingPresent && (
+            <Text
+              weight="semiBold"
+              text={heading}
+              tx={headingTx}
+              txOptions={headingTxOptions}
+              {...HeadingTextProps}
+              style={$headingStyle}
+            />
+          ))}
 
-          {ContentComponent ||
-            (isContentPresent && (
-              <Text
-                weight="normal"
-                text={content}
-                tx={contentTx}
-                txOptions={contentTxOptions}
-                {...ContentTextProps}
-                style={$contentStyle}
-              />
-            ))}
-        </HeaderContentWrapper>
+        {ContentComponent ||
+          ((content || contentTx) && (
+            <Text
+              weight="normal"
+              text={content}
+              tx={contentTx}
+              txOptions={contentTxOptions}
+              {...ContentTextProps}
+              style={$contentStyle}
+            />
+          ))}
+
+        {children}
 
         {FooterComponent ||
           (isFooterPresent && (

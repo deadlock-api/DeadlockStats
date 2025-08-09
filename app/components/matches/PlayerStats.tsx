@@ -68,8 +68,12 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
                 style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}
                 onPress={handleViewProfile}
               >
-                <Text numberOfLines={1} style={[themed($viewProfileText)]} tx="matchDetailsScreen:viewProfile" />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={13} />
+                <Text
+                  numberOfLines={1}
+                  style={[themed($viewProfileText), { color: theme.colors.tint }]}
+                  tx="matchDetailsScreen:viewProfile"
+                />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />
               </TouchableOpacity>
             </View>
           </View>
