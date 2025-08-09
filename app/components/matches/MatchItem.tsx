@@ -19,7 +19,7 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
             <Text numberOfLines={1} style={{ fontFamily: theme.typography.primary.semiBold }}>
               <HeroName heroId={match.hero_id} />
             </Text>
-            <Text numberOfLines={1} style={themed($timeText)}>
+            <Text numberOfLines={1} style={themed($timeText)} size="xxs">
               {parseMatchMode(match.match_mode)}
             </Text>
           </View>
@@ -30,35 +30,58 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
               themed($matchResult),
               { color: isMatchWon(match) ? theme.colors.palette.success500 : theme.colors.palette.failure500 },
             ]}
+            size="sm"
           >
             {isMatchWon(match) ? translate("common:victory") : translate("common:defeat")}
           </Text>
-          <Text style={themed($timeText)}>{formatMatchDuration(match.match_duration_s)}</Text>
-          <Text style={themed($timeText)}>{formatRelativeTime(match.start_time)}</Text>
+          <Text style={themed($timeText)} size="xxs">
+            {formatMatchDuration(match.match_duration_s)}
+          </Text>
+          <Text style={themed($timeText)} size="xxs">
+            {formatRelativeTime(match.start_time)}
+          </Text>
         </View>
       </View>
       <View style={themed($statsRow)}>
         <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)}>KDA</Text>
-          <Text style={themed($statsValue)}>
+          <Text style={themed($statsLabel)} size="xxs">
+            KDA
+          </Text>
+          <Text style={themed($statsValue)} size="xs">
             {match.player_kills}/{match.player_deaths}/{match.player_assists}
           </Text>
         </View>
         <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)}>Last Hits</Text>
-          <Text style={themed($statsValue)}>{match.last_hits}</Text>
+          <Text style={themed($statsLabel)} size="xxs">
+            Last Hits
+          </Text>
+          <Text style={themed($statsValue)} size="xs">
+            {match.last_hits}
+          </Text>
         </View>
         <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)}>Denies</Text>
-          <Text style={themed($statsValue)}>{match.denies}</Text>
+          <Text style={themed($statsLabel)} size="xxs">
+            Denies
+          </Text>
+          <Text style={themed($statsValue)} size="xs">
+            {match.denies}
+          </Text>
         </View>
         <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)}>Level</Text>
-          <Text style={themed($statsValue)}>{match.hero_level}</Text>
+          <Text style={themed($statsLabel)} size="xxs">
+            Level
+          </Text>
+          <Text style={themed($statsValue)} size="xs">
+            {match.hero_level}
+          </Text>
         </View>
         <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)}>Net Worth</Text>
-          <Text style={themed($statsValue)}>{(match.net_worth / 1000).toFixed(0).toLocaleString()}k</Text>
+          <Text style={themed($statsLabel)} size="xxs">
+            Net Worth
+          </Text>
+          <Text style={themed($statsValue)} size="xs">
+            {(match.net_worth / 1000).toFixed(0).toLocaleString()}k
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -81,21 +104,15 @@ const $statsColumn: ThemedStyle<ViewStyle> = () => ({
 
 const $statsLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 12,
-  lineHeight: 14,
 });
 
 const $statsValue: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   color: colors.text,
-  fontSize: 14,
-  lineHeight: 16,
   fontFamily: typography.primary.semiBold,
 });
 
 const $timeText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 12,
-  lineHeight: 14,
 });
 
 const $matchHero: ThemedStyle<ViewStyle> = () => ({
@@ -114,7 +131,6 @@ const $matchStats: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $matchResult: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 16,
   fontFamily: typography.primary.bold,
 });
 

@@ -63,7 +63,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
         >
           <FontAwesome6 name="chevron-left" solid size={24} color={theme.colors.text} />
         </TouchableOpacity>
-        <Text style={[themed($title)]} tx="playerSearchScreen:title" />
+        <Text style={[themed($title)]} tx="playerSearchScreen:title" preset="subheading" />
         <View style={themed($placeholder)} />
       </View>
 
@@ -104,14 +104,15 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
             ) : isLoading ? (
               <View style={[themed($loadingResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <ActivityIndicator size="large" color={theme.colors.tint} />
-                <Text style={themed($loadingResultsText)} tx="common:loading" />
+                <Text style={themed($loadingResultsText)} tx="common:loading" size="sm" />
               </View>
             ) : (
               <View style={[themed($noResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <FontAwesome6 name="user" solid color={theme.colors.text} size={24} />
-                <Text style={themed($noResultsText)} tx="playerSearchScreen:noPlayersFound" />
+                <Text style={themed($noResultsText)} tx="playerSearchScreen:noPlayersFound" size="sm" />
                 <Text
                   style={[themed($noResultsSubtext), { color: theme.colors.textDim }]}
+                  size="xs"
                   tx="playerSearchScreen:tryCheckingSpelling"
                 />
               </View>
@@ -134,7 +135,7 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
         <SteamImage accountId={player.account_id} size={32} />
       </View>
       <View style={{ flex: 1 }}>
-        <Text style={themed($playerName)}>
+        <Text style={themed($playerName)} size="sm" numberOfLines={1}>
           <SteamName accountId={player.account_id} />
         </Text>
       </View>
@@ -163,7 +164,6 @@ const $backButton: ThemedStyle<ViewStyle> = () => ({
 const $title: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
   textAlign: "center",
-  fontSize: 20,
   fontWeight: "bold",
 });
 
@@ -201,13 +201,11 @@ const $noResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $noResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  fontSize: 16,
   fontWeight: "bold",
   marginBottom: spacing.md,
 });
 
 const $noResultsSubtext: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  fontSize: 14,
   marginBottom: spacing.md,
 });
 
@@ -219,7 +217,6 @@ const $loadingResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $loadingResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  fontSize: 16,
   fontWeight: "bold",
   marginBottom: spacing.md,
 });
@@ -243,6 +240,5 @@ const $playerAvatar: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 16,
   fontFamily: typography.primary.semiBold,
 });

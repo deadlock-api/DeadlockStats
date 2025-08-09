@@ -20,14 +20,24 @@ export const StatCard = ({ title, value, subtitle, valueColor, width, size }: St
   return (
     <View style={[themed($statCard), { width: width ?? screenWidth / 2 - 32 }]}>
       <View style={themed($statCardHeader)}>
-        {React.isValidElement(title) ? title : <Text style={themed($statTitle)}>{title}</Text>}
+        {React.isValidElement(title) ? (
+          title
+        ) : (
+          <Text style={themed($statTitle)} size="xs">
+            {title}
+          </Text>
+        )}
       </View>
       {React.isValidElement(value) ? (
         value
       ) : (
-        <Text style={[themed($statValue), valueColor && { color: valueColor }, { fontSize: size ?? 26 }]}>{value}</Text>
+        <Text style={[themed($statValue), valueColor && { color: valueColor }, { fontSize: size ?? 24 }]}>{value}</Text>
       )}
-      {subtitle && <Text style={themed($statSubtitleText)}>{subtitle}</Text>}
+      {subtitle && (
+        <Text size="xxs" style={themed($statSubtitleText)}>
+          {subtitle}
+        </Text>
+      )}
     </View>
   );
 };
@@ -52,7 +62,6 @@ const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
-  fontSize: 14,
   color: theme.colors.textDim,
 });
 
@@ -63,8 +72,6 @@ export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
 });
 
 const $statSubtitleText: ThemedStyle<TextStyle> = (theme) => ({
-  fontSize: 12,
   fontFamily: "Inter-Regular",
   color: theme.colors.textDim,
-  lineHeight: 23,
 });

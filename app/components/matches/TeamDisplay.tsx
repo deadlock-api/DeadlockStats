@@ -46,13 +46,13 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
   const kdaValue = `${stats.kills}/${stats.deaths}/${stats.assists}`;
   const kda = isLeft ? (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
+      <Text size="xs">{kdaLabel}</Text>
+      <Text size="xs">{kdaValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{kdaValue}</Text>
-      <Text style={{ fontSize: 14 }}>{kdaLabel}</Text>
+      <Text size="xs">{kdaValue}</Text>
+      <Text size="xs">{kdaLabel}</Text>
     </View>
   );
 
@@ -60,13 +60,13 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
   const netWorthValue = `${(stats.netWorth / 1000).toFixed(0).toLocaleString()}k`;
   const netWorth = isLeft ? (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
+      <Text size="xs">{netWorthLabel}</Text>
+      <Text size="xs">{netWorthValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{netWorthValue}</Text>
-      <Text style={{ fontSize: 14 }}>{netWorthLabel}</Text>
+      <Text size="xs">{netWorthValue}</Text>
+      <Text size="xs">{netWorthLabel}</Text>
     </View>
   );
 
@@ -74,13 +74,13 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
   const playerDamageValue = `${(stats.playerDamage / 1000).toFixed(0).toLocaleString()}k`;
   const playerDamage = isLeft ? (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
-      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
+      <Text size="xs">{playerDamageLabel}</Text>
+      <Text size="xs">{playerDamageValue}</Text>
     </View>
   ) : (
     <View style={style}>
-      <Text style={{ fontSize: 14 }}>{playerDamageValue}</Text>
-      <Text style={{ fontSize: 14 }}>{playerDamageLabel}</Text>
+      <Text size="xs">{playerDamageValue}</Text>
+      <Text size="xs">{playerDamageLabel}</Text>
     </View>
   );
 
@@ -89,7 +89,9 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
       <View style={[themed($teamContainerTop), themed(isLeft ? $teamContainerTopLeft : $teamContainerTopRight)]}>
         {isLeft && <BadgeDisplay badge={badge} />}
         <View style={themed(isLeft ? $leftTeamNameContainer : $rightTeamNameContainer)}>
-          <Text style={themed(isLeft ? $leftTeamName : $rightTeamName)}>{teamName}</Text>
+          <Text size="md" style={themed(isLeft ? $leftTeamName : $rightTeamName)}>
+            {teamName}
+          </Text>
           <Text
             tx={isWinner ? "common:victory" : "common:defeat"}
             style={{
@@ -146,13 +148,11 @@ const $rightTeamNameContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $leftTeamName: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 18,
   fontFamily: typography.primary.bold,
   textAlign: "left",
 });
 
 const $rightTeamName: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 18,
   fontFamily: typography.primary.bold,
   textAlign: "right",
 });

@@ -97,9 +97,11 @@ export function BadgeDisplay(props: BadgeDisplayProps) {
     return (
       <View style={themed($container)}>
         <View style={[themed($placeholder), { width: size, height: size }]}>
-          <Text style={themed($placeholderText)}>?</Text>
+          <Text style={themed($placeholderText)} size="md">
+            ?
+          </Text>
         </View>
-        {showName && <Text style={themed($rankName)} numberOfLines={1} tx="matchDetailsScreen:unranked" />}
+        {showName && <Text style={themed($rankName)} numberOfLines={1} tx="matchDetailsScreen:unranked" size="xxs" />}
       </View>
     );
   }
@@ -149,12 +151,10 @@ const $placeholder: ThemedStyle<ViewStyle> = ({ colors }) => ({
 
 const $placeholderText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 16,
   fontWeight: "bold",
 });
 
 const $rankName: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 12,
   color: colors.textDim,
   textAlign: "center",
 });

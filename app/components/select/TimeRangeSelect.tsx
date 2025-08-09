@@ -26,7 +26,7 @@ export const TimeRangeSelect = () => {
           onPress={() => setTimeRange(range)}
           style={[themed($timeRangeButton), timeRange.value === range.value && themed($timeRangeButtonActive)]}
         >
-          <Text key={range.labelKey} style={themed($timeRangeText)} tx={range.labelKey} />
+          <Text key={range.labelKey} style={themed($timeRangeText)} size="sm" tx={range.labelKey} />
         </TouchableOpacity>
       ))}
     </View>
@@ -41,7 +41,6 @@ const $timeRangeContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $timeRangeText: ThemedStyle<TextStyle> = () => ({
-  fontSize: 16,
   fontWeight: "bold",
 });
 

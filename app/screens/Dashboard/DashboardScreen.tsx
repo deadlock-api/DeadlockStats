@@ -53,7 +53,11 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
               onPress={() => (props.navigation as any).navigate("MainMatches", { screen: "List" })}
             >
-              <Text style={[themed($viewAllText), { color: theme.colors.tint }]} tx="dashboardScreen:viewAllMatches" />
+              <Text
+                size="xxs"
+                style={[themed($viewAllText), { color: theme.colors.tint }]}
+                tx="dashboardScreen:viewAllMatches"
+              />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={16} />
             </TouchableOpacity>
           </View>
@@ -77,13 +81,13 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
       ) : (
         <View style={themed($noDataContainer)}>
           {isLoading ? (
-            <Text tx="dashboardScreen:loadingMatchHistory" />
+            <Text tx="dashboardScreen:loadingMatchHistory" size="md" />
           ) : error ? (
-            <Text tx="dashboardScreen:failedToLoadMatchHistory" />
+            <Text tx="dashboardScreen:failedToLoadMatchHistory" size="md" />
           ) : !hasSteamId() ? (
-            <Text tx="dashboardScreen:noSteamAccountLinked" />
+            <Text tx="dashboardScreen:noSteamAccountLinked" size="md" />
           ) : (
-            <Text tx="dashboardScreen:noMatchesFound" />
+            <Text tx="dashboardScreen:noMatchesFound" size="md" />
           )}
         </View>
       )}
@@ -142,13 +146,15 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     const icon = winLossDiff > 0 ? "caret-up" : winLossDiff < 0 ? "caret-down" : null;
     winRateField = (
       <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
-        <Text style={[themed($statValue), { color: winRateColor }]}>{winrateValue}</Text>
+        <Text style={[themed($statValue), { color: winRateColor }]} size="xl">
+          {winrateValue}
+        </Text>
         {icon && (
           <FontAwesome6
             style={{ color: winRateColorHard, marginLeft: theme.spacing.xxs }}
             name={icon}
             solid
-            size={16}
+            size={18}
           />
         )}
         {winLossDiff !== 0 && (
@@ -190,7 +196,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           <StatCard
             title={
               <>
-                <Text tx="dashboardScreen:bestMate30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
+                <Text tx="dashboardScreen:bestMate30d" size="xs" style={{ color: theme.colors.textDim }} />
                 <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
               </>
             }
@@ -219,7 +225,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           <StatCard
             title={
               <>
-                <Text tx="dashboardScreen:worstEnemy30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
+                <Text tx="dashboardScreen:worstEnemy30d" size="xs" style={{ color: theme.colors.textDim }} />
                 <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
               </>
             }
@@ -252,7 +258,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
         <StatCard
           title={
             <>
-              <Text tx="dashboardScreen:mainHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
+              <Text tx="dashboardScreen:mainHeroOverall" size="xs" style={{ color: theme.colors.textDim }} />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
             </>
           }
@@ -287,7 +293,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
         <StatCard
           title={
             <>
-              <Text tx="dashboardScreen:bestHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
+              <Text tx="dashboardScreen:bestHeroOverall" size="xs" style={{ color: theme.colors.textDim }} />
               <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
             </>
           }
@@ -320,12 +326,10 @@ const $matchesContainer: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $viewAllText: ThemedStyle<TextStyle> = () => ({
-  fontSize: 12,
   fontWeight: "bold",
 });
 
 const $noDataContainer: ThemedStyle<TextStyle> = () => ({
-  fontSize: 16,
   fontFamily: "Inter-SemiBold",
 });
 

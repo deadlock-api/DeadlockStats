@@ -98,7 +98,7 @@ export const MainSettingsScreen: FC<MainTabScreenProps<"Settings">> = function M
         )}
       </SettingsSection>
 
-      <Text style={themed($version)}>
+      <Text style={themed($version)} size="xxs">
         {translate("settingsScreen:version")} {Application.nativeApplicationVersion}
       </Text>
     </Screen>
@@ -109,7 +109,9 @@ const SettingsSection = ({ title, children }: { title: string; children: React.R
   const { themed, theme } = useAppTheme();
   return (
     <View style={themed($section)}>
-      <Text style={[themed($sectionTitle), { color: theme.colors.text }]}>{title}</Text>
+      <Text size="xs" style={[themed($sectionTitle), { color: theme.colors.text }]}>
+        {title}
+      </Text>
       <View style={[themed($sectionContent), { backgroundColor: theme.colors.palette.neutral100 }]}>{children}</View>
     </View>
   );
@@ -139,7 +141,11 @@ const SettingsItem = ({
         <View style={[themed($settingsIcon), { backgroundColor: theme.colors.palette.primary600 }]}>{icon}</View>
         <View style={themed($settingsText)}>
           <Text style={[themed($settingsTitle), { color: theme.colors.text }]}>{title}</Text>
-          {subtitle && <Text style={[themed($settingsSubtitle), { color: theme.colors.textDim }]}>{subtitle}</Text>}
+          {subtitle && (
+            <Text size="xxs" style={[themed($settingsSubtitle), { color: theme.colors.textDim }]}>
+              {subtitle}
+            </Text>
+          )}
         </View>
       </View>
       <View style={themed($settingsRight)}>
@@ -154,7 +160,6 @@ const $section: ThemedStyle<ViewStyle> = () => ({
 });
 
 const $sectionTitle: ThemedStyle<TextStyle> = () => ({
-  fontSize: 14,
   fontFamily: "Inter-SemiBold",
   marginBottom: 8,
   textTransform: "uppercase",
@@ -213,8 +218,6 @@ const $settingsTitle: ThemedStyle<TextStyle> = ({ typography }) => ({
 
 const $settingsSubtitle: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.normal,
-  fontSize: 12,
-  lineHeight: 16,
 });
 
 const $settingsRight: ThemedStyle<ViewStyle> = () => ({
@@ -224,8 +227,6 @@ const $settingsRight: ThemedStyle<ViewStyle> = () => ({
 
 const $version: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   fontFamily: typography.primary.normal,
-  fontSize: 12,
-  lineHeight: 16,
   textAlign: "center",
   color: colors.textDim,
 });
