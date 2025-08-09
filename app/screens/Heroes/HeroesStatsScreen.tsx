@@ -117,8 +117,8 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
             navigateAny.navigate("MainHeroes", { screen: "Details", params: { heroId: heroStat.hero_id } })
           }
         >
-          <Text style={{ color: theme.colors.textDim, fontSize: 14, lineHeight: 16 }}>View details</Text>
-          <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={14} />
+          <Text style={{ fontSize: 14, lineHeight: 16, color: theme.colors.tint }}>View details</Text>
+          <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />
         </TouchableOpacity>
       </View>
     </View>

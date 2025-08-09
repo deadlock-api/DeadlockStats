@@ -53,8 +53,8 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
               onPress={() => (props.navigation as any).navigate("MainMatches", { screen: "List" })}
             >
-              <Text style={[themed($viewAllText), { color: theme.colors.text }]} tx="dashboardScreen:viewAllMatches" />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.text} size={16} />
+              <Text style={[themed($viewAllText), { color: theme.colors.tint }]} tx="dashboardScreen:viewAllMatches" />
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={16} />
             </TouchableOpacity>
           </View>
           <View style={themed($matchesContainer)}>
@@ -191,7 +191,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
             title={
               <>
                 <Text tx="dashboardScreen:bestMate30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
               </>
             }
             value={
@@ -220,7 +220,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
             title={
               <>
                 <Text tx="dashboardScreen:worstEnemy30d" style={{ fontSize: 14, color: theme.colors.textDim }} />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
               </>
             }
             value={
@@ -253,7 +253,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           title={
             <>
               <Text tx="dashboardScreen:mainHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
             </>
           }
           value={
@@ -288,7 +288,7 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           title={
             <>
               <Text tx="dashboardScreen:bestHeroOverall" style={{ fontSize: 14, color: theme.colors.textDim }} />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.textDim} size={12} />
+              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
             </>
           }
           value={
