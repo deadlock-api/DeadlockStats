@@ -1,5 +1,5 @@
 import { type FC, useCallback, useMemo } from "react";
-import { ActivityIndicator, FlatList, type TextStyle, View, type ViewStyle } from "react-native";
+import { ActivityIndicator, FlatList, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
@@ -104,11 +104,11 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
         <View style={themed($heroHeaderRow)}>
           <HeroImage heroId={heroId} size={50} />
           <View style={{ flex: 1, justifyContent: "center", gap: theme.spacing.xs }}>
-            <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 18 }}>
+            <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 16 }}>
               <HeroName heroId={heroId} />
             </Text>
             {!!heroAsset.description?.role && (
-              <Text numberOfLines={2} style={{ color: theme.colors.textDim, lineHeight: 14 }}>
+              <Text numberOfLines={2} style={{ color: theme.colors.textDim, fontSize: 14 }}>
                 {heroAsset.description.role}
               </Text>
             )}
@@ -159,20 +159,6 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
   );
 };
 
-const StatBox = ({ label, value, valueColor }: { label: string; value: string | number; valueColor?: string }) => {
-  const { themed } = useAppTheme();
-  return (
-    <View style={themed($statBox)}>
-      <Text numberOfLines={1} style={themed($statLabel)}>
-        {label}
-      </Text>
-      <Text numberOfLines={1} style={[themed($statValue), valueColor && { color: valueColor }]}>
-        {value}
-      </Text>
-    </View>
-  );
-};
-
 const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1,
   justifyContent: "center",
@@ -190,7 +176,7 @@ const $errorContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $headerCard: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   borderRadius: 12,
   gap: spacing.sm,
-  marginTop: spacing.lg,
+  marginTop: spacing.md,
 });
 
 const $heroHeaderRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -204,27 +190,6 @@ const $statsRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-between",
   flexWrap: "wrap",
   gap: spacing.sm,
-});
-
-const $statBox: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  width: "30%",
-  backgroundColor: colors.palette.neutral200,
-  borderRadius: 10,
-  paddingVertical: spacing.xs,
-  paddingHorizontal: spacing.sm,
-});
-
-const $statLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  fontSize: 12,
-  lineHeight: 14,
-});
-
-const $statValue: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
-  color: colors.text,
-  fontSize: 14,
-  lineHeight: 16,
-  fontFamily: typography.primary.semiBold,
 });
 
 const $listCard: ThemedStyle<ViewStyle> = ({ spacing }) => ({

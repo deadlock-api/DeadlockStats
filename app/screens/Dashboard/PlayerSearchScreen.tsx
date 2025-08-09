@@ -189,9 +189,8 @@ const $searchInput: ThemedStyle<ViewStyle> = ({ typography }) => ({
   fontFamily: typography.primary.normal,
 });
 
-const $resultsSection: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $resultsSection: ThemedStyle<ViewStyle> = () => ({
   flex: 1,
-  paddingHorizontal: spacing.lg,
 });
 
 const $noResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
