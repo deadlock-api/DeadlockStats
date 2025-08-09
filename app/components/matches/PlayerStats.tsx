@@ -54,14 +54,14 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
         <View style={themed($playerHeroInfo)}>
           <HeroImage heroId={player.hero_id ?? 0} size={50} />
           <View style={themed($playerBasicInfo)}>
-            <Text numberOfLines={1} style={themed($playerName)} weight="semiBold">
+            <Text numberOfLines={1} style={themed($playerName)} weight="semiBold" size="md">
               {player.account_id && <SteamName accountId={player.account_id} />}
             </Text>
-            <Text style={themed($heroName)} size="md">
+            <Text style={themed($heroName)} size="sm">
               {hero?.name ?? "Unknown Hero"}
             </Text>
             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-              <Text style={themed($playerLevel)} size="sm">
+              <Text style={themed($playerLevel)} size="xs">
                 Level {player.level ?? 0}
               </Text>
               <TouchableOpacity
@@ -70,6 +70,7 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
               >
                 <Text
                   numberOfLines={1}
+                  size="xs"
                   style={[themed($viewProfileText), { color: theme.colors.tint }]}
                   tx="matchDetailsScreen:viewProfile"
                 />
@@ -139,10 +140,8 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
   );
 }
 
-const $viewProfileText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  fontSize: 13,
+const $viewProfileText: ThemedStyle<TextStyle> = () => ({
   fontWeight: "bold",
-  lineHeight: 18,
 });
 
 const $playerStatsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -163,30 +162,23 @@ const $playerHeroInfo: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   gap: spacing.sm,
 });
 
-const $playerBasicInfo: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $playerBasicInfo: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "column",
   justifyContent: "space-around",
-  gap: spacing.xxs,
   flex: 1,
 });
 
 const $playerName: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.semiBold,
-  lineHeight: 18,
-  fontSize: 18,
   overflow: "hidden",
 });
 
 const $heroName: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 16,
-  lineHeight: 16,
 });
 
 const $playerLevel: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  lineHeight: 14,
-  fontSize: 14,
 });
 
 const $statsGrid: ThemedStyle<ViewStyle> = () => ({

@@ -130,6 +130,6 @@ const $tabBarItem: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $tabBarLabel: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   fontSize: 12,
   fontFamily: typography.primary.medium,
-  lineHeight: 16,
+  lineHeight: 18,
   color: colors.text,
 });

@@ -15,7 +15,7 @@ import {
   extractSteamIdFromUrl,
   removeSkipWelcomePreference,
   saveSkipWelcomePreference,
-  saveSteamId,
+  saveSteamId
 } from "@/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
@@ -185,7 +185,7 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
           </View>
         </Button>
 
-        <Text tx="welcomeScreen:skipDescription" style={themed($skipDescription)} />
+        <Text tx="welcomeScreen:skipDescription" style={themed($skipDescription)} size="sm" />
 
         {isLoading && <Text tx="welcomeScreen:loadingMessage" style={themed($loadingText)} />}
       </View>
@@ -235,7 +235,6 @@ const $skipButton: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $skipDescription: ThemedStyle<TextStyle> = ({ spacing, colors }) => ({
   textAlign: "center",
   color: colors.textDim,
-  fontSize: 14,
   marginBottom: spacing.lg,
 });
 

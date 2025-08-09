@@ -55,6 +55,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
           keyExtractor={(item) => item.match_id.toString()}
           ListEmptyComponent={() => (
             <Text
+              size="sm"
               style={themed($noDataText)}
               tx={!hasSteamId() ? "matchesListScreen:noSteamAccountLinked" : "matchesListScreen:noMatchesFound"}
             />
@@ -80,7 +81,6 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
 
 const $noDataText: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 16,
   fontWeight: "bold",
   textAlign: "center",
   padding: 16,

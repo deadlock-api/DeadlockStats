@@ -86,14 +86,18 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
         <View style={themed($heroStatsTopRowLeft)}>
           <HeroImage heroId={heroStat.hero_id} size={40} />
           <View>
-            <Text numberOfLines={1} style={themed($heroNameText)}>
+            <Text numberOfLines={1} style={themed($heroNameText)} size="sm">
               <HeroName heroId={heroStat.hero_id} />
             </Text>
           </View>
         </View>
         <View style={themed($heroStatsTopRowRight)}>
-          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{timePlayed} playtime</Text>
-          <Text style={{ color: theme.colors.textDim, fontSize: 13, lineHeight: 14 }}>{lastPlayed} last</Text>
+          <Text style={{ color: theme.colors.textDim }} size="xxs">
+            {timePlayed} playtime
+          </Text>
+          <Text style={{ color: theme.colors.textDim }} size="xxs">
+            {lastPlayed} last
+          </Text>
         </View>
       </View>
       <View style={themed($heroStatsContent)}>
@@ -117,7 +121,9 @@ const HeroStatItem = ({ heroStat }: { heroStat: HeroStats }) => {
             navigateAny.navigate("MainHeroes", { screen: "Details", params: { heroId: heroStat.hero_id } })
           }
         >
-          <Text style={{ fontSize: 14, lineHeight: 16, color: theme.colors.tint }}>View details</Text>
+          <Text size="xs" style={{ color: theme.colors.tint }}>
+            View details
+          </Text>
           <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />
         </TouchableOpacity>
       </View>
@@ -129,12 +135,13 @@ const HeroStatItemBox = (item: { label: string; value: string | number; valueCol
   const { themed } = useAppTheme();
   return (
     <View style={themed($heroStatsContentStat)}>
-      <Text numberOfLines={1} style={themed($heroStatsContentStatLabel)}>
+      <Text numberOfLines={1} size="xxs" style={themed($heroStatsContentStatLabel)}>
         {item.label}
       </Text>
       <Text
         numberOfLines={1}
         style={[themed($heroStatsContentStatValue), item.valueColor && { color: item.valueColor }]}
+        size="xs"
       >
         {item.value}
       </Text>
@@ -198,19 +205,13 @@ const $heroStatsContentStat: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $heroStatsContentStatLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
-  fontSize: 12,
-  lineHeight: 14,
 });
 
 const $heroStatsContentStatValue: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   color: colors.text,
-  fontSize: 14,
-  lineHeight: 16,
   fontFamily: typography.primary.semiBold,
 });
 
 const $heroNameText: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 16,
   fontFamily: typography.primary.semiBold,
-  lineHeight: 16,
 });

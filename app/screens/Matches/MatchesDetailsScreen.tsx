@@ -146,7 +146,7 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             <Text
               numberOfLines={1}
               style={[themed($playerHeader)]}
-              size={"md"}
+              size={"sm"}
               tx="matchDetailsScreen:playerNameLabel"
             />
             {[...team0Players, ...team1Players].map((player) => (
@@ -185,7 +185,7 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
                       backgroundColor: getLaneColor(player.account_id ?? 0),
                     }}
                   ></View>
-                  <Text numberOfLines={1} style={[themed($playerStat), themed($playerName)]} size={"md"}>
+                  <Text numberOfLines={1} style={[themed($playerStat), themed($playerName)]} size={"xs"}>
                     {player.account_id && <SteamName accountId={player.account_id} />}
                   </Text>
                 </View>
@@ -196,11 +196,11 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             <Text
               numberOfLines={1}
               style={[themed($playerHeader)]}
-              size={"md"}
+              size={"sm"}
               tx="matchDetailsScreen:playerKdaLabel"
             />
             {[...team0Players, ...team1Players].map((player) => (
-              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"md"}>
+              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"xs"}>
                 {player.kills}/{player.deaths}/{player.assists}
               </Text>
             ))}
@@ -209,11 +209,11 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             <Text
               numberOfLines={1}
               style={[themed($playerHeader)]}
-              size={"md"}
+              size={"sm"}
               tx="matchDetailsScreen:playerSoulsLabelShort"
             />
             {[...team0Players, ...team1Players].map((player) => (
-              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"md"}>
+              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"xs"}>
                 {((player.net_worth ?? 0) / 1000).toFixed(0)}k
               </Text>
             ))}
@@ -222,11 +222,11 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             <Text
               numberOfLines={1}
               style={[themed($playerHeader)]}
-              size={"md"}
+              size={"sm"}
               tx="matchDetailsScreen:playerDamageLabelShort"
             />
             {[...team0Players, ...team1Players].map((player) => (
-              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"md"}>
+              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"xs"}>
                 {((player.stats[player.stats.length - 1]?.player_damage ?? 0) / 1000).toFixed(0)}k
               </Text>
             ))}
@@ -288,12 +288,10 @@ const $playersStatsContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $playerHeader: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 14,
   fontFamily: typography.primary.semiBold,
 });
 
 const $playerStat: ThemedStyle<TextStyle> = ({ typography }) => ({
-  fontSize: 14,
   fontFamily: typography.primary.normal,
   maxWidth: 130,
 });
