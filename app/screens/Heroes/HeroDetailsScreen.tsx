@@ -60,9 +60,27 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
     [props.navigation],
   );
 
+  const header = (
+    <View style={themed($heroHeaderRow)}>
+      <HeroImage heroId={heroId} size={50} />
+      <View style={{ justifyContent: "center", gap: theme.spacing.xs }}>
+        <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 16 }}>
+          <HeroName heroId={heroId} />
+        </Text>
+        {heroAsset?.description?.role && (
+          <Text numberOfLines={2} style={{ color: theme.colors.textDim, fontSize: 14 }}>
+            {heroAsset?.description.role}
+          </Text>
+        )}
+      </View>
+    </View>
+  );
+
   if (isLoading) {
     return (
-      <Screen preset="fixed" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+        <TimeRangeSelect />
+        <View style={themed($headerCard)}>{header}</View>
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
           <Text preset="subheading" style={{ marginTop: theme.spacing.md }}>
@@ -75,13 +93,12 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
 
   if (!heroAsset || !heroStat) {
     return (
-      <Screen preset="fixed" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+        <TimeRangeSelect />
+        <View style={themed($headerCard)}>{header}</View>
         <View style={themed($errorContainer)}>
-          <Text preset="heading" style={{ color: theme.colors.error }}>
-            Hero data unavailable
-          </Text>
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }}>
-            We couldn't load data for this hero. Please try again later.
+            We couldn't find any data for this hero. Please try again or change the time range.
           </Text>
         </View>
       </Screen>
@@ -101,19 +118,7 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
       <TimeRangeSelect />
 
       <View style={themed($headerCard)}>
-        <View style={themed($heroHeaderRow)}>
-          <HeroImage heroId={heroId} size={50} />
-          <View style={{ flex: 1, justifyContent: "center", gap: theme.spacing.xs }}>
-            <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 16 }}>
-              <HeroName heroId={heroId} />
-            </Text>
-            {!!heroAsset.description?.role && (
-              <Text numberOfLines={2} style={{ color: theme.colors.textDim, fontSize: 14 }}>
-                {heroAsset.description.role}
-              </Text>
-            )}
-          </View>
-        </View>
+        {header}
         <View style={themed($statsRow)}>
           <StatCard width="48%" title="Games" value={heroStat.matches_played} />
           <StatCard width="48%" title="WR" value={`${winrate}%`} valueColor={scaleColor(winrate, 30, 70)} />
@@ -160,14 +165,12 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
 };
 
 const $loadingContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
   justifyContent: "center",
   alignItems: "center",
   paddingVertical: spacing.xl,
 });
 
 const $errorContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flex: 1,
   justifyContent: "center",
   alignItems: "center",
   paddingVertical: spacing.xl,
