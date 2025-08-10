@@ -1,77 +1,254 @@
-# Welcome to your new ignited app!
+# DeadlockStats
 
-> The latest and greatest boilerplate for Infinite Red opinions
+> A comprehensive mobile application for tracking and analyzing Deadlock game statistics
 
-This is the boilerplate that [Infinite Red](https://infinite.red) uses as a way to test bleeding-edge changes to our React Native stack.
+DeadlockStats is a React Native application built with Expo that provides players with detailed statistics, match history, hero performance analytics, and teammate/enemy tracking for the game Deadlock. The app integrates with Steam authentication and the Deadlock API to deliver real-time data and insights.
 
-- [Quick start documentation](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/Boilerplate.md)
-- [Full documentation](https://github.com/infinitered/ignite/blob/master/docs/README.md)
+## 🎯 Features
 
-## Getting Started
+### 📊 Dashboard & Overview
+- **Player Statistics Overview**: Quick access to key performance metrics
+- **Recent Match History**: View your latest matches with detailed results
+- **Win Rate Analytics**: Track your overall performance and improvement
+- **KDA Statistics**: Monitor your Kill/Death/Assist ratios across matches
+
+### 🎮 Match Tracking & Analysis
+- **Detailed Match History**: Browse through all your past matches
+- **Match Details**: In-depth analysis of individual matches including:
+  - Team compositions
+  - Individual player performance
+  - Match duration and outcome
+  - Detailed statistics for all players
+- **Time Range Filtering**: Analyze performance over specific time periods
+- **Match Sharing**: Share match details with other players
+
+### 🦸 Hero Analytics
+- **Hero Performance Stats**: Track your performance with each hero
+- **Hero Win Rates**: See which heroes you perform best with
+- **Hero Details**: Comprehensive information about each hero
+- **Hero Comparison**: Compare your performance across different heroes
+
+### 👥 Social Features
+- **Teammate Analytics**: Track performance with frequent teammates
+- **Enemy Analytics**: Analyze matchups against common opponents
+- **Player Search**: Find and analyze other players' statistics
+- **Profile Sharing**: Share your profile via deep links
+
+### 🔧 Customization & Settings
+- **Theme Support**: Light and dark theme options with automatic switching
+- **Internationalization**: Multi-language support (i18n)
+- **Time Range Selection**: Customize analysis periods
+- **Offline Support**: Access cached data when offline
+
+## 🏗️ Technical Architecture
+
+### Frontend Stack
+- **React Native**: Cross-platform mobile development
+- **Expo**: Development platform and deployment tools
+- **TypeScript**: Type-safe development
+- **React Navigation**: Navigation library with stack and tab navigators
+- **React Query (TanStack Query)**: Data fetching and caching
+
+### State Management
+- **React Hooks Global States**: Global state management for player selection and time ranges
+- **React Query**: Server state management and caching
+- **Local Storage**: Persistent storage for user preferences
+
+### Authentication & Deep Linking
+- **Steam OpenID**: Secure authentication via Steam
+- **Deep Linking**: Custom URL schemes for sharing and navigation
+- **Auto-verification**: Verified deep links for seamless user experience
+
+### UI/UX
+- **Custom Theme System**: Comprehensive theming with light/dark modes
+- **Responsive Design**: Optimized for various screen sizes
+- **Safe Area Support**: Proper handling of device-specific UI elements
+- **Keyboard Handling**: Enhanced keyboard interaction support
+
+### Development Tools
+- **Biome**: Fast linting and formatting
+- **Jest**: Unit testing framework
+- **Maestro**: End-to-end testing
+- **EAS Build**: Cloud and local build system
+
+## 📱 Platform Support
+
+- **iOS**: Native iOS builds with proper App Store compliance
+- **Android**: Native Android builds with Google Play Store support
+- **Development Builds**: Local simulator and device testing
+- **Preview Builds**: Internal testing and distribution
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (18+)
+- pnpm package manager
+- Expo CLI
+- iOS Simulator (for iOS development)
+- Android Studio (for Android development)
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone <repository-url>
+cd DeadlockStats
+
+# Install dependencies
 pnpm install
+
+# Start the development server
 pnpm run start
 ```
 
-To make things work on your local simulator, or on your phone, you need first to [run `eas build`](https://github.com/infinitered/ignite/blob/master/docs/expo/EAS.md). We have many shortcuts on `package.json` to make it easier:
+### Development Builds
+
+#### iOS Development
+```bash
+# Build for iOS Simulator
+pnpm run build:ios:sim
+
+# Build for iOS Device (Development)
+pnpm run build:ios:dev
+
+# Build for iOS Device (Production)
+pnpm run build:ios:prod
+```
+
+#### Android Development
+```bash
+# Build for Android Emulator/Device
+pnpm run build:android:sim
+
+# Build for Android Device (Development)
+pnpm run build:android:dev
+
+# Build for Android Device (Production)
+pnpm run build:android:prod
+```
+
+### Development Workflow
 
 ```bash
-pnpm run build:ios:sim # build for ios simulator
-pnpm run build:ios:dev # build for ios device
-pnpm run build:ios:prod # build for ios device
+# Run linting
+pnpm run lint
+
+# Format code
+pnpm run fmt
+
+# Run tests
+pnpm run test
+
+# Run tests in watch mode
+pnpm run test:watch
+
+# Type checking
+pnpm run compile
 ```
 
-### `./assets` directory
+## 📂 Project Structure
 
-This directory is designed to organize and store various assets, making it easy for you to manage and use them in your application. The assets are further categorized into subdirectories, including `icons` and `images`:
+```
+app/
+├── components/           # Reusable UI components
+│   ├── heroes/          # Hero-related components
+│   ├── matches/         # Match-related components
+│   ├── profile/         # Profile and player components
+│   ├── select/          # Selection components
+│   └── ui/              # Base UI components
+├── config/              # Configuration files
+├── hooks/               # Custom React hooks
+├── i18n/                # Internationalization
+├── navigators/          # Navigation configuration
+├── screens/             # Screen components
+│   ├── Dashboard/       # Dashboard screens
+│   ├── Heroes/          # Hero-related screens
+│   ├── Matches/         # Match-related screens
+│   └── Mates/           # Teammate/enemy screens
+├── services/            # API services and types
+├── theme/               # Theme configuration
+└── utils/               # Utility functions
 
-```tree
-assets
-├── icons
-└── images
+assets/
+├── heroes/              # Hero images and assets
+├── images/              # General images
+└── ranks/               # Rank badges and images
 ```
 
-**icons**
-This is where your icon assets will live. These icons can be used for buttons, navigation elements, or any other UI components. The recommended format for icons is PNG, but other formats can be used as well.
+## 🔌 API Integration
 
-Ignite comes with a built-in `Icon` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/boilerplate/app/components/Icon.md).
+The app integrates with the Deadlock API to fetch:
+- Player profiles and statistics
+- Match history and details
+- Hero information and assets
+- Rank and badge data
 
-**images**
-This is where your images will live, such as background images, logos, or any other graphics. You can use various formats such as PNG, JPEG, or GIF for your images.
+### Key API Endpoints
+- `/match-history/{account_id}` - Player match history
+- `/steam-profile/{account_id}` - Steam profile information
+- Hero and asset endpoints for game data
 
-Another valuable built-in component within Ignite is the `AutoImage` component. You can find detailed usage instructions in the [docs](https://github.com/infinitered/ignite/blob/master/docs/Components-AutoImage.md).
+## 🌐 Deep Linking
 
-How to use your `icon` or `image` assets:
+The app supports deep linking for:
+- **Welcome Flow**: `deadlockstats://welcome`
+- **Steam Auth Callback**: `deadlockstats://auth/steam/callback`
+- **Profile Sharing**: `deadlockstats://share/{accountId}`
+- **Match Details**: `deadlockstats://matches/{matchId}`
+- **Hero Details**: `deadlockstats://heroes/{heroId}`
 
-```typescript
-import { Image } from 'react-native';
+## 🛠️ Configuration
 
-const MyComponent = () => {
-  return (
-    <Image source={require('assets/images/my_image.png')} />
-  );
-};
-```
+### Environment Configuration
+- `config.dev.ts` - Development environment settings
+- `config.prod.ts` - Production environment settings
+- `config.base.ts` - Shared configuration
 
-## Running Maestro end-to-end tests
+### Build Configuration
+- `eas.json` - EAS Build configuration
+- `app.config.ts` - Expo configuration
+- `metro.config.js` - Metro bundler configuration
 
-Follow our [Maestro Setup](https://ignitecookbook.com/docs/recipes/MaestroSetup) recipe.
+## 📊 Analytics & Utilities
 
-## Next Steps
+### Match Analytics
+- Win rate calculations
+- KDA analysis
+- Hero performance metrics
+- Time-based filtering
+- Statistical comparisons
 
-### Ignite Cookbook
+### Data Management
+- Offline-first approach with React Query
+- Intelligent caching strategies
+- Background data synchronization
+- Error handling and retry logic
 
-[Ignite Cookbook](https://ignitecookbook.com/) is an easy way for developers to browse and share code snippets (or “recipes”) that actually work.
+## 🚀 Deployment
 
-### Upgrade Ignite boilerplate
+### EAS Build Profiles
+- **Development**: Local testing with development builds
+- **Preview**: Internal testing and distribution
+- **Production**: App store releases
 
-Read our [Upgrade Guide](https://ignitecookbook.com/docs/recipes/UpdatingIgnite) to learn how to upgrade your Ignite project.
+### Platform-Specific Features
+- **Android**: Edge-to-edge display, intent filters for deep linking
+- **iOS**: Native navigation, proper safe area handling
 
-## Community
+## 🤝 Contributing
 
-⭐️ Help us out by [starring on GitHub](https://github.com/infinitered/ignite), filing bug reports in [issues](https://github.com/infinitered/ignite/issues) or [ask questions](https://github.com/infinitered/ignite/discussions).
+This project follows Infinite Red's React Native boilerplate structure and best practices. When contributing:
 
-💬 Join us on [Slack](https://join.slack.com/t/infiniteredcommunity/shared_invite/zt-1f137np4h-zPTq_CbaRFUOR_glUFs2UA) to discuss.
+1. Follow the established code style using Biome
+2. Write tests for new functionality
+3. Update documentation as needed
+4. Use TypeScript for type safety
+5. Follow the component organization patterns
 
-📰 Make our Editor-in-chief happy by [reading the React Native Newsletter](https://reactnativenewsletter.com/).
+## 📄 License
+
+This project is private and proprietary.
+
+## 🎮 About Deadlock
+
+DeadlockStats is designed specifically for players of Deadlock, providing comprehensive statistics and analytics to help players improve their gameplay and track their progress over time.
