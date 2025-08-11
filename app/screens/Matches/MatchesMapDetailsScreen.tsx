@@ -313,7 +313,7 @@ export const MatchesMapDetailsScreen: FC<MatchesStackScreenProps<"MapDetails">> 
                       numberOfLines={1}
                       style={{
                         color: e.killer_team_1 ? theme.colors.palette.success400 : theme.colors.palette.failure400,
-                        width: 90,
+                        width: 85,
                         fontWeight: "600",
                         textAlign: "right",
                       }}
@@ -349,7 +349,7 @@ export const MatchesMapDetailsScreen: FC<MatchesStackScreenProps<"MapDetails">> 
                       numberOfLines={1}
                       style={{
                         color: e.killer_team_1 ? theme.colors.palette.failure400 : theme.colors.palette.success400,
-                        width: 90,
+                        width: 85,
                         fontWeight: "600",
                       }}
                     >
