@@ -111,6 +111,8 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
     return mapData?.zipline_paths[laneIdx]?.color ?? "transparent";
   };
 
+  const showViewMapButton = !!matchData.match_paths;
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       <View style={themed($container)}>
@@ -233,6 +235,18 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             ))}
           </View>
         </View>
+
+        {showViewMapButton && (
+          <Button
+            preset="filled"
+            style={{ paddingVertical: theme.spacing.xxs }}
+            onPress={() =>
+              (props.navigation as any).navigate("MainMatches", { screen: "MapDetails", params: { matchId } })
+            }
+          >
+            <Text size="sm" style={[{ paddingVertical: theme.spacing.xxs }]} tx="matchDetailsScreen:viewMatchMap" />
+          </Button>
+        )}
       </View>
     </Screen>
   );
