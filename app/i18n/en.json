@@ -98,7 +98,6 @@
   "matchDetailsScreen": {
     "title": "Match",
     "loadingMessage": "Loading match details...",
-    "viewMatchMap": "View Map",
     "errorTitle": "Error",
     "errorMessage": "Failed to load match details. Please try again.",
     "duration": "Duration",
