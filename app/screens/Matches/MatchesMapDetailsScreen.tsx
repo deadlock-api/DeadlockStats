@@ -259,14 +259,13 @@ export const MatchesMapDetailsScreen: FC<MatchesStackScreenProps<"MapDetails">> 
                 slotAccountIds[e.team1_player_slot] &&
                 slotAccountIds[e.team2_player_slot],
             )
-            .map((e, index) => (
+            .map((e) => (
               <View
                 key={`${e.game_time_s}-${e.team1_player_slot}-${e.team2_player_slot}`}
                 style={{
                   flexDirection: "row",
                   gap: theme.spacing.xs,
                   padding: theme.spacing.xs,
-                  backgroundColor: index === 0 ? theme.colors.palette.overlay20 : "transparent",
                   borderRadius: theme.spacing.xxs,
                   marginBottom: theme.spacing.xxs,
                 }}
