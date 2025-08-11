@@ -4,7 +4,7 @@ import type { Hero } from "@/services/assets-api/types/hero";
 
 const DEFAULT_SIZE = 70;
 
-const HERO_IMAGES = {
+export const HERO_IMAGES = {
   1: require("@assets/heroes/1.webp"),
   2: require("@assets/heroes/2.webp"),
   3: require("@assets/heroes/3.webp"),

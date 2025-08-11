@@ -1,7 +1,7 @@
 import { useSteamProfile } from "@/hooks/useSteamProfile";
 
 export interface SteamNameProps {
-  accountId: number;
+  accountId?: number;
   fontSize?: number;
 }
 

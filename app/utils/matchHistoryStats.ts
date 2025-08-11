@@ -152,12 +152,17 @@ export function formatDuration(minutes: number): string {
 /**
  * Formats duration in seconds to a readable string
  * @param seconds Duration in seconds
+ * @param leadingZero Whether to include a leading zero for minutes
  * @returns Formatted duration string (e.g., "25:30")
  */
-export function formatMatchDuration(seconds: number): string {
+export function formatMatchDuration(seconds: number, leadingZero: boolean = false): string {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  if (leadingZero) {
+    return `${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
+  } else {
+    return `${minutes}:${remainingSeconds.toString().padStart(2, "0")}`;
+  }
 }
 
 /**
