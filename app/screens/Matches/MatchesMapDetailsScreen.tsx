@@ -96,6 +96,7 @@ export const MatchesMapDetailsScreen: FC<MatchesStackScreenProps<"MapDetails">> 
     const xPos = getInterpolatedValue(p.x_pos, gameTime);
     const yPos = getInterpolatedValue(p.y_pos, gameTime);
     const health = getInterpolatedValue(p.health, gameTime);
+    const currentHealth = Math.min(p.health[Math.floor(gameTime)], p.health[Math.floor(gameTime) + 1]);
     const pathWidth = (p.x_max ?? 1) - (p.x_min ?? 0);
     const pathHeight = (p.y_max ?? 1) - (p.y_min ?? 0);
     const xScaled = (xPos / xResolution) * pathWidth + (p.x_min ?? 0) - 2300;
@@ -107,11 +108,12 @@ export const MatchesMapDetailsScreen: FC<MatchesStackScreenProps<"MapDetails">> 
       x: clamp(xRelPos, 0, 1),
       y: clamp(yRelPos, 0, 1),
       health,
+      show: currentHealth >= 1,
     };
   });
   const heroImgSize = minimapSize / 15;
   const heroImagesCanvas = playerPositions
-    ?.filter((p) => p.health > 0)
+    ?.filter((p) => p.show)
     .map((p) => (
       <Image
         key={p.player_slot}
