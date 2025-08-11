@@ -20,6 +20,9 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
               <HeroName heroId={match.hero_id} />
             </Text>
             <Text numberOfLines={1} style={themed($timeText)} size="xxs">
+              {match.match_id}
+            </Text>
+            <Text numberOfLines={1} style={themed($timeText)} size="xxs">
               {parseMatchMode(match.match_mode)}
             </Text>
           </View>

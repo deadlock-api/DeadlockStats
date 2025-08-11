@@ -1,9 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
-import type { FC } from "react";
+import React, { type FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { TeamDisplay } from "@/components/matches/TeamDisplay";
 import { SteamName } from "@/components/profile/SteamName";
+import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsMap } from "@/hooks/useAssetsMap";
@@ -110,6 +111,8 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
     return mapData?.zipline_paths[laneIdx]?.color ?? "transparent";
   };
 
+  const showViewMapButton = !!matchData.match_paths;
+
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       <View style={themed($container)}>
@@ -118,12 +121,12 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             {translate("matchDetailsScreen:title")} {matchId}
           </Text>
           <View style={themed($headerContainer)}>
-            <View style={{ alignItems: "flex-start" }}>
-              <Text>{parseMatchMode(matchData.match_mode)}</Text>
-            </View>
             <View style={{ alignItems: "flex-end" }}>
               <Text>{formatMatchDuration(matchData.duration_s ?? 0)}</Text>
               <Text>{formatRelativeTime(matchData.start_time ?? 0)}</Text>
+            </View>
+            <View style={{ alignItems: "flex-start" }}>
+              <Text>{parseMatchMode(matchData.match_mode)}</Text>
             </View>
           </View>
           <View style={themed($teamsContainer)}>
@@ -232,6 +235,18 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
             ))}
           </View>
         </View>
+
+        {showViewMapButton && (
+          <Button
+            preset="filled"
+            style={{ paddingVertical: theme.spacing.xxs }}
+            onPress={() =>
+              (props.navigation as any).navigate("MainMatches", { screen: "MapDetails", params: { matchId } })
+            }
+          >
+            <Text size="sm" style={[{ paddingVertical: theme.spacing.xxs }]} tx="matchDetailsScreen:viewMatchMap" />
+          </Button>
+        )}
       </View>
     </Screen>
   );

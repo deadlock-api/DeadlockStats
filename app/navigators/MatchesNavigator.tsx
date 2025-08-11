@@ -4,6 +4,7 @@ import type { ComponentProps } from "react";
 import Config from "@/config";
 import { MatchesDetailsScreen } from "@/screens/Matches/MatchesDetailsScreen";
 import { MatchesListScreen } from "@/screens/Matches/MatchesListScreen";
+import { MatchesMapDetailsScreen } from "@/screens/Matches/MatchesMapDetailsScreen";
 import { MatchesPlayerDetailsScreen } from "@/screens/Matches/MatchesPlayerDetailsScreen";
 import { useAppTheme } from "@/theme/context";
 import { useBackButtonHandler } from "./navigationUtilities";
@@ -13,6 +14,7 @@ const exitRoutes = Config.exitRoutes;
 export type MatchesStackParamList = {
   List: { matchIds?: number[] };
   Details: { matchId?: number };
+  MapDetails: { matchId?: number };
   PlayerDetails: { matchId?: number; accountId?: number };
 };
 export type MatchesStackScreenProps<T extends keyof MatchesStackParamList> = NativeStackScreenProps<
@@ -40,6 +42,7 @@ export const MatchesNavigator = (_props: NavigationProps) => {
     >
       <Stack.Screen name="List" component={MatchesListScreen} />
       <Stack.Screen name="Details" component={MatchesDetailsScreen} />
+      <Stack.Screen name="MapDetails" component={MatchesMapDetailsScreen} />
       <Stack.Screen name="PlayerDetails" component={MatchesPlayerDetailsScreen} />
     </Stack.Navigator>
   );
