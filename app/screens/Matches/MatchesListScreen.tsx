@@ -32,7 +32,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
   }
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       {!filterMatchIds && <TimeRangeSelect />}
       {filterMatchIds && (
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
@@ -43,7 +43,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
         </View>
       )}
       {matchHistory ? (
-        <MatchList matches={matchHistory} />
+        <MatchList matches={matchHistory} scroll />
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
           <ActivityIndicator size="large" />

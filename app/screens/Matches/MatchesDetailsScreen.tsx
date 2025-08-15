@@ -32,7 +32,7 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
 
   if (isLoading) {
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
           <Text preset="subheading" style={{ marginTop: theme.spacing.md }} tx="matchDetailsScreen:loadingMessage" />
@@ -43,7 +43,7 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
 
   if (error || !matchData || !matchData.players) {
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
         <View style={themed($errorContainer)}>
           <Text preset="heading" style={{ color: theme.colors.error }} tx="matchDetailsScreen:errorTitle" />
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }} tx="matchDetailsScreen:errorMessage" />

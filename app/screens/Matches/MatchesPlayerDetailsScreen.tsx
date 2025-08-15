@@ -88,6 +88,5 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   borderRadius: 12,
   padding: spacing.sm,
   gap: spacing.md,
-  marginTop: spacing.xl + spacing.xl,
   width: "100%",
 });
