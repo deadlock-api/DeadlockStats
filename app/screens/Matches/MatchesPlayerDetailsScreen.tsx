@@ -8,7 +8,6 @@ import { useMatchMetadata } from "@/hooks/useMatchMetadata";
 import type { MatchesStackScreenProps } from "@/navigators/MatchesNavigator";
 import { api } from "@/services/api";
 import { useAppTheme } from "@/theme/context";
-import { spacing } from "@/theme/spacing";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 
@@ -62,7 +61,7 @@ export const MatchesPlayerDetailsScreen: FC<MatchesStackScreenProps<"PlayerDetai
   };
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       <View style={themed($container)}>
         <PlayerStats player={highlightedPlayer} updatePlayer={updatePlayer} />
       </View>

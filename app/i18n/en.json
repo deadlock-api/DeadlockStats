@@ -45,7 +45,7 @@
     "loadingMessage": "Authenticating with Steam..."
   },
   "dashboardScreen": {
-    "recentMatches": "Recent Matches",
+    "latestMatches": "Latest Matches",
     "viewAllMatches": "View All Matches",
     "loadingMatchHistory": "Loading match history...",
     "failedToLoadMatchHistory": "Failed to load match history",

@@ -6,8 +6,9 @@ import { usePlayerSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { MatchItem } from "@/components/matches/MatchItem";
+import { MatchList } from "@/components/matches/MatchList";
 import { AccountSelector } from "@/components/profile/AccountSelector";
-import { $statValue, StatCard } from "@/components/profile/StatCard";
+import { StatCard } from "@/components/profile/StatCard";
 import { SteamImage } from "@/components/profile/SteamImage";
 import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
@@ -48,7 +49,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
               marginTop: theme.spacing.md,
             }}
           >
-            <Text preset="subheading" tx="dashboardScreen:recentMatches" />
+            <Text preset="subheading" tx="dashboardScreen:latestMatches" />
             <TouchableOpacity
               style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
               onPress={() => (props.navigation as any).navigate("MainMatches", { screen: "List" })}
@@ -62,20 +63,7 @@ export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (prop
             </TouchableOpacity>
           </View>
           <View style={themed($matchesContainer)}>
-            {matchHistory.slice(0, 5).map((match) => (
-              <MatchItem
-                key={match.match_id}
-                match={match}
-                onPress={() =>
-                  props.navigation.navigate("MainMatches", {
-                    screen: "Details",
-                    params: {
-                      matchId: match.match_id,
-                    },
-                  })
-                }
-              />
-            ))}
+            <MatchList matches={matchHistory.slice(0, 5)} />
           </View>
         </>
       ) : (
@@ -144,36 +132,6 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     .filter((stats) => stats.playCount >= avgMatchesPerHero)
     .sort((a, b) => b.winRate - a.winRate)[0];
 
-  const winLossDiff = wins - losses;
-  const winRateColor = scaleColor(winRate, 30, 70);
-  const winRateColorHard = winRate >= 50 ? theme.colors.palette.success500 : theme.colors.palette.failure500;
-
-  let winRateField = <Text>-</Text>;
-  if (wins + losses > 0) {
-    const winrateValue = `${winRate}%`;
-    const icon = winLossDiff > 0 ? "caret-up" : winLossDiff < 0 ? "caret-down" : null;
-    winRateField = (
-      <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
-        <Text style={[themed($statValue), { color: winRateColor }]} size="xl">
-          {winrateValue}
-        </Text>
-        {icon && (
-          <FontAwesome6
-            style={{ color: winRateColorHard, marginLeft: theme.spacing.xxs }}
-            name={icon}
-            solid
-            size={18}
-          />
-        )}
-        {winLossDiff !== 0 && (
-          <Text size="md" style={{ color: winRateColorHard }}>
-            {Math.abs(winLossDiff)}
-          </Text>
-        )}
-      </View>
-    );
-  }
-
   function updatePlayer(accountId: number) {
     api.getSteamProfile(accountId).then((response) => {
       if (response.ok) {
@@ -194,86 +152,49 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     <View style={themed($statDisplaysContainer)}>
       <StatCard
         title={translate("dashboardScreen:winRate7Days")}
-        value={winRateField}
+        value={`${winRate}%`}
+        valueChange={wins - losses}
+        valueColor={wins + losses > 0 ? scaleColor(winRate, 30, 70) : theme.colors.text}
         subtitle={`${wins}W ${losses}L`}
       />
       <StatCard
         title={translate("dashboardScreen:avgKda7Days")}
-        value={kda.ratio > 0 ? kda.ratio : "-"}
+        value={kda.ratio > 0 ? kda.ratio : "N/A"}
         subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
-        valueColor={scaleColor(kda.ratio, 0.5, 4)}
+        valueColor={kda.ratio > 0 ? scaleColor(kda.ratio, 0.5, 4) : theme.colors.text}
       />
       {bestMate && (
-        <TouchableOpacity onPress={() => updatePlayer(bestMate.mate_id)}>
-          <StatCard
-            title={
-              <>
-                <Text tx="dashboardScreen:bestMate30d" size="xs" style={{ color: theme.colors.textDim }} />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
-              </>
-            }
-            value={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: theme.spacing.xs,
-                  marginBottom: theme.spacing.xxs,
-                }}
+        <StatCard
+          onPress={() => updatePlayer(bestMate.mate_id)}
+          title={translate("dashboardScreen:bestMate30d")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+                width: "100%",
+              }}
+            >
+              <SteamImage accountId={bestMate?.mate_id ?? 0} size={30} />
+              <Text
+                numberOfLines={1}
+                style={{ color: theme.colors.text, marginRight: theme.spacing.xl }}
+                ellipsizeMode="tail"
               >
-                <SteamImage accountId={bestMate?.mate_id ?? 0} size={30} />
-                <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
-                  <SteamName accountId={bestMate?.mate_id ?? 0} />
-                </Text>
-              </View>
-            }
-            subtitle={`${((100 * (bestMate?.wins ?? 0)) / (bestMate?.matches_played ?? 1)).toFixed(0)}% WR | ${bestMate.matches_played} M`}
-            valueColor={theme.colors.text}
-          />
-        </TouchableOpacity>
+                <SteamName accountId={bestMate?.mate_id ?? 0} />
+              </Text>
+            </View>
+          }
+          subtitle={`${((100 * (bestMate?.wins ?? 0)) / (bestMate?.matches_played ?? 1)).toFixed(0)}% WR | ${bestMate.matches_played} M`}
+          valueColor={theme.colors.text}
+        />
       )}
       {worstEnemy && (
-        <TouchableOpacity onPress={() => updatePlayer(worstEnemy.enemy_id)}>
-          <StatCard
-            title={
-              <>
-                <Text tx="dashboardScreen:worstEnemy30d" size="xs" style={{ color: theme.colors.textDim }} />
-                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
-              </>
-            }
-            value={
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  gap: theme.spacing.xs,
-                  marginBottom: theme.spacing.xxs,
-                }}
-              >
-                <SteamImage accountId={worstEnemy?.enemy_id ?? 0} size={30} />
-                <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
-                  <SteamName accountId={worstEnemy?.enemy_id ?? 0} />
-                </Text>
-              </View>
-            }
-            subtitle={`${((100 * (worstEnemy?.wins ?? 0)) / (worstEnemy?.matches_played ?? 1)).toFixed(0)}% WR | ${worstEnemy.matches_played} M`}
-            valueColor={theme.colors.text}
-          />
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity
-        // @ts-expect-error navigating into tab child stack
-        onPress={() =>
-          (navigation as any).navigate("MainHeroes", { screen: "Details", params: { heroId: mostPlayedHero.heroId } })
-        }
-      >
         <StatCard
-          title={
-            <>
-              <Text tx="dashboardScreen:mainHeroOverall" size="xs" style={{ color: theme.colors.textDim }} />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
-            </>
-          }
+          onPress={() => updatePlayer(worstEnemy.enemy_id)}
+          title={translate("dashboardScreen:worstEnemy30d")}
           value={
             <View
               style={{
@@ -283,58 +204,71 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
                 marginBottom: theme.spacing.xxs,
               }}
             >
-              <HeroImage heroId={mostPlayedHero.heroId} size={30} />
-              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-                <HeroName heroId={mostPlayedHero.heroId} />
+              <SteamImage accountId={worstEnemy?.enemy_id ?? 0} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text, maxWidth: 100 }}>
+                <SteamName accountId={worstEnemy?.enemy_id ?? 0} />
               </Text>
             </View>
           }
-          subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
+          subtitle={`${((100 * (worstEnemy?.wins ?? 0)) / (worstEnemy?.matches_played ?? 1)).toFixed(0)}% WR | ${worstEnemy.matches_played} M`}
           valueColor={theme.colors.text}
         />
-      </TouchableOpacity>
-      <TouchableOpacity
-        // @ts-expect-error navigating into tab child stack
+      )}
+      <StatCard
+        onPress={() =>
+          (navigation as any).navigate("MainHeroes", { screen: "Details", params: { heroId: mostPlayedHero.heroId } })
+        }
+        title={translate("dashboardScreen:mainHeroOverall")}
+        value={
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
+              marginBottom: theme.spacing.xxs,
+            }}
+          >
+            <HeroImage heroId={mostPlayedHero.heroId} size={30} />
+            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+              <HeroName heroId={mostPlayedHero.heroId} />
+            </Text>
+          </View>
+        }
+        subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
+        valueColor={theme.colors.text}
+      />
+      <StatCard
         onPress={() =>
           (navigation as any).navigate("MainHeroes", {
             screen: "Details",
             params: { heroId: highestWinRateHero.heroId },
           })
         }
-      >
-        <StatCard
-          title={
-            <>
-              <Text tx="dashboardScreen:bestHeroOverall" size="xs" style={{ color: theme.colors.textDim }} />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={12} />
-            </>
-          }
-          value={
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                gap: theme.spacing.xs,
-                marginBottom: theme.spacing.xxs,
-              }}
-            >
-              <HeroImage heroId={highestWinRateHero.heroId} size={30} />
-              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-                <HeroName heroId={highestWinRateHero.heroId} />
-              </Text>
-            </View>
-          }
-          subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
-          valueColor={theme.colors.text}
-        />
-      </TouchableOpacity>
+        title={translate("dashboardScreen:bestHeroOverall")}
+        value={
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: theme.spacing.xs,
+              marginBottom: theme.spacing.xxs,
+            }}
+          >
+            <HeroImage heroId={highestWinRateHero.heroId} size={30} />
+            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+              <HeroName heroId={highestWinRateHero.heroId} />
+            </Text>
+          </View>
+        }
+        subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
+        valueColor={theme.colors.text}
+      />
     </View>
   );
 };
 
-const $matchesContainer: ThemedStyle<ViewStyle> = () => ({
-  borderRadius: 16,
-  overflow: "hidden",
+const $matchesContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  gap: spacing.xs,
 });
 
 const $viewAllText: ThemedStyle<TextStyle> = () => ({

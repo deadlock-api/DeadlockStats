@@ -1,17 +1,22 @@
-import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { type TextStyle, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
+import { StatItem } from "@/components/matches/StatItem";
 import { Text } from "@/components/ui/Text";
 import { translate } from "@/i18n/translate";
 import type { MatchHistory } from "@/services/api/types/match_history";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 import { formatMatchDuration, formatRelativeTime, isMatchWon, parseMatchMode } from "@/utils/matchHistoryStats";
+import { Card } from "../ui/Card";
 
-export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (match: MatchHistory) => void }) => {
+export const MatchItem = ({ match }: { match: MatchHistory }) => {
   const { themed, theme } = useAppTheme();
+  const navigation = useNavigation();
+  const onPress = () => navigation.navigate("MainMatches", { screen: "Details", params: { matchId: match.match_id } });
   return (
-    <TouchableOpacity onPress={() => onPress(match)} style={themed($matchItem)}>
+    <Card style={themed($matchItem)} onPress={onPress}>
       <View style={themed($headerRow)}>
         <View style={themed($matchHero)}>
           <HeroImage heroId={match.hero_id} size={40} />
@@ -46,72 +51,29 @@ export const MatchItem = ({ match, onPress }: { match: MatchHistory; onPress: (m
         </View>
       </View>
       <View style={themed($statsRow)}>
-        <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)} size="xxs">
-            KDA
-          </Text>
-          <Text style={themed($statsValue)} size="xs">
-            {match.player_kills}/{match.player_deaths}/{match.player_assists}
-          </Text>
-        </View>
-        <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)} size="xxs">
-            Last Hits
-          </Text>
-          <Text style={themed($statsValue)} size="xs">
-            {match.last_hits}
-          </Text>
-        </View>
-        <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)} size="xxs">
-            Denies
-          </Text>
-          <Text style={themed($statsValue)} size="xs">
-            {match.denies}
-          </Text>
-        </View>
-        <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)} size="xxs">
-            Level
-          </Text>
-          <Text style={themed($statsValue)} size="xs">
-            {match.hero_level}
-          </Text>
-        </View>
-        <View style={themed($statsColumn)}>
-          <Text style={themed($statsLabel)} size="xxs">
-            Net Worth
-          </Text>
-          <Text style={themed($statsValue)} size="xs">
-            {(match.net_worth / 1000).toFixed(0).toLocaleString()}k
-          </Text>
-        </View>
+        <StatItem label="KDA" value={`${match.player_kills}/${match.player_deaths}/${match.player_assists}`} />
+        <StatItem label="Last Hits" value={`${match.last_hits}`} />
+        <StatItem label="Denies" value={`${match.denies}`} />
+        <StatItem label="Level" value={`${match.hero_level}`} />
+        <StatItem label="Net Worth" value={`${(match.net_worth / 1000).toFixed(0).toLocaleString()}k`} />
       </View>
-    </TouchableOpacity>
+    </Card>
   );
 };
+
+const $matchItem: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "column",
+  alignItems: "center",
+  marginVertical: spacing.xxs,
+  borderRadius: 12,
+});
 
 const $statsRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   width: "100%",
   paddingBottom: spacing.xxs,
-});
-
-const $statsColumn: ThemedStyle<ViewStyle> = () => ({
-  flexDirection: "column",
-  alignItems: "center",
-  justifyContent: "center",
-  gap: 4,
-});
-
-const $statsLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-});
-
-const $statsValue: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
-  color: colors.text,
-  fontFamily: typography.primary.semiBold,
+  gap: spacing.xs,
 });
 
 const $timeText: ThemedStyle<TextStyle> = ({ colors }) => ({
@@ -135,21 +97,6 @@ const $matchStats: ThemedStyle<ViewStyle> = () => ({
 
 const $matchResult: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.bold,
-});
-
-const $matchItem: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  flexDirection: "column",
-  justifyContent: "space-between",
-  alignItems: "center",
-  backgroundColor: colors.palette.neutral100,
-  marginVertical: spacing.xxs,
-  borderRadius: 12,
-  padding: spacing.sm,
-  elevation: 1,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.05,
-  shadowRadius: 4,
 });
 
 const $headerRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({

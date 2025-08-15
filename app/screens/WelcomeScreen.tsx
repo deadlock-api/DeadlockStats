@@ -165,7 +165,7 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
               width: "100%",
             }}
           >
-            <Text>{translate("welcomeScreen:signInButton")}</Text>
+            <Text tx="welcomeScreen:signInButton" />
             <FontAwesome6 name="steam" solid color={theme.colors.text} size={20} style={{ marginHorizontal: 8 }} />
           </View>
         </Button>
@@ -180,7 +180,7 @@ export function WelcomeScreen({ navigation }: WelcomeScreenProps) {
               width: "100%",
             }}
           >
-            <Text>{translate("welcomeScreen:skipButton")}</Text>
+            <Text tx="welcomeScreen:skipButton" />
             <FontAwesome6 name="forward" solid color={theme.colors.text} size={20} />
           </View>
         </Button>
