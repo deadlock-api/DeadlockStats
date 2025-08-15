@@ -70,12 +70,12 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
       <View style={themed($statsSection)}>
         <Text size="md" weight="semiBold" tx="matchDetailsScreen:playerStats" />
         <View style={themed($statsGrid)}>
-          <StatItem label="K/D/A" value={`${player.kills}/${player.deaths}/${player.assists}`} />
-          <StatItem label="KDA Ratio" value={kda.toFixed(2)} />
-          <StatItem label="Net Worth" value={`${((player.net_worth ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Last Hits" value={`${player.last_hits ?? 0}`} />
-          <StatItem label="Denies" value={`${player.denies ?? 0}`} />
-          <StatItem label="Ability Points" value={`${player.ability_points ?? 0}`} />
+          <StatItem width="30%" label="K/D/A" value={`${player.kills}/${player.deaths}/${player.assists}`} />
+          <StatItem width="30%" label="KDA Ratio" value={kda.toFixed(2)} />
+          <StatItem width="30%" label="Net Worth" value={`${((player.net_worth ?? 0) / 1000).toFixed(1)}k`} />
+          <StatItem width="30%" label="Last Hits" value={`${player.last_hits ?? 0}`} />
+          <StatItem width="30%" label="Denies" value={`${player.denies ?? 0}`} />
+          <StatItem width="30%" label="Ability Points" value={`${player.ability_points ?? 0}`} />
         </View>
       </View>
 
@@ -83,12 +83,28 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
       <View style={themed($statsSection)}>
         <Text size="md" weight="semiBold" text="Combat Stats" />
         <View style={themed($statsGrid)}>
-          <StatItem label="Player Damage" value={`${((latestStats?.player_damage ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Damage Taken" value={`${((latestStats?.player_damage_taken ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Healing Done" value={`${((latestStats?.player_healing ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Self Healing" value={`${((latestStats?.self_healing ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Accuracy" value={`${accuracy.toFixed(1)}%`} />
-          <StatItem label="Crit Rate" value={`${critRate.toFixed(1)}%`} />
+          <StatItem
+            width="30%"
+            label="Player Damage"
+            value={`${((latestStats?.player_damage ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
+            label="Damage Taken"
+            value={`${((latestStats?.player_damage_taken ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
+            label="Healing Done"
+            value={`${((latestStats?.player_healing ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
+            label="Self Healing"
+            value={`${((latestStats?.self_healing ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem width="30%" label="Accuracy" value={`${accuracy.toFixed(1)}%`} />
+          <StatItem width="30%" label="Crit Rate" value={`${critRate.toFixed(1)}%`} />
         </View>
       </View>
 
@@ -96,11 +112,11 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
       <View style={themed($statsSection)}>
         <Text size="md" weight="semiBold" text="Economy" />
         <View style={themed($statsGrid)}>
-          <StatItem label="Gold Earned" value={`${((latestStats?.gold_player ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Creep Kills" value={`${latestStats?.creep_kills ?? 0}`} />
-          <StatItem label="Neutral Kills" value={`${latestStats?.neutral_kills ?? 0}`} />
-          <StatItem label="Boss Damage" value={`${((latestStats?.boss_damage ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Max Health" value={`${latestStats?.max_health ?? 0}`} />
+          <StatItem width="30%" label="Gold Earned" value={`${((latestStats?.gold_player ?? 0) / 1000).toFixed(1)}k`} />
+          <StatItem width="30%" label="Creep Kills" value={`${latestStats?.creep_kills ?? 0}`} />
+          <StatItem width="30%" label="Neutral Kills" value={`${latestStats?.neutral_kills ?? 0}`} />
+          <StatItem width="30%" label="Boss Damage" value={`${((latestStats?.boss_damage ?? 0) / 1000).toFixed(1)}k`} />
+          <StatItem width="30%" label="Max Health" value={`${latestStats?.max_health ?? 0}`} />
         </View>
       </View>
 
@@ -108,12 +124,25 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
       <View style={themed($statsSection)}>
         <Text size="md" weight="semiBold" text="Power Stats" />
         <View style={themed($statsGrid)}>
-          <StatItem label="Weapon Power" value={`${latestStats?.weapon_power ?? 0}`} />
-          <StatItem label="Tech Power" value={`${latestStats?.tech_power ?? 0}`} />
-          <StatItem label="Damage Absorbed" value={`${((latestStats?.damage_absorbed ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Damage Mitigated" value={`${((latestStats?.damage_mitigated ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem label="Heal Prevented" value={`${((latestStats?.heal_prevented ?? 0) / 1000).toFixed(1)}k`} />
+          <StatItem width="30%" label="Weapon Power" value={`${latestStats?.weapon_power ?? 0}`} />
+          <StatItem width="30%" label="Tech Power" value={`${latestStats?.tech_power ?? 0}`} />
           <StatItem
+            width="30%"
+            label="Damage Absorbed"
+            value={`${((latestStats?.damage_absorbed ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
+            label="Damage Mitigated"
+            value={`${((latestStats?.damage_mitigated ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
+            label="Heal Prevented"
+            value={`${((latestStats?.heal_prevented ?? 0) / 1000).toFixed(1)}k`}
+          />
+          <StatItem
+            width="30%"
             label="Absorption Provided"
             value={`${((latestStats?.absorption_provided ?? 0) / 1000).toFixed(1)}k`}
           />
@@ -167,10 +196,12 @@ const $playerLevel: ThemedStyle<TextStyle> = ({ colors }) => ({
 const $statsGrid: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   flexWrap: "wrap",
-  justifyContent: "flex-start",
+  justifyContent: "space-evenly",
   gap: spacing.sm,
+  marginTop: spacing.xs,
 });
 
 const $statsSection: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
+  alignItems: "center",
 });

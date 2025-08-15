@@ -1,28 +1,34 @@
-import { type TextStyle, View, type ViewStyle } from "react-native";
+import { type TextStyle, View } from "react-native";
+import type { DimensionValue } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 import { Text } from "@/components/ui/Text";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
 export interface StatItemProps {
   label: string;
-  value: string;
+  value: string | number;
+  valueColor?: string;
+  width?: DimensionValue;
+  minWidth?: DimensionValue;
 }
 
-export function StatItem({ label, value }: StatItemProps) {
-  const { themed } = useAppTheme();
+export function StatItem({ label, value, valueColor, minWidth, width }: StatItemProps) {
+  const { themed, theme } = useAppTheme();
   return (
-    <View style={themed($statItem)}>
-      <Text style={themed($statLabel)} size="xxs" text={label} />
-      <Text size="sm" weight="medium" text={value} />
+    <View style={{ minWidth: minWidth, width: width }}>
+      <Text style={themed($statLabel)} size="xxs" text={label} numberOfLines={1} />
+      <Text
+        size="sm"
+        weight="medium"
+        text={value.toString()}
+        style={{ textAlign: "center", color: valueColor ?? theme.colors.text }}
+        numberOfLines={1}
+      />
     </View>
   );
 }
 
-const $statItem: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.palette.neutral100,
-  flexGrow: 1,
-});
-
 const $statLabel: ThemedStyle<TextStyle> = ({ colors }) => ({
   color: colors.textDim,
+  textAlign: "center",
 });

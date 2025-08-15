@@ -43,16 +43,14 @@ export const StatCard = ({
       onPress={onPress}
     >
       <View style={themed($statCardHeader)}>
-        <Text style={themed($statTitle)} size="xs">
-          {title}
-        </Text>
+        <Text size="xs" text={title} />
         {onPress && <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />}
       </View>
       {React.isValidElement(value) ? (
         value
       ) : (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
-          <Text style={[themed($statValue), valueColor && { color: valueColor }]} size={size ?? "lg"} numberOfLines={1}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+          <Text style={[valueColor && { color: valueColor }]} size={size ?? "lg"} weight="bold" numberOfLines={1}>
             {value}
             {unit && <Text size="xs">/{unit}</Text>}
           </Text>
@@ -65,7 +63,7 @@ export const StatCard = ({
                 size={18}
               />
               <Text
-                size="md"
+                size="sm"
                 style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
               >
                 {Math.abs(valueChange)}
@@ -96,19 +94,6 @@ const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1,
 });
 
-const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.textDim,
-});
-
-export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
-  fontFamily: "Inter-Bold",
-  color: theme.colors.text,
-  marginBottom: 4,
-  flex: 1,
-});
-
 const $statSubtitleText: ThemedStyle<TextStyle> = (theme) => ({
-  fontFamily: "Inter-Regular",
   color: theme.colors.textDim,
-  flex: 1,
 });
