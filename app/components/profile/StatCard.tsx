@@ -50,11 +50,11 @@ export const StatCard = ({
       {React.isValidElement(value) ? (
         value
       ) : (
-        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
           <Text style={[valueColor && { color: valueColor }]} size={size ?? "lg"} weight="bold" numberOfLines={1}>
             {value}
-            {unit && <Text size="xs">/{unit}</Text>}
           </Text>
+          {unit && <Text size="xs">/{unit}</Text>}
           {valueChange && (
             <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
               <FontAwesome6
