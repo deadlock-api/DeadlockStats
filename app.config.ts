@@ -1,4 +1,4 @@
-import type { ConfigContext, ExpoConfig } from "@expo/config";
+import type { ExpoConfig } from "@expo/config";
 
 /**
  * Use ts-node here so we can use TypeScript for our Config Plugins
@@ -6,25 +6,50 @@ import type { ConfigContext, ExpoConfig } from "@expo/config";
  */
 require("ts-node/register");
 
-/**
- * @param config ExpoConfig coming from the static config app.json if it exists
- *
- * You can read more about Expo's Configuration Resolution Rules here:
- * https://docs.expo.dev/workflow/configuration/#configuration-resolution-rules
- */
-module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
-  const existingPlugins = config.plugins ?? [];
-
+module.exports = (): ExpoConfig => {
   return {
-    ...config,
+    name: "DeadlockStats",
+    slug: "DeadlockStats",
+    scheme: "deadlockstats",
+    version: "0.0.5",
+    orientation: "portrait",
+    platforms: ["android", "ios"],
+    userInterfaceStyle: "automatic",
+    icon: "./assets/images/app-icon-all.png",
+    updates: {
+      fallbackToCacheTimeout: 0,
+    },
+    newArchEnabled: true,
+    android: {
+      icon: "./assets/images/app-icon-android-legacy.png",
+      package: "com.deadlockapi.deadlockstats",
+      edgeToEdgeEnabled: true,
+      versionCode: 2,
+      intentFilters: [
+        {
+          action: "VIEW",
+          autoVerify: true,
+          data: [
+            {
+              scheme: "https",
+              host: "deadlock-api.com",
+            },
+          ],
+          category: ["BROWSABLE", "DEFAULT"],
+        },
+      ],
+      splash: {
+        backgroundColor: "#0F172A",
+        image: "./assets/images/splash-logo-android-universal.png",
+        resizeMode: "contain",
+      },
+    },
     ios: {
-      ...config.ios,
-      // This privacyManifests is to get you started.
-      // See Expo's guide on apple privacy manifests here:
-      // https://docs.expo.dev/guides/apple-privacy/
-      // You may need to add more privacy manifests depending on your app's usage of APIs.
-      // More details and a list of "required reason" APIs can be found in the Apple Developer Documentation.
-      // https://developer.apple.com/documentation/bundleresources/privacy-manifest-files
+      icon: "./assets/images/app-icon-ios.png",
+      supportsTablet: true,
+      bundleIdentifier: "com.deadlockapi.deadlockstats",
+      buildNumber: "0.0.5",
+      associatedDomains: ["applinks:deadlock-api.com"],
       privacyManifests: {
         NSPrivacyAccessedAPITypes: [
           {
@@ -33,7 +58,49 @@ module.exports = ({ config }: ConfigContext): Partial<ExpoConfig> => {
           },
         ],
       },
+      splash: {
+        backgroundColor: "#0F172A",
+        image: "./assets/images/splash-logo-ios-mobile.png",
+        resizeMode: "contain",
+      },
     },
-    plugins: [...existingPlugins, require("./plugins/withSplashScreen").withSplashScreen],
+    plugins: [
+      "react-native-edge-to-edge",
+      "expo-localization",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          image: "./assets/images/app-icon-android-adaptive-foreground.png",
+          imageWidth: 200,
+          resizeMode: "cover",
+          backgroundColor: "#191015",
+        },
+      ],
+      [
+        "react-native-edge-to-edge",
+        {
+          android: {
+            parentTheme: "Light",
+            enforceNavigationBarContrast: false,
+          },
+        },
+      ],
+      require("./plugins/withSplashScreen").withSplashScreen,
+    ],
+    experiments: {
+      tsconfigPaths: true,
+    },
+    extra: {
+      ignite: {
+        version: "11.0.1",
+      },
+      eas: {
+        projectId: "74b94e72-decb-4b89-8618-29bfd9ff8362",
+      },
+      updates: {
+        assetPatternsToBeBundled: ["**/*"],
+      },
+    },
   };
 };
