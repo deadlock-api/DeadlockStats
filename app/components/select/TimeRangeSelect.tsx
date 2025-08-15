@@ -46,7 +46,7 @@ const $timeRangeText: ThemedStyle<TextStyle> = () => ({
 
 const $timeRangeButton: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   color: colors.textDim,
-  paddingVertical: spacing.xxs,
+  paddingVertical: spacing.xs,
   paddingHorizontal: spacing.lg,
   backgroundColor: colors.palette.neutral100,
   borderRadius: 20,

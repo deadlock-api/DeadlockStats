@@ -116,7 +116,7 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
       <View style={themed($stats)}>
         <StatCard
           width="30%"
-          title="WR"
+          title="Winrate"
           value={`${winrate}%`}
           valueChange={2 * heroStat.wins - heroStat.matches_played}
           valueColor={scaleColor(winrate, 30, 70)}
