@@ -1,5 +1,4 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useQuery } from "@tanstack/react-query";
 import { type FC, useState } from "react";
 import { ActivityIndicator, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
@@ -8,9 +7,9 @@ import { SteamName } from "@/components/profile/SteamName";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useSearchSteamProfile } from "@/hooks/useSteamProfile";
 import { translate } from "@/i18n/translate";
 import type { DashboardStackScreenProps } from "@/navigators/DashboardNavigator";
-import { api } from "@/services/api";
 import type { SteamProfile } from "@/services/api/types/steam_profile";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
@@ -38,21 +37,7 @@ export const PlayerSearchScreen: FC<DashboardStackScreenProps<"PlayerSearch">> =
     props.navigation.goBack();
   };
 
-  const { data: profiles, isLoading } = useQuery({
-    queryKey: ["api-steam-profile-search", debounceSearchQuery],
-    queryFn: async () => {
-      if (!debounceSearchQuery || debounceSearchQuery.length < 3) {
-        return [];
-      }
-      const response = await api.searchSteamProfile(debounceSearchQuery);
-      if (response.ok) {
-        return response.data;
-      } else {
-        throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
-      }
-    },
-    staleTime: 60 * 1000,
-  });
+  const { data: profiles, isLoading } = useSearchSteamProfile(debounceSearchQuery);
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
