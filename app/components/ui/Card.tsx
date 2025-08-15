@@ -1,4 +1,4 @@
-import { type ComponentType, Fragment, type ReactElement } from "react";
+import type { ComponentType, ReactElement } from "react";
 import {
   type StyleProp,
   type TextStyle,
@@ -253,13 +253,11 @@ export function Card(props: CardProps) {
 const $containerBase: ThemedStyle<ViewStyle> = (theme) => ({
   borderRadius: theme.spacing.md,
   padding: theme.spacing.xs,
-  borderWidth: 1,
   shadowColor: theme.colors.palette.neutral800,
-  shadowOffset: { width: 0, height: 12 },
-  shadowOpacity: 0.08,
-  shadowRadius: 12.81,
-  elevation: 16,
-  minHeight: 96,
+  shadowOffset: { width: 0, height: 6 },
+  shadowRadius: theme.spacing.md,
+  shadowOpacity: 0.05,
+  borderWidth: 1,
 });
 
 const $alignmentWrapper: ViewStyle = {

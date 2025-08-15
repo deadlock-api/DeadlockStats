@@ -16,7 +16,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import * as Linking from "expo-linking";
 import { useEffect, useState } from "react";
-import { createGlobalState } from "react-hooks-global-states";
 import { KeyboardProvider } from "react-native-keyboard-controller";
 import { initialWindowMetrics, SafeAreaProvider } from "react-native-safe-area-context";
 import { DEFAULT_TIME_RANGE, type TimeRange } from "@/components/select/TimeRangeSelect";
@@ -28,6 +27,7 @@ import { ThemeProvider } from "./theme/context";
 import { customFontsToLoad } from "./theme/typography";
 import { loadDateFnsLocale } from "./utils/formatDate";
 import * as storage from "./utils/storage";
+import { createGlobalState } from "react-native-global-state-hooks";
 
 export const NAVIGATION_PERSISTENCE_KEY = "NAVIGATION_STATE";
 

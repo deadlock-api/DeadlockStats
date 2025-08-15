@@ -120,11 +120,11 @@ export const MatchesDetailsScreen: FC<MatchesStackScreenProps<"Details">> = (pro
           </Text>
           <View style={themed($headerContainer)}>
             <View style={{ alignItems: "flex-end" }}>
-              <Text>{formatMatchDuration(matchData.duration_s ?? 0)}</Text>
-              <Text>{formatRelativeTime(matchData.start_time ?? 0)}</Text>
+              <Text text={formatMatchDuration(matchData.duration_s ?? 0)} />
+              <Text text={formatRelativeTime(matchData.start_time ?? 0)} />
             </View>
             <View style={{ alignItems: "flex-start" }}>
-              <Text>{parseMatchMode(matchData.match_mode)}</Text>
+              <Text text={parseMatchMode(matchData.match_mode)} />
             </View>
           </View>
           <View style={themed($teamsContainer)}>

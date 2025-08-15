@@ -1,9 +1,10 @@
-import { type FC, useCallback, useMemo } from "react";
-import { ActivityIndicator, FlatList, View, type ViewStyle } from "react-native";
+import { type FC, useMemo } from "react";
+import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
 import { MatchItem } from "@/components/matches/MatchItem";
+import { MatchList } from "@/components/matches/MatchList";
 import { StatCard } from "@/components/profile/StatCard";
 import { TimeRangeSelect } from "@/components/select/TimeRangeSelect";
 import { Screen } from "@/components/ui/Screen";
@@ -54,33 +55,29 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
 
   const isLoading = isHeroLoading || isHeroStatsLoading || isMatchHistoryLoading;
 
-  const onPressMatch = useCallback(
-    (match: MatchHistory) =>
-      (props.navigation as any).navigate("MainMatches", { screen: "Details", params: { matchId: match.match_id } }),
-    [props.navigation],
-  );
-
   const header = (
-    <View style={themed($heroHeaderRow)}>
-      <HeroImage heroId={heroId} size={50} />
-      <View style={{ justifyContent: "center", gap: theme.spacing.xs }}>
-        <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 16 }}>
-          <HeroName heroId={heroId} />
-        </Text>
-        {heroAsset?.description?.role && (
-          <Text numberOfLines={2} style={{ color: theme.colors.textDim, fontSize: 14 }}>
-            {heroAsset?.description.role}
+    <>
+      <TimeRangeSelect />
+      <View style={themed($heroHeaderRow)}>
+        <HeroImage heroId={heroId} size={50} />
+        <View style={{ justifyContent: "center", gap: theme.spacing.xs }}>
+          <Text numberOfLines={1} preset="subheading" style={{ color: theme.colors.text, lineHeight: 16 }}>
+            <HeroName heroId={heroId} />
           </Text>
-        )}
+          {heroAsset?.description?.role && (
+            <Text numberOfLines={2} style={{ color: theme.colors.textDim, fontSize: 14 }}>
+              {heroAsset?.description.role}
+            </Text>
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 
   if (isLoading) {
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
-        <TimeRangeSelect />
-        <View style={themed($headerCard)}>{header}</View>
+        {header}
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
           <Text preset="subheading" style={{ marginTop: theme.spacing.md }}>
@@ -94,8 +91,7 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
   if (!heroAsset || !heroStat) {
     return (
       <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
-        <TimeRangeSelect />
-        <View style={themed($headerCard)}>{header}</View>
+        {header}
         <View style={themed($errorContainer)}>
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }}>
             We couldn't find any data for this hero. Please try again or change the time range.
@@ -111,55 +107,73 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
   const avgAssists = Math.round(heroStat.assists / Math.max(1, heroStat.matches_played)).toFixed(0);
   const avgKd = Math.round((10 * (heroStat.kills + heroStat.assists)) / Math.max(1, heroStat.deaths || 1)) / 10;
   const avgDmg = Math.round(heroStat.damage_per_min);
+  const avgDmgTaken = Math.round(heroStat.damage_taken_per_min);
   const avgObjDmg = Math.round(heroStat.obj_damage_per_min);
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
-      <TimeRangeSelect />
-
-      <View style={themed($headerCard)}>
-        {header}
-        <View style={themed($statsRow)}>
-          <StatCard width="48%" title="Games" value={heroStat.matches_played} />
-          <StatCard width="48%" title="WR" value={`${winrate}%`} valueColor={scaleColor(winrate, 30, 70)} />
-          <StatCard
-            width="48%"
-            title="KDA"
-            value={`${avgKills}/${avgDeaths}/${avgAssists}`}
-            valueColor={scaleColor(avgKd, 0.5, 4)}
-          />
-          <StatCard
-            width="48%"
-            title="KDA/10min"
-            value={`${(Math.round(heroStat.kills_per_min * 100) / 10).toFixed(0)}/${(Math.round(heroStat.deaths_per_min * 100) / 10).toFixed(0)}/${(Math.round(heroStat.assists_per_min * 100) / 10).toFixed(0)}`}
-          />
-          <StatCard width="48%" title="Ply. Dmg/min" value={avgDmg} />
-          <StatCard width="48%" title="Obj. Dmg/min" value={avgObjDmg} />
-          <StatCard width="48%" title="Accuracy" value={`${Math.round(100 * heroStat.accuracy).toFixed(0)}%`} />
-          <StatCard width="48%" title="Crit Rate" value={`${Math.round(100 * heroStat.crit_shot_rate).toFixed(0)}%`} />
-        </View>
+      {header}
+      <View style={themed($stats)}>
+        <StatCard
+          width="30%"
+          title="WR"
+          value={`${winrate}%`}
+          valueChange={2 * heroStat.wins - heroStat.matches_played}
+          valueColor={scaleColor(winrate, 30, 70)}
+        />
+        <StatCard
+          width="30%"
+          title="KDA"
+          value={`${avgKills}/${avgDeaths}/${avgAssists}`}
+          valueColor={scaleColor(avgKd, 0.5, 4)}
+        />
+        <StatCard
+          width="30%"
+          title="Accuracy"
+          value={`${Math.round(100 * heroStat.accuracy).toFixed(0)}%`}
+          valueColor={scaleColor(heroStat.accuracy, 0.4, 0.7)}
+        />
+        <StatCard
+          width="30%"
+          title="Crit Rate"
+          value={`${Math.round(100 * heroStat.crit_shot_rate).toFixed(0)}%`}
+          valueColor={scaleColor(heroStat.crit_shot_rate, 0.06, 0.23)}
+        />
+        <StatCard
+          width="30%"
+          unit="min"
+          title="Last Hits"
+          value={heroStat.last_hits_per_min.toFixed(2)}
+          valueColor={scaleColor(heroStat.last_hits_per_min, 2.2, 6.2)}
+        />
+        <StatCard
+          width="30%"
+          unit="min"
+          title="Networth"
+          value={heroStat.networth_per_min.toFixed(0)}
+          valueColor={scaleColor(heroStat.networth_per_min, 740, 1440)}
+        />
+        <StatCard width="30%" unit="min" title="Ply. Dmg" value={avgDmg} valueColor={scaleColor(avgDmg, 290, 1240)} />
+        <StatCard
+          width="30%"
+          unit="min"
+          title="Dmg Taken"
+          value={avgDmgTaken}
+          valueColor={scaleColor(avgDmgTaken, 1240, 290)}
+        />
+        <StatCard
+          width="30%"
+          unit="min"
+          title="Obj. Dmg"
+          value={avgObjDmg}
+          valueColor={scaleColor(avgObjDmg, 0, 1000)}
+        />
       </View>
 
-      <View style={themed($listHeader)}>
+      <View style={{ marginTop: theme.spacing.md }}>
         <Text preset="subheading" tx="heroDetailsScreen:heroMatches" />
       </View>
-      <View style={themed($listCard)}>
-        {heroMatches.length === 0 ? (
-          <View style={themed($emptyContainer)}>
-            <Text style={{ color: theme.colors.textDim }}>No matches with this hero yet.</Text>
-          </View>
-        ) : (
-          <FlatList
-            data={heroMatches}
-            maxToRenderPerBatch={20}
-            initialNumToRender={5}
-            windowSize={6}
-            renderItem={({ item }) => <MatchItem match={item} onPress={onPressMatch} />}
-            keyExtractor={(item) => item.match_id.toString()}
-            scrollEnabled={false}
-          />
-        )}
-      </View>
+      <MatchList matches={heroMatches} />
     </Screen>
   );
 };
@@ -183,32 +197,17 @@ const $headerCard: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 });
 
 const $heroHeaderRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  borderRadius: 12,
+  marginTop: spacing.md,
   flexDirection: "row",
   alignItems: "center",
   gap: spacing.sm,
 });
 
-const $statsRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $stats: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
   justifyContent: "space-between",
   flexWrap: "wrap",
   gap: spacing.sm,
-});
-
-const $listCard: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  borderRadius: 12,
-  gap: spacing.xs,
-});
-
-const $listHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
   marginTop: spacing.md,
-});
-
-const $emptyContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
-  justifyContent: "center",
-  paddingVertical: spacing.md,
 });

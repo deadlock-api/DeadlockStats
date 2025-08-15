@@ -1,57 +1,91 @@
+import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, type DimensionValue, type TextStyle, View, type ViewStyle } from "react-native";
-import { Text } from "@/components/ui/Text";
+import { Card } from "@/components/ui/Card";
+import { Text, type TextProps } from "@/components/ui/Text";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 export interface StatCardProps {
-  title: string | React.ReactNode;
+  title: string;
   value: string | number | React.ReactNode;
+  unit?: string;
+  valueChange?: number;
   valueColor?: string;
   subtitle?: string;
   width?: DimensionValue;
-  size?: number;
+  size?: TextProps["size"];
+  onPress?: () => void;
 }
 
-export const StatCard = ({ title, value, subtitle, valueColor, width, size }: StatCardProps) => {
-  const { themed } = useAppTheme();
+export const StatCard = ({
+  title,
+  value,
+  unit,
+  subtitle,
+  valueChange,
+  valueColor,
+  width,
+  size,
+  onPress,
+}: StatCardProps) => {
+  const { themed, theme } = useAppTheme();
   return (
-    <View style={[themed($statCard), { width: width ?? screenWidth / 2 - 32 }]}>
+    <Card
+      style={[
+        themed($statCard),
+        {
+          width: width ?? screenWidth / 2 - 32,
+        },
+      ]}
+      onPress={onPress}
+    >
       <View style={themed($statCardHeader)}>
-        {React.isValidElement(title) ? (
-          title
-        ) : (
-          <Text style={themed($statTitle)} size="xs">
-            {title}
-          </Text>
-        )}
+        <Text style={themed($statTitle)} size="xs">
+          {title}
+        </Text>
+        {onPress && <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />}
       </View>
       {React.isValidElement(value) ? (
         value
       ) : (
-        <Text style={[themed($statValue), valueColor && { color: valueColor }, { fontSize: size ?? 24 }]}>{value}</Text>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
+          <Text style={[themed($statValue), valueColor && { color: valueColor }]} size={size ?? "lg"} numberOfLines={1}>
+            {value}
+            {unit && <Text size="xs">/{unit}</Text>}
+          </Text>
+          {valueChange && (
+            <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
+              <FontAwesome6
+                style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
+                name={valueChange > 0 ? "caret-up" : "caret-down"}
+                solid
+                size={18}
+              />
+              <Text
+                size="md"
+                style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
+              >
+                {Math.abs(valueChange)}
+              </Text>
+            </View>
+          )}
+        </View>
       )}
       {subtitle && (
         <Text size="xxs" style={themed($statSubtitleText)}>
           {subtitle}
         </Text>
       )}
-    </View>
+    </Card>
   );
 };
 
-const $statCard: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
-  backgroundColor: colors.palette.neutral100,
-  paddingHorizontal: spacing.sm,
-  paddingVertical: spacing.xs,
-  borderRadius: 12,
-  elevation: 1,
-  shadowColor: "#000",
-  shadowOffset: { width: 0, height: 1 },
-  shadowOpacity: 0.05,
-  shadowRadius: 4,
+const $statCard: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "column",
+  justifyContent: "space-between",
 });
 
 const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -59,6 +93,7 @@ const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   marginBottom: spacing.xxs,
+  flex: 1,
 });
 
 const $statTitle: ThemedStyle<TextStyle> = (theme) => ({
@@ -69,9 +104,11 @@ export const $statValue: ThemedStyle<TextStyle> = (theme) => ({
   fontFamily: "Inter-Bold",
   color: theme.colors.text,
   marginBottom: 4,
+  flex: 1,
 });
 
 const $statSubtitleText: ThemedStyle<TextStyle> = (theme) => ({
   fontFamily: "Inter-Regular",
   color: theme.colors.textDim,
+  flex: 1,
 });
