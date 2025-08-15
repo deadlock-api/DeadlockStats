@@ -136,7 +136,7 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
       </View>
       <View style={{ flex: 1 }}>
         <Text style={themed($playerName)} size="sm" numberOfLines={1}>
-          <SteamName accountId={player.account_id} />
+          <SteamName profile={player} />
         </Text>
       </View>
     </TouchableOpacity>

@@ -46,9 +46,9 @@ export const AccountSelector = () => {
           {!steamId && !player && !userProfile ? (
             translate("common:noSteamAccount")
           ) : player && player.account_id !== steamId ? (
-            <SteamName accountId={player.account_id} />
+            <SteamName profile={player} />
           ) : (
-            <SteamName accountId={userProfile?.account_id ?? 0} />
+            <SteamName profile={userProfile ?? undefined} />
           )}
         </Text>
         {player && player.account_id !== steamId && (
