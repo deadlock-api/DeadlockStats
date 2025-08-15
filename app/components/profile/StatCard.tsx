@@ -38,6 +38,7 @@ export const StatCard = ({
         themed($statCard),
         {
           width: width ?? screenWidth / 2 - 32,
+          minWidth: width ?? screenWidth / 2 - 32,
         },
       ]}
       onPress={onPress}
@@ -84,6 +85,7 @@ export const StatCard = ({
 const $statCard: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "column",
   justifyContent: "space-between",
+  flexGrow: 1,
 });
 
 const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({

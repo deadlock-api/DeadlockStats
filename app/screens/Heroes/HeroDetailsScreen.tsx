@@ -18,6 +18,7 @@ import type { MatchHistory } from "@/services/api/types/match_history";
 import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
+import { formatRelativeTime, formatTimePlayed } from "@/utils/matchHistoryStats";
 import { scaleColor } from "@/utils/scaleColor";
 
 export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) => {
@@ -109,11 +110,15 @@ export const HeroDetailsScreen: FC<HeroesStackScreenProps<"Details">> = (props) 
   const avgDmg = Math.round(heroStat.damage_per_min);
   const avgDmgTaken = Math.round(heroStat.damage_taken_per_min);
   const avgObjDmg = Math.round(heroStat.obj_damage_per_min);
+  const lastPlayed = formatRelativeTime(heroStat.last_played);
+  const timePlayed = formatTimePlayed(heroStat.time_played);
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
       {header}
       <View style={themed($stats)}>
+        <StatCard width="40%" title="Last Played" value={lastPlayed} />
+        <StatCard width="40%" title="Playtime" value={timePlayed} />
         <StatCard
           width="30%"
           title="Winrate"
