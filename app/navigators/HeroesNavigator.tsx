@@ -2,8 +2,8 @@ import type { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator, type NativeStackScreenProps } from "@react-navigation/native-stack";
 import type { ComponentProps } from "react";
 import Config from "@/config";
-import { HeroesStatsScreen } from "@/screens/Heroes/HeroesStatsScreen";
 import { HeroDetailsScreen } from "@/screens/Heroes/HeroDetailsScreen";
+import { HeroesStatsScreen } from "@/screens/Heroes/HeroesStatsScreen";
 import { useAppTheme } from "@/theme/context";
 import { useBackButtonHandler } from "./navigationUtilities";
 

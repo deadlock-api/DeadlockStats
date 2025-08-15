@@ -9,7 +9,7 @@ import {
   type ScrollViewProps,
   type StyleProp,
   View,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 import { SystemBars, type SystemBarsProps, type SystemBarStyle } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";

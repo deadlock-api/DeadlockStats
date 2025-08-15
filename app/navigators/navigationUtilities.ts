@@ -2,11 +2,9 @@ import { createNavigationContainerRef, type NavigationState, type PartialState }
 import { useEffect, useRef, useState } from "react";
 import { BackHandler, Linking, Platform } from "react-native";
 
-import Config from "@/config";
-import type { PersistNavigationConfig } from "@/config/config.base";
+import Config, { type ConfigProps } from "@/config";
 import type * as storage from "@/utils/storage";
 import { useIsMounted } from "@/utils/useIsMounted";
-
 import type { AppStackParamList, NavigationProps } from "./AppNavigator";
 
 type Storage = typeof storage;
@@ -96,7 +94,7 @@ export function useBackButtonHandler(canExit: (routeName: string) => boolean) {
  * @param {PersistNavigationConfig} persistNavigation - The config setting for navigation persistence.
  * @returns {boolean} - Whether to restore navigation state by default.
  */
-function navigationRestoredDefaultState(persistNavigation: PersistNavigationConfig) {
+function navigationRestoredDefaultState(persistNavigation: ConfigProps["persistNavigation"]) {
   if (persistNavigation === "always") return false;
   if (persistNavigation === "dev" && __DEV__) return false;
   if (persistNavigation === "prod" && !__DEV__) return false;
