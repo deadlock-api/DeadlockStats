@@ -22,7 +22,7 @@
       "@/*": ["./app/*"],
       "@assets/*": ["./assets/*"]
     },
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types"]
   },
   "ts-node": {
     "compilerOptions": {
@@ -30,5 +30,5 @@
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "test/**/*"]
+  "exclude": ["node_modules"]
 }

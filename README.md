@@ -67,8 +67,6 @@ DeadlockStats is a React Native application built with Expo that provides player
 
 ### Development Tools
 - **Biome**: Fast linting and formatting
-- **Jest**: Unit testing framework
-- **Maestro**: End-to-end testing
 - **EAS Build**: Cloud and local build system
 
 ## 📱 Platform Support
@@ -136,12 +134,6 @@ pnpm run lint
 # Format code
 pnpm run fmt
 
-# Run tests
-pnpm run test
-
-# Run tests in watch mode
-pnpm run test:watch
-
 # Type checking
 pnpm run compile
 ```
@@ -199,11 +191,6 @@ The app supports deep linking for:
 
 ## 🛠️ Configuration
 
-### Environment Configuration
-- `config.dev.ts` - Development environment settings
-- `config.prod.ts` - Production environment settings
-- `config.base.ts` - Shared configuration
-
 ### Build Configuration
 - `eas.json` - EAS Build configuration
 - `app.config.ts` - Expo configuration
@@ -240,10 +227,9 @@ The app supports deep linking for:
 This project follows Infinite Red's React Native boilerplate structure and best practices. When contributing:
 
 1. Follow the established code style using Biome
-2. Write tests for new functionality
-3. Update documentation as needed
-4. Use TypeScript for type safety
-5. Follow the component organization patterns
+2. Update documentation as needed
+3. Use TypeScript for type safety
+4. Follow the component organization patterns
 
 ## 📄 License
 

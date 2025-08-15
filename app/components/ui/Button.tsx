@@ -5,7 +5,7 @@ import {
   type PressableStateCallbackType,
   type StyleProp,
   type TextStyle,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 
 import { useAppTheme } from "@/theme/context";
