@@ -7,7 +7,7 @@ import { useAppTheme } from "@/theme/context";
 import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 
-export const MatchList = ({ matches }: { matches: MatchHistory[] }) => {
+export const MatchList = ({ matches, scroll }: { matches: MatchHistory[]; scroll?: boolean }) => {
   const { themed } = useAppTheme();
   return (
     <FlatList
@@ -22,7 +22,7 @@ export const MatchList = ({ matches }: { matches: MatchHistory[] }) => {
           <Text style={$styles.textCenter} tx="matchesListScreen:noMatchesFound" />
         </Card>
       )}
-      scrollEnabled={false}
+      scrollEnabled={scroll ?? false}
     />
   );
 };
