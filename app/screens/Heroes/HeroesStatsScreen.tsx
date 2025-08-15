@@ -114,9 +114,14 @@ const HeroStatItem = ({ heroStat, onPress }: { heroStat: HeroStats; onPress?: ()
           valueColor={scaleColor(avgKd, 0.5, 4)}
         />
         <StatItem
-          label="Accuracy (Head)"
-          value={`${Math.round(100 * heroStat.accuracy)}% (${Math.round(100 * heroStat.crit_shot_rate)}%)`}
+          label="Accuracy"
+          value={`${Math.round(100 * heroStat.accuracy)}%`}
           valueColor={scaleColor(heroStat.accuracy, 0.45, 0.7)}
+        />
+        <StatItem
+          label="Crit Rate"
+          value={`${Math.round(100 * heroStat.crit_shot_rate)}%`}
+          valueColor={scaleColor(heroStat.crit_shot_rate, 0.06, 0.23)}
         />
       </View>
       <View style={themed($bottomRow)}>
@@ -137,7 +142,7 @@ const HeroStatItem = ({ heroStat, onPress }: { heroStat: HeroStats; onPress?: ()
 const $heroStats: ThemedStyle<ViewStyle> = ({ spacing, colors }) => ({
   backgroundColor: colors.palette.neutral100,
   borderRadius: 12,
-  padding: spacing.sm,
+  padding: spacing.xs,
   marginVertical: spacing.xxs,
 });
 
