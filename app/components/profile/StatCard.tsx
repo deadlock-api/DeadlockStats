@@ -48,13 +48,17 @@ export const StatCard = ({
         {onPress && <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />}
       </View>
       {React.isValidElement(value) ? (
-        value
+        <View>{value}</View>
       ) : (
         <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
-          <Text style={[valueColor && { color: valueColor }]} size={size ?? "lg"} weight="bold" numberOfLines={1}>
-            {value}
-          </Text>
-          {unit && <Text size="xs">/{unit}</Text>}
+          <Text
+            style={[valueColor && { color: valueColor }]}
+            size={size ?? "lg"}
+            weight="bold"
+            numberOfLines={1}
+            text={value?.toString()}
+          />
+          {unit && <Text size="xs" text={`/${unit}`} />}
           {valueChange && (
             <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
               <FontAwesome6
@@ -66,18 +70,14 @@ export const StatCard = ({
               <Text
                 size="sm"
                 style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
-              >
-                {Math.abs(valueChange)}
-              </Text>
+                numberOfLines={1}
+                text={`${Math.abs(valueChange)}`}
+              />
             </View>
           )}
         </View>
       )}
-      {subtitle && (
-        <Text size="xxs" style={themed($statSubtitleText)}>
-          {subtitle}
-        </Text>
-      )}
+      <Text size="xxs" style={themed($statSubtitleText)} text={subtitle} />
     </Card>
   );
 };
