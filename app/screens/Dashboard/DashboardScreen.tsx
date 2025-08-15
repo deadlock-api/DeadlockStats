@@ -104,9 +104,12 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
   const minUnixTimestamp = nextFullHour - 30 * 24 * 60 * 60;
-  const { data: mateStats } = useMateStats(accountId ?? null, {
+  const { data: mateStats, isLoading: mateLoading } = useMateStats(accountId ?? null, {
     sameParty: true,
     minMatchesPlayed: 10,
+    minUnixTimestamp,
+  });
+  const { data: enemyStats, isLoading: enemyLoading } = useEnemyStats(accountId ?? null, {
     minUnixTimestamp,
   });
   const uniqueMatchesPlayedMates = [...new Set(mateStats?.map((m) => m.matches_played))];
@@ -115,10 +118,6 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
   const bestMate = mateStats
     ?.filter((m) => m.matches_played >= avgMatchesPlayedMates)
     .sort((a, b) => b.wins / b.matches_played - a.wins / a.matches_played)[0];
-
-  const { data: enemyStats } = useEnemyStats(accountId ?? null, {
-    minUnixTimestamp,
-  });
   const uniqueMatchesPlayedEnemies = [...new Set(enemyStats?.map((m) => m.matches_played))];
   const avgMatchesPlayedEnemies =
     uniqueMatchesPlayedEnemies.reduce((acc, m) => acc + m, 0) / uniqueMatchesPlayedEnemies.length;
@@ -185,6 +184,10 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
     });
+  }
+
+  if (mateLoading || enemyLoading) {
+    return <ActivityIndicator />;
   }
 
   return (
