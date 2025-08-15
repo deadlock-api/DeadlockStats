@@ -68,7 +68,7 @@ export const ThemeProvider: FC<PropsWithChildren<ThemeProviderProps>> = ({ child
    * systemColorScheme is the value from the device. If undefined, we fall back to "light"
    */
   const themeContext: ImmutableThemeContextModeT = useMemo(() => {
-    const t = initialContext || themeScheme || (systemColorScheme ? systemColorScheme : "light");
+    const t = initialContext || themeScheme || systemColorScheme || "light";
     return t === "dark" ? "dark" : "light";
   }, [initialContext, themeScheme, systemColorScheme]);
 
