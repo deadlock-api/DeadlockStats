@@ -9,7 +9,7 @@ import {
   TextInput,
   type TextStyle,
   TouchableOpacity,
-  View,
+  View
 } from "react-native";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { Screen } from "@/components/ui/Screen";
@@ -232,7 +232,12 @@ const Message = ({ message }: { message: Message }) => {
         <Text style={[{ textAlign: "right" }]} text={message.text.trim()} />
       ) : (
         <Markdown
-          style={StyleSheet.create({ text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal } })}
+          style={StyleSheet.create({
+            text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal },
+            heading1: { fontFamily: theme.typography.primary.bold },
+            heading2: { fontFamily: theme.typography.primary.semiBold },
+            heading3: { fontFamily: theme.typography.primary.medium },
+          })}
         >
           {message.text.trim()}
         </Markdown>
@@ -264,6 +269,7 @@ const $inputContainer: ThemedStyle<TextStyle> = ({ spacing, colors }) => ({
   borderTopWidth: 1,
   borderTopColor: colors.tint,
   paddingTop: spacing.md,
+  paddingBottom: spacing.xs,
 });
 
 const $inputStyle: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
