@@ -162,7 +162,7 @@ const $heroStatsTopRowRight: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $heroStatsContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
-  justifyContent: "space-between",
+  justifyContent: "space-evenly",
   flexWrap: "wrap",
   gap: spacing.sm,
   marginTop: spacing.sm,
