@@ -35,7 +35,7 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
     .sort((a, b) => b.last_played - a.last_played);
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" contentContainerStyle={$styles.container}>
       <TimeRangeSelect />
 
       {heroStats && heroStats.length > 0 ? (
