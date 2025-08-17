@@ -7,21 +7,21 @@ import type { Hero } from "@/services/assets-api/types/hero";
 import type { Ability, Item, Upgrade, Weapon } from "@/services/assets-api/types/item";
 import type { Rank } from "@/services/assets-api/types/rank";
 
-export interface AssetsApiConfig {
+export interface ApiConfig {
   apiUrl: string;
   timeout: number;
 }
 
-export const DEFAULT_ASSETS_API_CONFIG: AssetsApiConfig = {
+export const DEFAULT_API_CONFIG: ApiConfig = {
   apiUrl: Config.ASSETS_API_URL,
   timeout: 5000,
 };
 
 export class AssetsApi {
   api: ApisauceInstance;
-  config: AssetsApiConfig;
+  config: ApiConfig;
 
-  constructor(config: AssetsApiConfig = DEFAULT_ASSETS_API_CONFIG) {
+  constructor(config: ApiConfig = DEFAULT_API_CONFIG) {
     this.config = config;
     this.api = create({
       baseURL: this.config.apiUrl,
