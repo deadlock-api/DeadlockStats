@@ -39,7 +39,7 @@ export const AccountSelector = () => {
               justifyContent: "center",
             }}
           >
-            <SteamImage accountId={player?.account_id ?? 0} size={48} />
+            <SteamImage profile={player ?? undefined} size={48} />
           </View>
         )}
         <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>

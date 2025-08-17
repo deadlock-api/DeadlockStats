@@ -1,33 +1,44 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { AutoImage } from "@/components/ui/AutoImage";
 import { useSteamProfile } from "@/hooks/useSteamProfile";
+import type { SteamProfile } from "@/services/api/types/steam_profile";
 import { useAppTheme } from "@/theme/context";
 
 const DEFAULT_SIZE = 48;
 
 export interface SteamImageProps {
-  accountId: number;
+  accountId?: number;
+  profile?: SteamProfile;
   size?: number;
 }
 
 export function SteamImage(props: SteamImageProps) {
+  if (props.profile) return <SteamImageProfile profile={props.profile} size={props.size} />;
+  else return <SteamImageFetch accountId={props.accountId} size={props.size} />;
+}
+
+export function SteamImageFetch({ accountId, size }: Omit<SteamImageProps, "account">) {
+  const { data: profile } = useSteamProfile(accountId);
+
+  if (!profile) return null;
+  return <SteamImageProfile profile={profile} size={size} />;
+}
+
+export function SteamImageProfile({ profile, size }: Omit<SteamImageProps, "accountId">) {
   const { theme } = useAppTheme();
-  const { data: profile } = useSteamProfile(props.accountId);
+
+  if (!profile?.avatar) {
+    return <FontAwesome6 name="user" solid color={theme.colors.textDim} size={(size ?? DEFAULT_SIZE) / 2} />;
+  }
 
   return (
-    <>
-      {profile?.avatar ? (
-        <AutoImage
-          source={{ uri: profile.avatar }}
-          style={{
-            width: props.size ?? DEFAULT_SIZE,
-            height: props.size ?? DEFAULT_SIZE,
-            borderRadius: (props.size ?? DEFAULT_SIZE) / 2,
-          }}
-        />
-      ) : (
-        <FontAwesome6 name="user" solid color={theme.colors.textDim} size={(props.size ?? DEFAULT_SIZE) / 2} />
-      )}
-    </>
+    <AutoImage
+      source={{ uri: profile.avatar }}
+      style={{
+        width: size ?? DEFAULT_SIZE,
+        height: size ?? DEFAULT_SIZE,
+        borderRadius: (size ?? DEFAULT_SIZE) / 2,
+      }}
+    />
   );
 }

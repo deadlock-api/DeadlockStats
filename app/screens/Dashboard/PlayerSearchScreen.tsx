@@ -117,7 +117,7 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
       onPress={() => onPress(player)}
     >
       <View style={[themed($playerAvatar), { backgroundColor: theme.colors.palette.neutral200 }]}>
-        <SteamImage accountId={player.account_id} size={32} />
+        <SteamImage profile={player} size={32} />
       </View>
       <View style={{ flex: 1 }}>
         <Text style={themed($playerName)} size="sm" numberOfLines={1}>
