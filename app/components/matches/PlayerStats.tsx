@@ -5,9 +5,21 @@ import { StatItem } from "@/components/matches/StatItem";
 import { SteamName } from "@/components/profile/SteamName";
 import { Text } from "@/components/ui/Text";
 import { useAssetsHero } from "@/hooks/useAssetsHeroes";
-import type { Players } from "@/services/api/types/match_metadata";
+import { EGoldSource, type Players } from "@/services/api/types/match_metadata";
 import { useAppTheme } from "@/theme/context";
 import type { ThemedStyle } from "@/theme/types";
+
+const GOLD_SOURCE_NAMES: Record<EGoldSource, string> = {
+  [EGoldSource.Players]: "Players",
+  [EGoldSource.LaneCreeps]: "Creeps",
+  [EGoldSource.Neutrals]: "Neutrals",
+  [EGoldSource.Bosses]: "Bosses",
+  [EGoldSource.Treasure]: "Urn",
+  [EGoldSource.Assists]: "Assists",
+  [EGoldSource.Denies]: "Denies",
+  [EGoldSource.TeamBonus]: "Team Bonus",
+  [EGoldSource.UNRECOGNIZED]: "Unknown",
+};
 
 export interface PlayerStatsProps {
   player: Players;
@@ -31,6 +43,14 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
     latestStats?.hero_bullets_hit && latestStats?.hero_bullets_hit_crit
       ? (latestStats.hero_bullets_hit_crit / latestStats.hero_bullets_hit) * 100
       : 0;
+
+  const goldSources: Record<EGoldSource, number> = (latestStats?.gold_sources ?? []).reduce(
+    (acc, { source, gold }) => {
+      if (source) acc[source] = (acc[source] ?? 0) + (gold ?? 0);
+      return acc;
+    },
+    {} as Record<EGoldSource, number>,
+  );
 
   return (
     <View style={themed($playerStatsContainer)}>
@@ -93,16 +113,8 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
             label="Damage Taken"
             value={`${((latestStats?.player_damage_taken ?? 0) / 1000).toFixed(1)}k`}
           />
-          <StatItem
-            width="30%"
-            label="Healing Done"
-            value={`${((latestStats?.player_healing ?? 0) / 1000).toFixed(1)}k`}
-          />
-          <StatItem
-            width="30%"
-            label="Self Healing"
-            value={`${((latestStats?.self_healing ?? 0) / 1000).toFixed(1)}k`}
-          />
+          <StatItem width="30%" label="Healing Done" value={`${(latestStats?.player_healing ?? 0).toFixed(0)}`} />
+          <StatItem width="30%" label="Self Healing" value={`${(latestStats?.self_healing ?? 0).toFixed(0)}`} />
           <StatItem width="30%" label="Accuracy" value={`${accuracy.toFixed(1)}%`} />
           <StatItem width="30%" label="Crit Rate" value={`${critRate.toFixed(1)}%`} />
         </View>
@@ -110,42 +122,19 @@ export function PlayerStats({ player, updatePlayer }: PlayerStatsProps) {
 
       {/* Economy Stats Section */}
       <View style={themed($statsSection)}>
-        <Text size="md" weight="semiBold" text="Economy" />
+        <Text size="md" weight="semiBold" text="Soul Sources" />
         <View style={themed($statsGrid)}>
-          <StatItem width="30%" label="Gold Earned" value={`${((latestStats?.gold_player ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem width="30%" label="Creep Kills" value={`${latestStats?.creep_kills ?? 0}`} />
-          <StatItem width="30%" label="Neutral Kills" value={`${latestStats?.neutral_kills ?? 0}`} />
-          <StatItem width="30%" label="Boss Damage" value={`${((latestStats?.boss_damage ?? 0) / 1000).toFixed(1)}k`} />
-          <StatItem width="30%" label="Max Health" value={`${latestStats?.max_health ?? 0}`} />
-        </View>
-      </View>
-
-      {/* Power Stats Section */}
-      <View style={themed($statsSection)}>
-        <Text size="md" weight="semiBold" text="Power Stats" />
-        <View style={themed($statsGrid)}>
-          <StatItem width="30%" label="Weapon Power" value={`${latestStats?.weapon_power ?? 0}`} />
-          <StatItem width="30%" label="Tech Power" value={`${latestStats?.tech_power ?? 0}`} />
-          <StatItem
-            width="30%"
-            label="Damage Absorbed"
-            value={`${((latestStats?.damage_absorbed ?? 0) / 1000).toFixed(1)}k`}
-          />
-          <StatItem
-            width="30%"
-            label="Damage Mitigated"
-            value={`${((latestStats?.damage_mitigated ?? 0) / 1000).toFixed(1)}k`}
-          />
-          <StatItem
-            width="30%"
-            label="Heal Prevented"
-            value={`${((latestStats?.heal_prevented ?? 0) / 1000).toFixed(1)}k`}
-          />
-          <StatItem
-            width="30%"
-            label="Absorption Provided"
-            value={`${((latestStats?.absorption_provided ?? 0) / 1000).toFixed(1)}k`}
-          />
+          {Object.entries(goldSources)
+            .filter(([source, gold]) => Object.hasOwn(GOLD_SOURCE_NAMES, source) && gold > 0)
+            .sort((a, b) => b[1] - a[1])
+            .map(([source, gold]) => (
+              <StatItem
+                key={source}
+                width="22%"
+                label={GOLD_SOURCE_NAMES[source as unknown as EGoldSource] ?? "Unknown"}
+                value={`${(gold / 1000).toFixed(1)}k`}
+              />
+            ))}
         </View>
       </View>
     </View>
