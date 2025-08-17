@@ -28,6 +28,7 @@
     "dashboardTab": "Dashboard",
     "matchesTab": "Matches",
     "heroesTab": "Heroes",
+    "chatBotTab": "Chat",
     "profileTab": "Profile",
     "settingsTab": "Settings"
   },
@@ -79,6 +80,9 @@
     "noHeroStatsFound": "No hero stats found",
     "noSteamAccountLinked": "Link your Steam account to view your hero statistics",
     "viewHeroMatches": "View Matches"
+  },
+  "chatBotScreen": {
+    "chatPlaceholders": ["How often did Bebop win?", "Which hero makes most kills?"]
   },
   "heroDetailsScreen": {
     "heroMatches": "Hero Matches",

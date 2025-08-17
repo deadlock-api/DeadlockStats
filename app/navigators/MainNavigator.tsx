@@ -5,6 +5,7 @@ import type { TextStyle, ViewStyle } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { translate } from "@/i18n/translate";
+import { ChatBotNavigator } from "@/navigators/ChatBotNavigator";
 import { DashboardNavigator } from "@/navigators/DashboardNavigator";
 import { HeroesNavigator } from "@/navigators/HeroesNavigator";
 import { MatchesNavigator } from "@/navigators/MatchesNavigator";
@@ -17,6 +18,7 @@ export type MainTabParamList = {
   MainDashboard: undefined;
   MainMatches: undefined;
   MainHeroes: undefined;
+  MainChatBot: undefined;
   Settings: undefined;
 };
 
@@ -99,6 +101,23 @@ export function MainNavigator() {
           tabPress: (e) => {
             e.preventDefault();
             (navigation as any).navigate(route.name, { screen: "Stats" });
+          },
+        })}
+      />
+
+      <Tab.Screen
+        name="MainChatBot"
+        component={ChatBotNavigator}
+        options={{
+          tabBarLabel: translate("mainNavigator:chatBotTab"),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="comments" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+          ),
+        }}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            (navigation as any).navigate(route.name, { screen: "ChatBot" });
           },
         })}
       />
