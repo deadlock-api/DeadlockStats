@@ -2,6 +2,7 @@ import type { FC } from "react";
 import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
 import { PlayerStats } from "@/components/matches/PlayerStats";
+import { Card } from "@/components/ui/Card";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useMatchMetadata } from "@/hooks/useMatchMetadata";
@@ -49,11 +50,9 @@ export const MatchesPlayerDetailsScreen: FC<MatchesStackScreenProps<"PlayerDetai
 
   const updatePlayer = (accountId: number) => {
     api.getSteamProfile(accountId).then((response) => {
-      if (response.ok) {
-        if (response.data) {
-          setPlayer(response.data);
-          props.navigation.navigate("MainDashboard");
-        }
+      if (response.ok && response.data) {
+        setPlayer(response.data);
+        props.navigation.navigate("MainDashboard");
       } else {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
@@ -62,9 +61,9 @@ export const MatchesPlayerDetailsScreen: FC<MatchesStackScreenProps<"PlayerDetai
 
   return (
     <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
-      <View style={themed($container)}>
+      <Card style={themed($container)}>
         <PlayerStats player={highlightedPlayer} updatePlayer={updatePlayer} />
-      </View>
+      </Card>
     </Screen>
   );
 };
