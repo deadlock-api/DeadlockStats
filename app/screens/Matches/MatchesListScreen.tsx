@@ -32,7 +32,7 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
   }
 
   return (
-    <Screen preset="fixed" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" contentContainerStyle={$styles.container}>
       {!filterMatchIds && <TimeRangeSelect />}
       {filterMatchIds && (
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>

@@ -21,7 +21,7 @@ export interface ErrorDetailsProps {
 export function ErrorDetails(props: ErrorDetailsProps) {
   const { themed, theme } = useAppTheme();
   return (
-    <Screen preset="fixed" safeAreaEdges={["top", "bottom"]} contentContainerStyle={themed($contentContainer)}>
+    <Screen preset="fixed" contentContainerStyle={themed($contentContainer)}>
       <View style={$topSection}>
         <FontAwesome6 name="bug" solid color={theme.colors.text} size={64} />
         <Text style={themed($heading)} preset="subheading" tx="errorScreen:title" />
