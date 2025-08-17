@@ -3,7 +3,6 @@ import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
-import { MatchItem } from "@/components/matches/MatchItem";
 import { MatchList } from "@/components/matches/MatchList";
 import { StatCard } from "@/components/profile/StatCard";
 import { TimeRangeSelect } from "@/components/select/TimeRangeSelect";
@@ -193,12 +192,6 @@ const $errorContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "center",
   alignItems: "center",
   paddingVertical: spacing.xl,
-});
-
-const $headerCard: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  borderRadius: 12,
-  gap: spacing.sm,
-  marginTop: spacing.md,
 });
 
 const $heroHeaderRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
