@@ -118,11 +118,6 @@ const HeroStatItem = ({ heroStat, onPress }: { heroStat: HeroStats; onPress?: ()
           value={`${Math.round(100 * heroStat.accuracy)}%`}
           valueColor={scaleColor(heroStat.accuracy, 0.45, 0.7)}
         />
-        <StatItem
-          label="Crit Rate"
-          value={`${Math.round(100 * heroStat.crit_shot_rate)}%`}
-          valueColor={scaleColor(heroStat.crit_shot_rate, 0.06, 0.23)}
-        />
       </View>
       <View style={themed($bottomRow)}>
         <TouchableOpacity
