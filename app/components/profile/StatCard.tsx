@@ -32,6 +32,7 @@ export const StatCard = ({
   onPress,
 }: StatCardProps) => {
   const { themed, theme } = useAppTheme();
+
   return (
     <Card
       style={[
@@ -59,26 +60,37 @@ export const StatCard = ({
             text={value?.toString()}
           />
           {unit && <Text size="xs" text={`/${unit}`} />}
-          {valueChange && (
-            <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
-              <FontAwesome6
-                style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
-                name={valueChange > 0 ? "caret-up" : "caret-down"}
-                solid
-                size={18}
-              />
-              <Text
-                size="sm"
-                style={{ color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500 }}
-                numberOfLines={1}
-                text={`${Math.abs(valueChange)}`}
-              />
-            </View>
-          )}
+          <StatCardValueChange valueChange={valueChange} />
         </View>
       )}
-      <Text size="xxs" style={themed($statSubtitleText)} text={subtitle} />
+      {subtitle && <Text size="xxs" style={themed($statSubtitleText)} text={subtitle} />}
     </Card>
+  );
+};
+
+const StatCardValueChange: React.FC<{ valueChange?: number }> = ({ valueChange }) => {
+  const { theme } = useAppTheme();
+
+  if (!valueChange) return null;
+  return (
+    <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xxs }}>
+      <FontAwesome6
+        style={{
+          color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500,
+        }}
+        name={valueChange > 0 ? "caret-up" : "caret-down"}
+        solid
+        size={18}
+      />
+      <Text
+        size="sm"
+        style={{
+          color: valueChange > 0 ? theme.colors.palette.success500 : theme.colors.palette.failure500,
+        }}
+        numberOfLines={1}
+        text={`${Math.abs(valueChange)}`}
+      />
+    </View>
   );
 };
 
