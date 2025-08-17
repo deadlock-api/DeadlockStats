@@ -9,8 +9,9 @@ import {
   TextInput,
   type TextStyle,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
+import Clipboard from "@react-native-clipboard/clipboard";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -200,7 +201,6 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
             </TouchableOpacity>
             <TextInput
               autoCapitalize="sentences"
-              autoCorrect={true}
               value={prompt}
               onChangeText={setPrompt}
               placeholder={placeholder}
@@ -209,6 +209,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
               submitBehavior="submit"
               style={themed($inputStyle)}
               multiline
+              autoCorrect
               numberOfLines={3}
             />
             <TouchableOpacity onPress={handleSend}>
@@ -229,18 +230,30 @@ const Message = ({ message }: { message: Message }) => {
   return (
     <View style={[themed($messageContainer), { marginLeft: isUser ? "auto" : 0, marginRight: !isUser ? "auto" : 0 }]}>
       {isUser ? (
-        <Text style={[{ textAlign: "right" }]} text={message.text.trim()} />
+        <Text
+          style={[{ textAlign: "right" }]}
+          text={message.text.trim()}
+          selectable
+          selectionColor={theme.colors.tint}
+        />
       ) : (
-        <Markdown
-          style={StyleSheet.create({
-            text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal },
-            heading1: { fontFamily: theme.typography.primary.bold },
-            heading2: { fontFamily: theme.typography.primary.semiBold },
-            heading3: { fontFamily: theme.typography.primary.medium },
-          })}
-        >
-          {message.text.trim()}
-        </Markdown>
+        <View style={{ minWidth: "30%" }}>
+          <Markdown
+            style={StyleSheet.create({
+              text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal },
+              heading1: { fontFamily: theme.typography.primary.bold },
+              heading2: { fontFamily: theme.typography.primary.semiBold },
+              heading3: { fontFamily: theme.typography.primary.medium },
+            })}
+          >
+            {message.text.trim()}
+          </Markdown>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: theme.spacing.xs }}>
+            <TouchableOpacity onPress={() => Clipboard.setString(message.text.trim())}>
+              <FontAwesome6 name="copy" solid color={theme.colors.text} size={20} />
+            </TouchableOpacity>
+          </View>
+        </View>
       )}
     </View>
   );
