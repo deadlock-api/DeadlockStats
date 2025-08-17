@@ -1,17 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import Markdown from "@ronradtke/react-native-markdown-display";
 import { createRef, type FC, type Ref, useCallback, useState } from "react";
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  TextInput,
-  type TextStyle,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import Clipboard from "@react-native-clipboard/clipboard";
+import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
+import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
@@ -106,7 +97,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
       setMemoryId(event.data);
       es.close();
     });
-    // @ts-ignore
+    // @ts-expect-error
     es.addEventListener("error", (event: ErrorEvent) => {
       setMessages((prev) => [...prev, { text: `Error: ${event.message}`, role: "assistant", error: true }]);
       es.close();
@@ -116,11 +107,8 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
       const data: AgentStep = JSON.parse(event.data);
       switch (data.type) {
         case "action": {
-          const actions = data.data
-            .filter((step) => step.role === "assistant")
-            .flatMap((step) => step.content)
-            .map((c) => c.text);
-          setInflightMessage({ role: "assistant", text: actions.join("\n\n").slice(0, 1000).trim() });
+          const firstStep = data.data.filter((step) => step.role === "assistant")[0].content[0].text;
+          setInflightMessage({ role: "assistant", text: firstStep.slice(0, 1000).trim() });
           break;
         }
         case "final_answer": {
@@ -231,7 +219,7 @@ const Message = ({ message }: { message: Message }) => {
     <View style={[themed($messageContainer), { marginLeft: isUser ? "auto" : 0, marginRight: !isUser ? "auto" : 0 }]}>
       {isUser ? (
         <Text
-          style={[{ textAlign: "right" }]}
+          style={[{ textAlign: "right", fontFamily: theme.typography.primary.normal }]}
           text={message.text.trim()}
           selectable
           selectionColor={theme.colors.tint}
@@ -239,20 +227,10 @@ const Message = ({ message }: { message: Message }) => {
       ) : (
         <View style={{ minWidth: "30%" }}>
           <Markdown
-            style={StyleSheet.create({
-              text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal },
-              heading1: { fontFamily: theme.typography.primary.bold },
-              heading2: { fontFamily: theme.typography.primary.semiBold },
-              heading3: { fontFamily: theme.typography.primary.medium },
-            })}
-          >
-            {message.text.trim()}
-          </Markdown>
-          <View style={{ flexDirection: "row", justifyContent: "flex-end", gap: theme.spacing.xs }}>
-            <TouchableOpacity onPress={() => Clipboard.setString(message.text.trim())}>
-              <FontAwesome6 name="copy" solid color={theme.colors.text} size={20} />
-            </TouchableOpacity>
-          </View>
+            value={message.text.trim()}
+            flatListProps={{ style: { backgroundColor: "transparent" } }}
+            styles={{ text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal } }}
+          />
         </View>
       )}
     </View>
