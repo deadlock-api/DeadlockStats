@@ -117,7 +117,7 @@ const SettingsSection = ({ title, children }: { title: string; children: React.R
   );
 };
 
-const SettingsItem = ({
+export const SettingsItem = ({
   icon,
   title,
   subtitle,
