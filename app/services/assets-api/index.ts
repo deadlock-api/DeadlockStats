@@ -17,7 +17,7 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
   timeout: 5000,
 };
 
-export class AssetsApi {
+export class Api {
   api: ApisauceInstance;
   config: ApiConfig;
 
@@ -33,16 +33,19 @@ export class AssetsApi {
   }
 
   async getMap(): Promise<ApiResponse<AssetsMap>> {
+    console.log("getMap");
     return await this.api.get(`v1/map`, {});
   }
 
   async getRanks(): Promise<ApiResponse<Rank[]>> {
+    console.log("getRanks");
     return await this.api.get(`v2/ranks`, {
       language: deadlock_locale,
     });
   }
 
   async getHeroes(): Promise<ApiResponse<Hero[]>> {
+    console.log("getHeroes");
     return await this.api.get(`v2/heroes`, {
       only_active: "true",
       language: deadlock_locale,
@@ -50,52 +53,61 @@ export class AssetsApi {
   }
 
   async getHero(heroId: number): Promise<ApiResponse<Hero>> {
+    console.log("getHero", heroId);
     return await this.api.get(`v2/heroes/${heroId}`, {
       language: deadlock_locale,
     });
   }
 
   async getItems(): Promise<ApiResponse<Item[]>> {
+    console.log("getItems");
     return await this.api.get(`v2/items`, {
       language: deadlock_locale,
     });
   }
 
   async getItem(itemId: number | string): Promise<ApiResponse<Item>> {
+    console.log("getItem", itemId);
     return await this.api.get(`v2/items/${itemId}`, {
       language: deadlock_locale,
     });
   }
 
   async getUpgrades(): Promise<ApiResponse<Upgrade[]>> {
+    console.log("getUpgrades");
     return await this.api.get(`v2/items/by-type/upgrade`, {
       language: deadlock_locale,
     });
   }
 
   async getUpgrade(itemId: number | string): Promise<ApiResponse<Upgrade>> {
+    console.log("getUpgrade", itemId);
     return (await this.getItem(itemId)) as ApiResponse<Upgrade>;
   }
 
   async getAbilities(): Promise<ApiResponse<Ability[]>> {
+    console.log("getAbilities");
     return await this.api.get(`v2/items/by-type/ability`, {
       language: deadlock_locale,
     });
   }
 
   async getAbility(itemId: number | string): Promise<ApiResponse<Ability>> {
+    console.log("getAbility", itemId);
     return (await this.getItem(itemId)) as ApiResponse<Ability>;
   }
 
   async getWeapons(): Promise<ApiResponse<Weapon[]>> {
+    console.log("getWeapons");
     return await this.api.get(`v2/items/by-type/weapon`, {
       language: deadlock_locale,
     });
   }
 
   async getWeapon(itemId: number | string): Promise<ApiResponse<Weapon>> {
+    console.log("getWeapon", itemId);
     return (await this.getItem(itemId)) as ApiResponse<Weapon>;
   }
 }
 
-export const assetsApi = new AssetsApi();
+export const assetsApi = new Api();
