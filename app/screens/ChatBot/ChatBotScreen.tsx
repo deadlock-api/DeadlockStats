@@ -4,6 +4,7 @@ import { createRef, type FC, type Ref, useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
+import { Turnstile } from "@/components/captcha";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import Config from "@/config";
@@ -49,6 +50,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
   const navigation = useNavigation();
   const { themed, theme } = useAppTheme();
   const [messages, setMessages] = useState<Message[]>([]);
+  const [token, setToken] = useState<string | null>(null);
   const [inflightMessage, setInflightMessage] = useState<Message | null>(null);
   const [prompt, setPrompt] = useState("");
   const [memoryId, setMemoryId] = useState<string | null>(null);
@@ -66,22 +68,31 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
 
   const handleSend = useCallback(() => {
     if (lock) return;
-    setLock(true);
+
+    if (!token) {
+      setMessages((prev) => [
+        ...prev,
+        { text: prompt.trim(), role: "user" },
+        { text: "Please validate the captcha", role: "assistant", error: true },
+      ]);
+      return;
+    }
     if (prompt.length < 3) {
       setMessages((prev) => [
         ...prev,
         { text: prompt.trim(), role: "user" },
         { text: "Please enter a longer message", role: "assistant", error: true },
       ]);
-      setLock(false);
       return;
     }
+
+    setLock(true);
 
     const url = new URL(`${Config.AI_ASSISTANT_API_URL}/invoke`);
     url.searchParams.append("prompt", prompt);
     url.searchParams.append("markdown_syntax", "true");
     url.searchParams.append("sleep_time", "0.1");
-    url.searchParams.append("api_key", "app");
+    url.searchParams.append("captcha_token", token);
     if (memoryId) {
       url.searchParams.append("memory_id", memoryId);
     }
@@ -134,7 +145,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
       flatListRef?.current?.scrollToEnd({ animated: true });
       es.close();
     });
-  }, [lock, prompt, memoryId, userProfile, flatListRef]);
+  }, [token, lock, prompt, memoryId, userProfile, flatListRef]);
 
   const handleLinkToSteam = useCallback(() => {
     removeSkipWelcomePreference();
@@ -183,27 +194,35 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
           />
         </View>
         {!lock ? (
-          <View style={[themed($inputContainer)]}>
-            <TouchableOpacity onPress={reset}>
-              <FontAwesome6 name="rotate" solid color={theme.colors.text} size={20} />
-            </TouchableOpacity>
-            <TextInput
-              autoCapitalize="sentences"
-              value={prompt}
-              onChangeText={setPrompt}
-              placeholder={placeholder}
-              placeholderTextColor={theme.colors.textDim}
-              onSubmitEditing={handleSend}
-              submitBehavior="submit"
-              style={themed($inputStyle)}
-              multiline
-              autoCorrect
-              numberOfLines={3}
-            />
-            <TouchableOpacity onPress={handleSend}>
-              <FontAwesome6 name="arrow-turn-up" solid color={theme.colors.text} size={20} />
-            </TouchableOpacity>
-          </View>
+          token ? (
+            <View style={[themed($inputContainer)]}>
+              <TouchableOpacity onPress={reset}>
+                <FontAwesome6 name="rotate" solid color={theme.colors.text} size={20} />
+              </TouchableOpacity>
+              <TextInput
+                autoCapitalize="sentences"
+                value={prompt}
+                onChangeText={setPrompt}
+                placeholder={placeholder}
+                placeholderTextColor={theme.colors.textDim}
+                onSubmitEditing={handleSend}
+                submitBehavior="submit"
+                style={themed($inputStyle)}
+                multiline
+                autoCorrect
+                numberOfLines={3}
+              />
+              <TouchableOpacity onPress={handleSend}>
+                <FontAwesome6 name="arrow-turn-up" solid color={theme.colors.text} size={20} />
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={{ alignItems: "center", justifyContent: "center", gap: theme.spacing.md }}>
+              <ActivityIndicator size="large" color={theme.colors.tint} />
+              <Text tx="chatBotScreen:pleaseWaitValidatingCaptcha" />
+              <Turnstile onToken={setToken} />
+            </View>
+          )
         ) : (
           <ActivityIndicator size="large" color={theme.colors.tint} />
         )}
