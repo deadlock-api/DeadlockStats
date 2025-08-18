@@ -1,11 +1,11 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import React, { type FC } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { type FC, useCallback } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { HeroName } from "@/components/heroes/HeroName";
-import { MatchItem } from "@/components/matches/MatchItem";
 import { MatchList } from "@/components/matches/MatchList";
 import { AccountSelector } from "@/components/profile/AccountSelector";
 import { StatCard } from "@/components/profile/StatCard";
@@ -31,12 +31,15 @@ import { hasSteamId } from "@/utils/steamAuth";
 export const DashboardScreen: FC<DashboardStackScreenProps<"Dashboard">> = (props) => {
   const { themed, theme } = useAppTheme();
 
-  const [player, setPlayer] = usePlayerSelected();
+  const [player] = usePlayerSelected();
 
   const { data: matchHistory, isLoading, error } = useMatchHistory(player?.account_id ?? null);
 
+  const queryClient = useQueryClient();
+  const onRefreshing = useCallback(async () => await queryClient.refetchQueries({ type: "active" }), [queryClient]);
+
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container} onRefreshing={onRefreshing}>
       <AccountSelector />
       {matchHistory && matchHistory.length > 0 ? (
         <>

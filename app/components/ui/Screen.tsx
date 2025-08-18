@@ -1,10 +1,11 @@
 import { useScrollToTop } from "@react-navigation/native";
-import { type ReactNode, useRef, useState } from "react";
+import { type ReactNode, useCallback, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
   type KeyboardAvoidingViewProps,
   type LayoutChangeEvent,
   Platform,
+  RefreshControl,
   type ScrollView,
   type ScrollViewProps,
   type StyleProp,
@@ -77,6 +78,10 @@ interface ScrollScreenProps extends BaseScreenProps {
    * Pass any additional props directly to the ScrollView component.
    */
   ScrollViewProps?: ScrollViewProps;
+  /**
+   * Refresh control for pull-to-refresh
+   */
+  onRefreshing?: () => Promise<void>;
 }
 
 interface AutoScreenProps extends Omit<ScrollScreenProps, "preset"> {
@@ -193,7 +198,15 @@ function ScreenWithScrolling(props: ScreenProps) {
     contentContainerStyle,
     ScrollViewProps,
     style,
+    onRefreshing,
   } = props as ScrollScreenProps;
+
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await onRefreshing?.();
+    setRefreshing(false);
+  }, [onRefreshing]);
 
   const ref = useRef<ScrollView>(null);
 
@@ -218,6 +231,9 @@ function ScreenWithScrolling(props: ScreenProps) {
       }}
       style={[$outerStyle, ScrollViewProps?.style, style]}
       contentContainerStyle={[$innerStyle, ScrollViewProps?.contentContainerStyle, contentContainerStyle]}
+      refreshControl={
+        onRefreshing && <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} progressViewOffset={128} />
+      }
     >
       {children}
     </KeyboardAwareScrollView>

@@ -1,5 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import type { FC } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { type FC, useCallback } from "react";
 import { ActivityIndicator, TouchableOpacity, View } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { MatchList } from "@/components/matches/MatchList";
@@ -21,7 +22,6 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
   const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : 0;
-
   let { data: matchHistory, isLoading } = useMatchHistory(player?.account_id ?? null);
 
   const filterMatchIds = props.route.params?.matchIds;
@@ -31,19 +31,25 @@ export const MatchesListScreen: FC<MatchesStackScreenProps<"List">> = (props) =>
     matchHistory = matchHistory?.filter((match) => !minUnixTimestamp || match.start_time >= minUnixTimestamp) ?? [];
   }
 
+  const queryClient = useQueryClient();
+  const onRefreshing = useCallback(
+    async () => await queryClient.refetchQueries({ queryKey: ["api-match-history", player?.account_id ?? null] }),
+    [queryClient, player?.account_id],
+  );
+
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
       {!filterMatchIds && <TimeRangeSelect />}
       {filterMatchIds && (
         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
           <Text text={`Filtered for ${filterMatchIds.length} matches`} />
-          <TouchableOpacity onPress={() => props.navigation.navigate("List")}>
+          <TouchableOpacity onPress={() => props.navigation.navigate({ name: "List", params: {} })}>
             <FontAwesome6 name="circle-xmark" solid color={theme.colors.palette.angry500} size={24} />
           </TouchableOpacity>
         </View>
       )}
       {matchHistory ? (
-        <MatchList matches={matchHistory} scroll />
+        <MatchList matches={matchHistory} scroll onRefreshing={onRefreshing} />
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
           <ActivityIndicator size="large" />
