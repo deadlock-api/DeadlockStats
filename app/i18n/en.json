@@ -82,7 +82,8 @@
     "viewHeroMatches": "View Matches"
   },
   "chatBotScreen": {
-    "chatPlaceholders": ["How often did Bebop win?", "Which hero makes most kills?"]
+    "chatPlaceholders": ["How often did Bebop win?", "Which hero makes most kills?"],
+    "pleaseWaitValidatingCaptcha": "Validating Captcha"
   },
   "heroDetailsScreen": {
     "heroMatches": "Hero Matches",
