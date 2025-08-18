@@ -66,6 +66,15 @@ module.exports = (): ExpoConfig => {
       },
     },
     plugins: [
+      [
+        "expo-build-properties",
+        {
+          android: {
+            enableProguardInReleaseBuilds: true,
+            enableShrinkResourcesInReleaseBuilds: true,
+          },
+        },
+      ],
       "react-native-edge-to-edge",
       "expo-localization",
       "expo-font",
