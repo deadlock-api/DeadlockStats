@@ -1,6 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import type { FC } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { type FC, useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "@/app";
 import { HeroImage } from "@/components/heroes/HeroImage";
@@ -34,6 +35,19 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
     ?.filter((heroStat) => heroStat.matches_played > 0)
     .sort((a, b) => b.last_played - a.last_played);
 
+  const queryClient = useQueryClient();
+  const onRefreshing = useCallback(
+    async () =>
+      await queryClient.refetchQueries({ queryKey: ["api-hero-stats", player?.account_id ?? null, minUnixTimestamp] }),
+    [queryClient, player?.account_id, minUnixTimestamp],
+  );
+  const [refreshing, setRefreshing] = useState(false);
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await onRefreshing();
+    setRefreshing(false);
+  }, [onRefreshing]);
+
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
       <TimeRangeSelect />
@@ -58,6 +72,8 @@ export const HeroesStatsScreen: FC<HeroesStackScreenProps<"Stats">> = () => {
           maxToRenderPerBatch={20}
           initialNumToRender={10}
           windowSize={10}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
         />
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
