@@ -17,6 +17,7 @@ import { $styles } from "@/theme/styles";
 import type { ThemedStyle } from "@/theme/types";
 import { sample } from "@/utils/random";
 import { getSteamId, removeSkipWelcomePreference } from "@/utils/steamAuth";
+import { loadString, remove, saveString } from "@/utils/storage";
 
 interface Message {
   role: "user" | "assistant";
@@ -47,10 +48,22 @@ interface FormattedResponseEvent {
 export type AgentStep = ActionEvent | FinalAnswerEvent | FormattedResponseEvent;
 
 export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
+  const tokenWithExpire = loadString("captchaTokenWithExpire");
+  let captchaToken: string | null = null;
+  if (tokenWithExpire) {
+    const [token, expire] = tokenWithExpire.split(" ");
+    if (token && expire && Number(expire) > Date.now()) {
+      console.log("Using cached captcha token");
+      captchaToken = token;
+    } else {
+      remove("captchaTokenWithExpire");
+    }
+  }
+
   const navigation = useNavigation();
   const { themed, theme } = useAppTheme();
   const [messages, setMessages] = useState<Message[]>([]);
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(captchaToken);
   const [inflightMessage, setInflightMessage] = useState<Message | null>(null);
   const [prompt, setPrompt] = useState("");
   const [memoryId, setMemoryId] = useState<string | null>(null);
@@ -58,6 +71,12 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
   const steamId = getSteamId();
   const { data: userProfile } = useSteamProfile(steamId);
   const flatListRef: Ref<FlatList<Message>> | undefined = createRef();
+
+  const handleToken = useCallback((newToken: string) => {
+    const expire = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    saveString("captchaTokenWithExpire", `${newToken} ${expire}`);
+    setToken(newToken);
+  }, []);
 
   const reset = useCallback(() => {
     setMessages([]);
@@ -111,6 +130,8 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
     // @ts-expect-error
     es.addEventListener("error", (event: ErrorEvent) => {
       setMessages((prev) => [...prev, { text: `Error: ${event.message}`, role: "assistant", error: true }]);
+      remove("captchaTokenWithExpire");
+      setToken(null);
       es.close();
     });
     es.addEventListener("agentStep", (event) => {
@@ -220,7 +241,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
             <View style={{ alignItems: "center", justifyContent: "center", gap: theme.spacing.md }}>
               <ActivityIndicator size="large" color={theme.colors.tint} />
               <Text tx="chatBotScreen:pleaseWaitValidatingCaptcha" />
-              <Turnstile onToken={setToken} />
+              <Turnstile onToken={handleToken} />
             </View>
           )
         ) : (
