@@ -18,7 +18,7 @@ export const DEFAULT_API_CONFIG: ApiConfig = {
   timeout: 5000,
 };
 
-export class AssetsApi {
+export class Api {
   api: ApisauceInstance;
   config: ApiConfig;
 
@@ -34,18 +34,22 @@ export class AssetsApi {
   }
 
   async getSteamProfile(playerId: number): Promise<ApiResponse<SteamProfile>> {
+    console.log("getSteamProfile", playerId);
     return await this.api.get(`v1/players/${playerId}/steam`);
   }
 
   async searchSteamProfile(search: string): Promise<ApiResponse<SteamProfile[]>> {
+    console.log("searchSteamProfile", search);
     return await this.api.get(`v1/players/steam-search`, { search_query: search });
   }
 
   async getMatchHistory(playerId: number): Promise<ApiResponse<MatchHistory[]>> {
+    console.log("getMatchHistory", playerId);
     return await this.api.get(`v1/players/${playerId}/match-history`);
   }
 
   async getHeroStats(playerId: number, minUnixTimestamp?: number | null): Promise<ApiResponse<HeroStats[]>> {
+    console.log("getHeroStats", playerId, minUnixTimestamp);
     return await this.api.get(`v1/players/${playerId}/hero-stats`, {
       min_unix_timestamp: minUnixTimestamp,
     });
@@ -55,6 +59,7 @@ export class AssetsApi {
     playerId: number,
     query?: { min_unix_timestamp?: number; min_matches_played?: number },
   ): Promise<ApiResponse<EnemyStats[]>> {
+    console.log("getEnemyStats", playerId, query);
     return await this.api.get(`v1/players/${playerId}/enemy-stats`, {
       min_unix_timestamp: query?.min_unix_timestamp,
       min_matches_played: query?.min_matches_played,
@@ -65,6 +70,7 @@ export class AssetsApi {
     playerId: number,
     query?: { min_unix_timestamp?: number; same_party: boolean; min_matches_played?: number },
   ): Promise<ApiResponse<MateStats[]>> {
+    console.log("getMateStats", playerId, query);
     return await this.api.get(`v1/players/${playerId}/mate-stats`, {
       min_unix_timestamp: query?.min_unix_timestamp,
       same_party: query?.same_party,
@@ -73,8 +79,9 @@ export class AssetsApi {
   }
 
   async getMatchMetadata(matchId: number): Promise<ApiResponse<MatchMetadata>> {
+    console.log("getMatchMetadata", matchId);
     return await this.api.get(`v1/matches/${matchId}/metadata`);
   }
 }
 
-export const api = new AssetsApi();
+export const api = new Api();
