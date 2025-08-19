@@ -43,11 +43,18 @@ export const HERO_IMAGES = {
   60: require("@assets/heroes/60.webp"),
   61: require("@assets/heroes/61.webp"),
   62: require("@assets/heroes/62.webp"),
+  63: require("@assets/heroes/63.webp"),
   64: require("@assets/heroes/64.webp"),
+  66: require("@assets/heroes/66.webp"),
+  67: require("@assets/heroes/67.webp"),
   68: require("@assets/heroes/68.webp"),
+  69: require("@assets/heroes/69.webp"),
   70: require("@assets/heroes/70.webp"),
   71: require("@assets/heroes/71.webp"),
   72: require("@assets/heroes/72.webp"),
+  73: require("@assets/heroes/73.webp"),
+  74: require("@assets/heroes/74.webp"),
+  75: require("@assets/heroes/75.webp"),
 } as Record<number, unknown>;
 
 export interface HeroImageProps {
