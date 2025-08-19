@@ -49,7 +49,6 @@ module.exports = (): ExpoConfig => {
       icon: "./assets/images/app-icon-ios.png",
       supportsTablet: true,
       bundleIdentifier: "com.deadlockapi.deadlockstats",
-      buildNumber: "0.0.5",
       associatedDomains: ["applinks:deadlock-api.com"],
       privacyManifests: {
         NSPrivacyAccessedAPITypes: [
