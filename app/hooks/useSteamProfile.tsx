@@ -15,7 +15,7 @@ export const useSteamProfile = (steamId?: number | null) => {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
     },
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
     networkMode: "offlineFirst",
     enabled: !!steamId, // Only run query if steamId exists
   });
@@ -40,7 +40,7 @@ export const useSearchSteamProfile = (searchQuery?: string | null) => {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
     },
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
     networkMode: "offlineFirst",
   });
 };

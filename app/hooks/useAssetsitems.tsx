@@ -13,7 +13,7 @@ export const useAssetsAbilities = () => {
         throw new Error(`Error fetching abilities: ${JSON.stringify(response)}`);
       }
     },
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
     networkMode: "offlineFirst",
   });
 };
@@ -29,7 +29,7 @@ export const useAssetsWeapon = (itemId: number) => {
         throw new Error(`Error fetching weapon: ${JSON.stringify(response)}`);
       }
     },
-    staleTime: 24 * 60 * 60 * 1000,
+    staleTime: 60 * 60 * 1000,
     networkMode: "offlineFirst",
   });
 };
