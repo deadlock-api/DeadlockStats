@@ -1,10 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
-import React, { type FC } from "react";
+import type { FC } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { HeroImage } from "@/components/heroes/HeroImage";
 import { TeamDisplay } from "@/components/matches/TeamDisplay";
 import { SteamName } from "@/components/profile/SteamName";
-import { Button } from "@/components/ui/Button";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import { useAssetsMap } from "@/hooks/useAssetsMap";

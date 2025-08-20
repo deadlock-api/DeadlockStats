@@ -2,11 +2,11 @@
 // markdown file and add links from here
 
 import {
-  SpaceGrotesk_300Light as spaceGroteskLight,
-  SpaceGrotesk_400Regular as spaceGroteskRegular,
-  SpaceGrotesk_500Medium as spaceGroteskMedium,
-  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
   SpaceGrotesk_700Bold as spaceGroteskBold,
+  SpaceGrotesk_300Light as spaceGroteskLight,
+  SpaceGrotesk_500Medium as spaceGroteskMedium,
+  SpaceGrotesk_400Regular as spaceGroteskRegular,
+  SpaceGrotesk_600SemiBold as spaceGroteskSemiBold,
 } from "@expo-google-fonts/space-grotesk";
 import { Platform } from "react-native";
 

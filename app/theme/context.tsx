@@ -1,7 +1,7 @@
 import {
   DarkTheme as NavDarkTheme,
   DefaultTheme as NavDefaultTheme,
-  type Theme as NavTheme,
+  type Theme as NavTheme
 } from "@react-navigation/native";
 import { createContext, type FC, type PropsWithChildren, useCallback, useContext, useEffect, useMemo } from "react";
 import { type StyleProp, useColorScheme } from "react-native";
@@ -17,7 +17,7 @@ import type {
   Theme,
   ThemeContextModeT,
   ThemedFnT,
-  ThemedStyle,
+  ThemedStyle
 } from "./types";
 
 export type ThemeContextType = {
