@@ -28,6 +28,7 @@ export class Api {
       timeout: this.config.timeout,
       headers: {
         Accept: "application/json",
+        UserAgent: "DeadlockStats/1.0.0",
       },
     });
   }
