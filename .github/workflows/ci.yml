@@ -26,4 +26,6 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Bundle android
-        run: pnpm build:android:sim
+        run: pnpm build:android:sim --non-interactive
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
