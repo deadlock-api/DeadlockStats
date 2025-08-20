@@ -1,6 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { createRef, type FC, type Ref, useCallback, useState } from "react";
+import { createRef, type FC, type Ref, useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
@@ -48,17 +48,16 @@ interface FormattedResponseEvent {
 export type AgentStep = ActionEvent | FinalAnswerEvent | FormattedResponseEvent;
 
 export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
-  const tokenWithExpire = loadString("captchaTokenWithExpire");
-  let captchaToken: string | null = null;
-  if (tokenWithExpire) {
+  const captchaToken = useMemo(() => {
+    const tokenWithExpire = loadString("captchaTokenWithExpire");
+    if (!tokenWithExpire) return null;
+
     const [token, expire] = tokenWithExpire.split(" ");
-    if (token && expire && Number(expire) > Date.now()) {
-      console.log("Using cached captcha token");
-      captchaToken = token;
-    } else {
-      remove("captchaTokenWithExpire");
-    }
-  }
+    if (token && expire && Number(expire) > Date.now()) return token;
+
+    remove("captchaTokenWithExpire");
+    return null;
+  }, []);
 
   const navigation = useNavigation();
   const { themed, theme } = useAppTheme();
@@ -73,7 +72,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
   const flatListRef: Ref<FlatList<Message>> | undefined = createRef();
 
   const handleToken = useCallback((newToken: string) => {
-    const expire = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    const expire = Date.now() + 6 * 24 * 60 * 60 * 1000;
     saveString("captchaTokenWithExpire", `${newToken} ${expire}`);
     setToken(newToken);
   }, []);
