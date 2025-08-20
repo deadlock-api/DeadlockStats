@@ -242,7 +242,7 @@ const $switchAccessibility: ViewStyle = {
   alignItems: "center",
 };
 
-const $switchAccessibilityIcon: ImageStyle = {
+const _$switchAccessibilityIcon: ImageStyle = {
   width: 14,
   height: 14,
   resizeMode: "contain",

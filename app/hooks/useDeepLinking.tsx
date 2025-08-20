@@ -13,7 +13,7 @@ export const useDeepLinking = () => {
     try {
       const accountIdNumber = parseInt(accountId, 10);
 
-      if (isNaN(accountIdNumber)) {
+      if (Number.isNaN(accountIdNumber)) {
         Alert.alert(translate("profileSharing:invalidProfileLink"), "The profile link is not valid.", [
           { text: translate("common:ok") },
         ]);

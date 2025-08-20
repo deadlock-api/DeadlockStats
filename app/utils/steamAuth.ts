@@ -34,7 +34,7 @@ export function getSteamId(): number | null {
     return null;
   }
   const steamId = Number(steamIdString);
-  return isNaN(steamId) ? null : steamId;
+  return Number.isNaN(steamId) ? null : steamId;
 }
 
 /**
