@@ -53,16 +53,16 @@ interface FormattedResponseEvent {
 export type AgentStep = ActionEvent | FinalAnswerEvent | FormattedResponseEvent;
 
 export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
-  const captchaToken = useMemo(() => {
-    const tokenWithExpire = loadString("captchaTokenWithExpire");
-    if (!tokenWithExpire) return null;
-
+  const tokenWithExpire = loadString("captchaTokenWithExpire");
+  let captchaToken: string | null = null;
+  if (tokenWithExpire) {
     const [token, expire] = tokenWithExpire.split(" ");
-    if (token && expire && Number(expire) > Date.now()) return token;
-
-    remove("captchaTokenWithExpire");
-    return null;
-  }, []);
+    if (token && expire && Number(expire) > Date.now()) {
+      captchaToken = token;
+    } else {
+      remove("captchaTokenWithExpire");
+    }
+  }
 
   const navigation = useNavigation();
   const { themed, theme } = useAppTheme();
