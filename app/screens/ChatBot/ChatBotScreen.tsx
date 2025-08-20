@@ -280,7 +280,7 @@ const Message = ({ message }: { message: Message }) => {
 
   const uris = useMemo(() => {
     if (!message.plots) return [];
-    return [...message.plots].map((p) => `data:image/png;base64,${p}`);
+    return [...message.plots].map((p) => `data:image/png;base64,${p}`).slice(0, 5);
   }, [message.plots]);
 
   return (
