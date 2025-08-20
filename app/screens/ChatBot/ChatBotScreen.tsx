@@ -1,10 +1,12 @@
 import { FontAwesome6 } from "@expo/vector-icons";
+import { Galeria } from "@nandorojo/galeria";
 import { useNavigation } from "@react-navigation/native";
 import { createRef, type FC, type Ref, useCallback, useMemo, useState } from "react";
 import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { Turnstile } from "@/components/captcha";
+import { AutoImage } from "@/components/ui/AutoImage";
 import { Screen } from "@/components/ui/Screen";
 import { Text } from "@/components/ui/Text";
 import Config from "@/config";
@@ -23,6 +25,7 @@ interface Message {
   role: "user" | "assistant";
   text: string;
   error?: boolean;
+  plots?: Set<string>;
 }
 
 interface ActionStep {
@@ -33,11 +36,13 @@ interface ActionStep {
 interface ActionEvent {
   type: "action";
   data: ActionStep[];
+  plots?: string[];
 }
 
 interface FinalAnswerEvent {
   type: "final_answer";
   data: string;
+  plots?: string[];
 }
 
 interface FormattedResponseEvent {
@@ -121,6 +126,8 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
     setMessages((prev) => [...prev, { text: prompt.trim(), role: "user" }]);
     setPrompt("");
 
+    let plots = new Set<string>();
+
     const es: EventSource<string> = new EventSource(url);
     es.addEventListener("memoryId", (event) => {
       setMemoryId(event.data);
@@ -139,19 +146,35 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
       switch (data.type) {
         case "action": {
           const firstStep = data.data.filter((step) => step.role === "assistant")[0].content[0].text;
-          setInflightMessage({ role: "assistant", text: firstStep.slice(0, 1000).trim() });
+          plots = new Set([...plots, ...(data.plots ?? [])]);
+          setInflightMessage({
+            role: "assistant",
+            text: firstStep.slice(0, 1000).trim(),
+            plots,
+          });
           break;
         }
         case "final_answer": {
           const answer = data.data;
+          plots = new Set([...plots, ...(data.plots ?? [])]);
           setInflightMessage(null);
-          setMessages((prev) => [...prev, { text: answer.trim(), role: "assistant" }]);
+          setMessages((prev) => [
+            ...prev,
+            {
+              text: answer.trim(),
+              role: "assistant",
+              plots,
+            },
+          ]);
           break;
         }
         case "formatted_response": {
           const formattedAnswer = data.data;
           setInflightMessage(null);
-          setMessages((prev) => [...prev.slice(0, -1), { text: formattedAnswer.trim(), role: "assistant" }]);
+          setMessages((prev) => [
+            ...prev.slice(0, -1),
+            { text: formattedAnswer.trim(), role: "assistant", plots: prev[prev.length - 1].plots },
+          ]);
           break;
         }
       }
@@ -254,6 +277,12 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
 const Message = ({ message }: { message: Message }) => {
   const { themed, theme } = useAppTheme();
   const isUser = message.role === "user";
+
+  const uris = useMemo(() => {
+    if (!message.plots) return [];
+    return [...message.plots].map((p) => `data:image/png;base64,${p}`);
+  }, [message.plots]);
+
   return (
     <View style={[themed($messageContainer), { marginLeft: isUser ? "auto" : 0, marginRight: !isUser ? "auto" : 0 }]}>
       {isUser ? (
@@ -270,6 +299,17 @@ const Message = ({ message }: { message: Message }) => {
             flatListProps={{ style: { backgroundColor: "transparent" } }}
             styles={{ text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal } }}
           />
+          {message.plots && (
+            <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.xs }}>
+              <Galeria urls={uris}>
+                {uris.map((uri) => (
+                  <Galeria.Image key={uri}>
+                    <AutoImage source={{ uri: uri }} style={{ width: 100, height: 100 }} />
+                  </Galeria.Image>
+                ))}
+              </Galeria>
+            </View>
+          )}
         </View>
       )}
     </View>
