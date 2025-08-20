@@ -71,6 +71,14 @@ module.exports = (): ExpoConfig => {
           android: {
             enableProguardInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
+            extraProguardRules: `
+            # Fixes a crash in android Production channel due to missing classes. '@nandorojo/galeria' library
+            -keep class nandorojo.modules.galeria.** { *; }
+            -keep class com.zeego.imageviewer.** { *; }        # Galeria’s delegate library
+            -keepclassmembers class * extends expo.modules.kotlin.views.ExpoView {
+                public <init>(android.content.Context);
+                public <init>(android.content.Context, expo.modules.kotlin.AppContext);
+            }`,
           },
         },
       ],
