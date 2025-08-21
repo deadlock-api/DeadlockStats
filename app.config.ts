@@ -65,6 +65,7 @@ module.exports = (): ExpoConfig => {
       },
     },
     plugins: [
+      "expo-router",
       [
         "expo-build-properties",
         {
@@ -107,6 +108,7 @@ module.exports = (): ExpoConfig => {
     ],
     experiments: {
       tsconfigPaths: true,
+      typedRoutes: true,
     },
     extra: {
       ignite: {

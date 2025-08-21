@@ -19,7 +19,7 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./app/*"],
+      "src/*": ["./src/*"],
       "@assets/*": ["./assets/*"]
     },
     "typeRoots": ["./node_modules/@types"]
@@ -29,6 +29,6 @@
       "module": "commonjs"
     }
   },
-  "include": ["**/*.ts", "**/*.tsx"],
+  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
   "exclude": ["node_modules"]
 }
