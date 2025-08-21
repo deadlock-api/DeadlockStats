@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { TeamDisplay } from "src/components/matches/TeamDisplay";
 import { SteamName } from "src/components/profile/SteamName";
@@ -28,13 +28,13 @@ export default function MatchDetails() {
   const { data: mapData } = useAssetsMap();
 
   if (!matchId) {
-    router.push("/(tabs)/matches");
+    router.replace("/(tabs)/matches");
     return null;
   }
 
   if (isLoading) {
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.container}>
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
           <Text preset="subheading" style={{ marginTop: theme.spacing.md }} tx="matchDetailsScreen:loadingMessage" />
@@ -45,7 +45,7 @@ export default function MatchDetails() {
 
   if (error || !matchData || !matchData.players) {
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.container}>
         <View style={themed($errorContainer)}>
           <Text preset="heading" style={{ color: theme.colors.error }} tx="matchDetailsScreen:errorTitle" />
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }} tx="matchDetailsScreen:errorMessage" />
@@ -114,7 +114,7 @@ export default function MatchDetails() {
   };
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       <View style={themed($container)}>
         <View>
           <Text preset="subheading" style={{ marginBottom: theme.spacing.md, textAlign: "center" }}>
@@ -153,12 +153,7 @@ export default function MatchDetails() {
               tx="matchDetailsScreen:playerNameLabel"
             />
             {[...team0Players, ...team1Players].map((player) => (
-              <TouchableOpacity
-                key={player.account_id}
-                onPress={() => {
-                  player.account_id && router.push(`/(tabs)/matches/${matchIdNumber}/player/${player.account_id}`);
-                }}
-              >
+              <Link key={player.account_id} href={`/(tabs)/matches/${matchIdNumber}/player/${player.account_id}`}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -188,7 +183,7 @@ export default function MatchDetails() {
                     {player.account_id && <SteamName accountId={player.account_id} />}
                   </Text>
                 </View>
-              </TouchableOpacity>
+              </Link>
             ))}
           </View>
           <View style={themed($playersStatsContainer)}>

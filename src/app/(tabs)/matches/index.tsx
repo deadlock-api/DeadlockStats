@@ -1,8 +1,7 @@
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
-import { ActivityIndicator, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "src/app/_layout";
 import { MatchList } from "src/components/matches/MatchList";
 import { TimeRangeSelect } from "src/components/select/TimeRangeSelect";
@@ -14,7 +13,6 @@ import { $styles } from "src/theme/styles";
 import { hasSteamId } from "src/utils/steamAuth";
 
 export default function MatchesList() {
-  const router = useRouter();
   const { matchIds } = useLocalSearchParams<{ matchIds?: string }>();
   const { theme } = useAppTheme();
 
@@ -42,14 +40,6 @@ export default function MatchesList() {
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
       {!filterMatchIds && <TimeRangeSelect />}
-      {filterMatchIds && (
-        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-          <Text text={`Filtered for ${filterMatchIds.length} matches`} />
-          <TouchableOpacity onPress={() => router.push("/(tabs)/matches")}>
-            <FontAwesome6 name="circle-xmark" solid color={theme.colors.palette.angry500} size={24} />
-          </TouchableOpacity>
-        </View>
-      )}
       {matchHistory ? (
         <MatchList matches={matchHistory} scroll onRefreshing={onRefreshing} />
       ) : isLoading ? (
