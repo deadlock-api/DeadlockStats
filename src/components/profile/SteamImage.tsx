@@ -1,8 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { AutoImage } from "../ui/AutoImage";
-import { useSteamProfile } from "../../hooks/useSteamProfile";
-import type { SteamProfile } from "../../services/api/types/steam_profile";
-import { useAppTheme } from "../../theme/context";
+import { AutoImage } from "src/components/ui/AutoImage";
+import { useSteamProfile } from "src/hooks/useSteamProfile";
+import type { SteamProfile } from "src/services/api/types/steam_profile";
+import { useAppTheme } from "src/theme/context";
 
 const DEFAULT_SIZE = 48;
 

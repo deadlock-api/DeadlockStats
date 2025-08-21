@@ -1,5 +1,5 @@
 import ReactNativeTurnstile from "react-native-turnstile";
-import { useAppTheme } from "../theme/context";
+import { useAppTheme } from "src/theme/context";
 
 interface TurnstileProps {
   onToken: (token: string) => void;

@@ -1,4 +1,4 @@
-import type { MatchHistory } from "../services/api/types/match_history";
+import type { MatchHistory } from "src/services/api/types/match_history";
 
 /**
  * Filters match history to only include matches from the last 7 days

@@ -1,12 +1,12 @@
 import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
-import Config from "../../config";
+import Config from "src/config";
 import type { EnemyStats } from "./types/enemy_stats";
 import type { HeroStats } from "./types/hero_stats";
-import type { MateStats } from "./types/mate_stats";
-import type { SteamProfile } from "./types/steam_profile";
 import type { MatchHistory } from "./types/match_history";
 import type { MatchMetadata } from "./types/match_metadata";
+import type { MateStats } from "./types/mate_stats";
+import type { SteamProfile } from "./types/steam_profile";
 
 export interface ApiConfig {
   apiUrl: string;

@@ -1,9 +1,9 @@
 import { type TextStyle, View, type ViewStyle } from "react-native";
+import { Text } from "src/components/ui/Text";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 import { BadgeDisplay } from "./BadgeDisplay";
-import { Text } from "../ui/Text";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
 
 export interface TeamDisplayProps {
   /**

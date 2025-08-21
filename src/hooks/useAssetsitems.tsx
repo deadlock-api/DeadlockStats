@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { deadlock_locale } from "../i18n";
-import { assetsApi } from "../services/assets-api";
+import { deadlock_locale } from "src/i18n";
+import { assetsApi } from "src/services/assets-api";
 
 export const useAssetsAbilities = () => {
   return useQuery({

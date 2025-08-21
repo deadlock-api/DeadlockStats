@@ -1,6 +1,6 @@
 import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
-import { Text } from "../components/ui/Text";
+import { Text } from "src/components/ui/Text";
 
 export default function ShareProfile() {
   const { accountId } = useLocalSearchParams<{ accountId: string }>();

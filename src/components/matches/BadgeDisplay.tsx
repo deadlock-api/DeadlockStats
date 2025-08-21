@@ -1,11 +1,11 @@
 import { useMemo } from "react";
 import { type ImageStyle, type TextStyle, View, type ViewStyle } from "react-native";
-import { AutoImage } from "../ui/AutoImage";
-import { Text } from "../ui/Text";
-import { useAssetsRanks } from "../../hooks/useAssetsRanks";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
-import { parseBadgeNumber } from "../../utils/badgeCalculations";
+import { AutoImage } from "src/components/ui/AutoImage";
+import { Text } from "src/components/ui/Text";
+import { useAssetsRanks } from "src/hooks/useAssetsRanks";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
+import { parseBadgeNumber } from "src/utils/badgeCalculations";
 
 const BADGE_IMAGES = {
   0: require("@assets/ranks/0.webp"),
@@ -75,7 +75,7 @@ const BADGE_IMAGES = {
   114: require("@assets/ranks/114.webp"),
   115: require("@assets/ranks/115.webp"),
   116: require("@assets/ranks/116.webp"),
-};
+} as const;
 
 export interface BadgeDisplayProps {
   badge?: number;

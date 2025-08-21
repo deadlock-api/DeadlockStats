@@ -7,11 +7,10 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import type { ThemedStyle } from "../../theme/types";
-import { type ExtendedEdge, useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle } from "src/theme/types";
 
 import { Text, type TextProps } from "./Text";
 
@@ -103,10 +102,6 @@ export interface HeaderProps {
    * What happens when you press the right icon or text action.
    */
   onRightPress?: TouchableOpacityProps["onPress"];
-  /**
-   * Override the default edges for the safe area.
-   */
-  safeAreaEdges?: ExtendedEdge[];
 }
 
 interface HeaderActionProps {
@@ -142,7 +137,6 @@ export function Header(props: HeaderProps) {
     rightText,
     rightTx,
     rightTxOptions,
-    safeAreaEdges = ["top"],
     title,
     titleMode = "center",
     titleTx,
@@ -153,12 +147,10 @@ export function Header(props: HeaderProps) {
     containerStyle: $containerStyleOverride,
   } = props;
 
-  const $containerInsets = useSafeAreaInsetsStyle(safeAreaEdges);
-
   const titleContent = titleTx ? translate(titleTx, titleTxOptions) : title;
 
   return (
-    <View style={[$container, $containerInsets, { backgroundColor }, $containerStyleOverride]}>
+    <View style={[$container, { backgroundColor }, $containerStyleOverride]}>
       <View style={[$styles.row, $wrapper, $styleOverride]}>
         <HeaderAction
           tx={leftTx}

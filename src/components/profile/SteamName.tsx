@@ -1,5 +1,5 @@
-import { useSteamProfile } from "../../hooks/useSteamProfile";
-import type { SteamProfile } from "../../services/api/types/steam_profile";
+import { useSteamProfile } from "src/hooks/useSteamProfile";
+import type { SteamProfile } from "src/services/api/types/steam_profile";
 
 export interface SteamNameProps {
   profile?: SteamProfile;

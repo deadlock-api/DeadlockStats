@@ -1,40 +1,33 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { type FC, useCallback } from "react";
+import { useRouter } from "expo-router";
+import { useCallback } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { usePlayerSelected } from "../../app/_layout";
-import { HeroImage } from "../../components/heroes/HeroImage";
-import { HeroName } from "../../components/heroes/HeroName";
-import { MatchList } from "../../components/matches/MatchList";
-import { AccountSelector } from "../../components/profile/AccountSelector";
-import { StatCard } from "../../components/profile/StatCard";
-import { SteamImage } from "../../components/profile/SteamImage";
-import { SteamName } from "../../components/profile/SteamName";
-import { Screen } from "../../components/ui/Screen";
-import { Text } from "../../components/ui/Text";
-import { useAssetsHeroes } from "../../hooks/useAssetsHeroes";
-import { useEnemyStats } from "../../hooks/useEnemyStats";
-import { useMatchHistory } from "../../hooks/useMatchHistory";
-import { useMateStats } from "../../hooks/useMateStats";
-import { translate } from "../../i18n/translate";
+import { usePlayerSelected } from "src/app/_layout";
+import { HeroImage } from "src/components/heroes/HeroImage";
+import { HeroName } from "src/components/heroes/HeroName";
+import { MatchList } from "src/components/matches/MatchList";
+import { AccountSelector } from "src/components/profile/AccountSelector";
+import { StatCard } from "src/components/profile/StatCard";
+import { SteamImage } from "src/components/profile/SteamImage";
+import { SteamName } from "src/components/profile/SteamName";
+import { Screen } from "src/components/ui/Screen";
+import { Text } from "src/components/ui/Text";
+import { useAssetsHeroes } from "src/hooks/useAssetsHeroes";
+import { useEnemyStats } from "src/hooks/useEnemyStats";
+import { useMatchHistory } from "src/hooks/useMatchHistory";
+import { useMateStats } from "src/hooks/useMateStats";
+import { translate } from "src/i18n/translate";
+import { api } from "src/services/api";
+import type { MatchHistory } from "src/services/api/types/match_history";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle } from "src/theme/types";
+import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "src/utils/matchHistoryStats";
+import { scaleColor } from "src/utils/scaleColor";
+import { hasSteamId } from "src/utils/steamAuth";
 
-import { api } from "../../services/api";
-import type { MatchHistory } from "../../services/api/types/match_history";
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import type { ThemedStyle } from "../../theme/types";
-import {
-  calculateKDA,
-  calculateWinRate,
-  filterLast7Days,
-  getHeroStats,
-  isMatchWon
-} from "../../utils/matchHistoryStats";
-import { scaleColor } from "../../utils/scaleColor";
-import { hasSteamId } from "../../utils/steamAuth";
-
-export const DashboardScreen: FC = () => {
+export default function DashboardScreen() {
   const router = useRouter();
   const { themed, theme } = useAppTheme();
 
@@ -47,7 +40,7 @@ export const DashboardScreen: FC = () => {
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container} onRefreshing={onRefreshing}>
-      <AccountSelector />
+      <AccountSelector onSearchPress={() => router.push("/dashboard/player-search")} />
       {matchHistory && matchHistory.length > 0 ? (
         <>
           <StatDisplays accountId={player?.account_id ?? 0} matchHistory={matchHistory} />
@@ -77,7 +70,7 @@ export const DashboardScreen: FC = () => {
           </View>
         </>
       ) : (
-        <View style={themed($noDataContainer)}>
+        <View>
           {isLoading ? (
             <Text tx="dashboardScreen:loadingMatchHistory" size="md" />
           ) : error ? (
@@ -91,7 +84,7 @@ export const DashboardScreen: FC = () => {
       )}
     </Screen>
   );
-};
+}
 
 export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; matchHistory: MatchHistory[] }) => {
   const [_, setPlayer] = usePlayerSelected();
@@ -276,10 +269,6 @@ const $matchesContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 
 const $viewAllText: ThemedStyle<TextStyle> = () => ({
   fontWeight: "bold",
-});
-
-const $noDataContainer: ThemedStyle<TextStyle> = () => ({
-  fontFamily: "Inter-SemiBold",
 });
 
 const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({

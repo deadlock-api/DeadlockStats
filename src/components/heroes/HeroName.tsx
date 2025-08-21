@@ -1,5 +1,5 @@
-import { useAssetsHero } from "../../hooks/useAssetsHeroes";
-import type { Hero } from "../../services/assets-api/types/hero";
+import { useAssetsHero } from "src/hooks/useAssetsHeroes";
+import type { Hero } from "src/services/assets-api/types/hero";
 
 export interface HeroNameProps {
   heroId?: number;

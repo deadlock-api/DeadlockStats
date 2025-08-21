@@ -1,6 +1,6 @@
-import { AutoImage } from "../ui/AutoImage";
-import { useAssetsHero } from "../../hooks/useAssetsHeroes";
-import type { Hero } from "../../services/assets-api/types/hero";
+import { AutoImage } from "src/components/ui/AutoImage";
+import { useAssetsHero } from "src/hooks/useAssetsHeroes";
+import type { Hero } from "src/services/assets-api/types/hero";
 
 const DEFAULT_SIZE = 70;
 

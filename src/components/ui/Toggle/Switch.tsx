@@ -1,10 +1,10 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Animated, type ImageStyle, Platform, type StyleProp, View, type ViewStyle } from "react-native";
-import { isRTL } from "../../../i18n";
-import { useAppTheme } from "../../../theme/context";
-import { $styles } from "../../../theme/styles";
-import type { ThemedStyle } from "../../../theme/types";
+import { isRTL } from "src/i18n";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle } from "src/theme/types";
 import { $inputOuterBase, type BaseToggleInputProps, Toggle, type ToggleProps } from "./Toggle";
 
 export interface SwitchToggleProps extends Omit<ToggleProps<SwitchInputProps>, "ToggleInput"> {

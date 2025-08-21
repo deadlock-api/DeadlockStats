@@ -1,6 +1,6 @@
 import { Redirect } from "expo-router";
 import { useEffect, useState } from "react";
-import { getSkipWelcomePreference, hasSteamId, saveSteamId } from "../utils/steamAuth";
+import { getSkipWelcomePreference, hasSteamId, saveSteamId } from "src/utils/steamAuth";
 
 export default function Index() {
   const [hasStoredSteamId, setHasStoredSteamId] = useState<boolean | null>(null);
@@ -24,5 +24,5 @@ export default function Index() {
     return null;
   }
 
-  return <Redirect href={hasStoredSteamId ? "/(tabs)" : "/welcome"} />;
+  return <Redirect href={hasStoredSteamId ? "/(tabs)/dashboard" : "/welcome"} />;
 }

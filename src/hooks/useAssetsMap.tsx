@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { assetsApi } from "../services/assets-api";
+import { assetsApi } from "src/services/assets-api";
 
 export const useAssetsMap = () => {
   return useQuery({

@@ -1,8 +1,8 @@
 import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { useTimeRangeSelected } from "../../app/_layout";
-import { Text } from "../ui/Text";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
+import { useTimeRangeSelected } from "src/app/_layout";
+import { Text } from "src/components/ui/Text";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 
 const timeRanges = [
   { labelKey: "timeRangeSelect:label24h", value: 24 * 60 * 60 },

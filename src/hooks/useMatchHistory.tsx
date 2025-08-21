@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { api } from "../services/api";
+import { api } from "src/services/api";
 
 export const useMatchHistory = (steamId: number | null) => {
   return useQuery({

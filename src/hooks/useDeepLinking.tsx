@@ -1,9 +1,9 @@
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { Alert, Linking } from "react-native";
-import { translate } from "../i18n/translate";
-import { api } from "../services/api";
-import { usePlayerSelected } from "../app/_layout";
+import { usePlayerSelected } from "src/app/_layout";
+import { translate } from "src/i18n/translate";
+import { api } from "src/services/api";
 
 export const useDeepLinking = () => {
   const router = useRouter();
@@ -28,7 +28,7 @@ export const useDeepLinking = () => {
         setPlayer(response.data);
 
         // Navigate to the dashboard to show the player's stats
-        router.push("/(tabs)");
+        router.push("/(tabs)/dashboard");
       } else {
         Alert.alert(
           translate("profileSharing:sharedProfileError"),
@@ -78,7 +78,7 @@ export const useDeepLinking = () => {
     return () => {
       subscription?.remove();
     };
-  }, []);
+  }, [handleDeepLink]);
 
   return {
     handleProfileShare,
