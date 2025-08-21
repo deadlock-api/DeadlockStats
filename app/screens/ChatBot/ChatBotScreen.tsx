@@ -3,7 +3,7 @@ import { Galeria } from "@nandorojo/galeria";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from "@react-navigation/native";
 import { createRef, type FC, type Ref, useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, TextInput, type TextStyle, View } from "react-native";
+import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
@@ -228,22 +228,29 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
     <Screen preset="fixed" contentContainerStyle={[$styles.container, { flex: 1 }]}>
       <View style={{ flex: 1, gap: theme.spacing.md }}>
         <View style={{ flex: 1 }}>
-          <Text preset="heading" style={themed($heading)} text="AI Assistant" />
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Text preset="heading" style={themed($heading)} text="AI Assistant" />
+            <Pressable onPress={reset}>
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
+                <Text style={{ color: theme.colors.error }} size="xxs">
+                  Reset
+                </Text>
+              </View>
+            </Pressable>
+          </View>
           <FlatList
             data={messages.concat(inflightMessage ? [inflightMessage] : [])}
             renderItem={({ item }) => <Message message={item} />}
             keyExtractor={(_, index) => index.toString()}
             ref={flatListRef}
             onContentSizeChange={() => flatListRef?.current?.scrollToEnd({ animated: true })}
-            contentContainerStyle={{ gap: theme.spacing.xxs }}
+            contentContainerStyle={{ gap: theme.spacing.xs, justifyContent: "space-between" }}
           />
         </View>
         {!lock ? (
           token ? (
             <View style={[themed($inputContainer)]}>
-              <TouchableOpacity onPress={reset}>
-                <FontAwesome6 name="rotate" solid color={theme.colors.text} size={20} />
-              </TouchableOpacity>
               <TextInput
                 autoCapitalize="sentences"
                 value={prompt}
@@ -258,7 +265,7 @@ export const ChatBotScreen: FC<ChatBotStackScreenProps<"ChatBot">> = () => {
                 numberOfLines={3}
               />
               <TouchableOpacity onPress={handleSend}>
-                <FontAwesome6 name="arrow-turn-up" solid color={theme.colors.text} size={20} />
+                <FontAwesome6 name="circle-arrow-right" color={theme.colors.tint} size={24} />
               </TouchableOpacity>
             </View>
           ) : (
@@ -290,7 +297,17 @@ const Message = ({ message }: { message: Message }) => {
   }, [message.text]);
 
   return (
-    <View style={[themed($messageContainer), { marginLeft: isUser ? "auto" : 0, marginRight: !isUser ? "auto" : 0 }]}>
+    <View
+      style={[
+        themed($messageContainer),
+        {
+          marginLeft: isUser ? "auto" : 0,
+          marginRight: !isUser ? "auto" : 0,
+          backgroundColor: isUser ? theme.colors.tint : theme.colors.palette.neutral100,
+          color: isUser ? theme.colors.tintInactive : theme.colors.text,
+        },
+      ]}
+    >
       {isUser ? (
         <Pressable onLongPress={copy}>
           <Text
@@ -340,25 +357,21 @@ const $messageContainer: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   maxWidth: "80%",
 });
 
-const $inputContainer: ThemedStyle<TextStyle> = ({ spacing, colors }) => ({
+const $inputContainer: ThemedStyle<TextStyle> = ({ spacing }) => ({
   flexDirection: "row",
   alignItems: "center",
   justifyContent: "space-between",
-  gap: spacing.sm,
+  gap: spacing.md,
   zIndex: 1,
-  borderTopWidth: 1,
-  borderTopColor: colors.tint,
-  paddingTop: spacing.md,
-  paddingBottom: spacing.xs,
 });
 
 const $inputStyle: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
   flex: 1,
   fontSize: 16,
   color: colors.text,
-  borderRadius: spacing.sm,
-  paddingHorizontal: spacing.md,
-  paddingVertical: spacing.md,
+  borderRadius: spacing.md,
+  padding: spacing.sm,
   backgroundColor: colors.palette.neutral100,
-  borderColor: colors.border,
+  borderColor: colors.tint,
+  borderWidth: 1,
 });
