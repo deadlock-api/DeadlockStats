@@ -1,8 +1,10 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Galeria } from "@nandorojo/galeria";
+import Clipboard from "@react-native-clipboard/clipboard";
 import { useNavigation } from "@react-navigation/native";
 import { createRef, type FC, type Ref, useCallback, useMemo, useState } from "react";
-import { ActivityIndicator, FlatList, TextInput, type TextStyle, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, TextInput, type TextStyle, View } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { Turnstile } from "@/components/captcha";
@@ -283,22 +285,30 @@ const Message = ({ message }: { message: Message }) => {
     return [...message.plots].map((p) => `data:image/png;base64,${p}`).slice(0, 5);
   }, [message.plots]);
 
+  const copy = useCallback(() => {
+    Clipboard.setString(message.text);
+  }, [message.text]);
+
   return (
     <View style={[themed($messageContainer), { marginLeft: isUser ? "auto" : 0, marginRight: !isUser ? "auto" : 0 }]}>
       {isUser ? (
-        <Text
-          style={[{ textAlign: "right", fontFamily: theme.typography.primary.normal }]}
-          text={message.text.trim()}
-          selectable
-          selectionColor={theme.colors.tint}
-        />
-      ) : (
-        <View style={{ minWidth: "30%" }}>
-          <Markdown
-            value={message.text.trim()}
-            flatListProps={{ style: { backgroundColor: "transparent" } }}
-            styles={{ text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal } }}
+        <Pressable onLongPress={copy}>
+          <Text
+            style={[{ textAlign: "right", fontFamily: theme.typography.primary.normal }]}
+            text={message.text.trim()}
+            selectable
+            selectionColor={theme.colors.tint}
           />
+        </Pressable>
+      ) : (
+        <View>
+          <Pressable onLongPress={copy}>
+            <Markdown
+              value={message.text.trim()}
+              flatListProps={{ style: { backgroundColor: "transparent" } }}
+              styles={{ text: { color: theme.colors.text, fontFamily: theme.typography.primary.normal } }}
+            />
+          </Pressable>
           {message.plots && (
             <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing.xs }}>
               <Galeria urls={uris}>
