@@ -1,15 +1,15 @@
 import { useRouter } from "expo-router";
 import { type TextStyle, View, type ViewStyle } from "react-native";
-import { HeroImage } from "../heroes/HeroImage";
-import { HeroName } from "../heroes/HeroName";
+import { HeroImage } from "src/components/heroes/HeroImage";
+import { HeroName } from "src/components/heroes/HeroName";
+import { Card } from "src/components/ui/Card";
+import { Text } from "src/components/ui/Text";
+import { translate } from "src/i18n/translate";
+import type { MatchHistory } from "src/services/api/types/match_history";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
+import { formatMatchDuration, formatRelativeTime, isMatchWon, parseMatchMode } from "src/utils/matchHistoryStats";
 import { StatItem } from "./StatItem";
-import { Text } from "../ui/Text";
-import { translate } from "../../i18n/translate";
-import type { MatchHistory } from "../../services/api/types/match_history";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
-import { formatMatchDuration, formatRelativeTime, isMatchWon, parseMatchMode } from "../../utils/matchHistoryStats";
-import { Card } from "../ui/Card";
 
 export const MatchItem = ({ match }: { match: MatchHistory }) => {
   const { themed, theme } = useAppTheme();

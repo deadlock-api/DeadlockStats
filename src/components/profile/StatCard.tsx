@@ -1,10 +1,10 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, type DimensionValue, type TextStyle, View, type ViewStyle } from "react-native";
-import { Card } from "../ui/Card";
-import { Text, type TextProps } from "../ui/Text";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
+import { Card } from "src/components/ui/Card";
+import { Text, type TextProps } from "src/components/ui/Text";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 
 const { width: screenWidth } = Dimensions.get("window");
 

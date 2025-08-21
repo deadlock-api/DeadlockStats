@@ -1,12 +1,12 @@
 import { useCallback, useState } from "react";
 import { FlatList, RefreshControl, type ViewStyle } from "react-native";
+import { Card } from "src/components/ui/Card";
+import { Text } from "src/components/ui/Text";
+import type { MatchHistory } from "src/services/api/types/match_history";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle } from "src/theme/types";
 import { MatchItem } from "./MatchItem";
-import { Card } from "../ui/Card";
-import { Text } from "../ui/Text";
-import type { MatchHistory } from "../../services/api/types/match_history";
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import type { ThemedStyle } from "../../theme/types";
 
 interface MatchListProps {
   matches: MatchHistory[];

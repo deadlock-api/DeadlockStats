@@ -1,13 +1,13 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { HeroImage } from "../heroes/HeroImage";
+import { HeroImage } from "src/components/heroes/HeroImage";
+import { SteamName } from "src/components/profile/SteamName";
+import { Text } from "src/components/ui/Text";
+import { useAssetsHero } from "src/hooks/useAssetsHeroes";
+import { EGoldSource, type Players } from "src/services/api/types/match_metadata";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 import { StatItem } from "./StatItem";
-import { SteamName } from "../profile/SteamName";
-import { Text } from "../ui/Text";
-import { useAssetsHero } from "../../hooks/useAssetsHeroes";
-import { EGoldSource, type Players } from "../../services/api/types/match_metadata";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
 
 const GOLD_SOURCE_NAMES: Record<EGoldSource, string> = {
   [EGoldSource.Players]: "Players",

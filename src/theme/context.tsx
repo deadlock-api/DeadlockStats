@@ -3,7 +3,7 @@ import { createContext, type FC, type PropsWithChildren, useCallback, useContext
 import { type StyleProp, useColorScheme } from "react-native";
 import { useMMKVString } from "react-native-mmkv";
 
-import { storage } from "../utils/storage";
+import { storage } from "src/utils/storage";
 
 import { setImperativeTheming } from "./context.utils";
 import { darkTheme, lightTheme } from "./theme";
@@ -13,7 +13,7 @@ import type {
   Theme,
   ThemeContextModeT,
   ThemedFnT,
-  ThemedStyle
+  ThemedStyle,
 } from "./types";
 
 export type ThemeContextType = {

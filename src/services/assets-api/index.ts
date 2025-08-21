@@ -1,7 +1,7 @@
 import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
-import Config from "../../config";
-import { deadlock_locale } from "../../i18n";
+import Config from "src/config";
+import { deadlock_locale } from "src/i18n";
 import type { AssetsMap } from "./types/assetsMap";
 import type { Hero } from "./types/hero";
 import type { Ability, Item, Upgrade, Weapon } from "./types/item";

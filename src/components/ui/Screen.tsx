@@ -15,9 +15,8 @@ import {
 import { type SystemBarStyle, SystemBars, type SystemBarsProps } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import { type ExtendedEdge, useSafeAreaInsetsStyle } from "../../utils/useSafeAreaInsetsStyle";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
 
 export const DEFAULT_BOTTOM_OFFSET = 50;
 
@@ -34,10 +33,6 @@ interface BaseScreenProps {
    * Style for the inner content container useful for padding & margin.
    */
   contentContainerStyle?: StyleProp<ViewStyle>;
-  /**
-   * Override the default edges for the safe area.
-   */
-  safeAreaEdges?: ExtendedEdge[];
   /**
    * Background color
    */
@@ -261,10 +256,8 @@ export function Screen(props: ScreenProps) {
     systemBarStyle,
   } = props;
 
-  const $containerInsets = useSafeAreaInsetsStyle(safeAreaEdges);
-
   return (
-    <View style={[$containerStyle, { backgroundColor: backgroundColor || colors.background }, $containerInsets]}>
+    <View style={[$containerStyle, { backgroundColor: backgroundColor || colors.background }]}>
       <SystemBars style={systemBarStyle || (themeContext === "dark" ? "light" : "dark")} {...SystemBarsProps} />
 
       <KeyboardAvoidingView

@@ -3,11 +3,11 @@ import { type ForwardedRef, forwardRef, type ReactNode } from "react";
 // eslint-disable-next-line no-restricted-imports
 import { Text as RNText, type TextProps as RNTextProps, type StyleProp, type TextStyle } from "react-native";
 
-import { isRTL, type TxKeyPath } from "../../i18n";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle, ThemedStyleArray } from "../../theme/types";
-import { typography } from "../../theme/typography";
+import { isRTL, type TxKeyPath } from "src/i18n";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle, ThemedStyleArray } from "src/theme/types";
+import { typography } from "src/theme/typography";
 
 type Sizes = keyof typeof $sizeStyles;
 type Weights = keyof typeof typography.primary;

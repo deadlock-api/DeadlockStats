@@ -1,20 +1,18 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
 import { useEffect } from "react";
 import { TouchableOpacity, View, type ViewStyle } from "react-native";
+import { usePlayerSelected } from "src/app/_layout";
+import { Text } from "src/components/ui/Text";
+import { useSteamProfile } from "src/hooks/useSteamProfile";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
+import { getSteamId } from "src/utils/steamAuth";
 import { SteamImage } from "./SteamImage";
 import { SteamName } from "./SteamName";
-import { Text } from "../ui/Text";
-import { useSteamProfile } from "../../hooks/useSteamProfile";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
-import { getSteamId } from "../../utils/steamAuth";
-import { usePlayerSelected } from "../../app/_layout";
 
-export const AccountSelector = () => {
+export const AccountSelector = ({ onSearchPress }: { onSearchPress: () => void }) => {
   const { themed, theme } = useAppTheme();
-  const router = useRouter();
 
   const [player, setPlayer] = usePlayerSelected();
 
@@ -59,10 +57,7 @@ export const AccountSelector = () => {
       </View>
       <View style={themed($buttonContainer)}>
         {/*{player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}*/}
-        <TouchableOpacity
-          style={[themed($searchButton)]}
-          onPress={() => router.push("/player-search")}
-        >
+        <TouchableOpacity style={[themed($searchButton)]} onPress={() => onSearchPress}>
           <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
         </TouchableOpacity>
       </View>

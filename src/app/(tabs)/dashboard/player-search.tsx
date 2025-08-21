@@ -1,22 +1,22 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { type FC, useState } from "react";
+import { useState } from "react";
 import { ActivityIndicator, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { usePlayerSelected } from "../../app/_layout";
-import { SteamImage } from "../../components/profile/SteamImage";
-import { SteamName } from "../../components/profile/SteamName";
-import { Screen } from "../../components/ui/Screen";
-import { Text } from "../../components/ui/Text";
-import { useDebounce } from "../../hooks/useDebounce";
-import { useSearchSteamProfile } from "../../hooks/useSteamProfile";
-import { translate } from "../../i18n/translate";
-import type { SteamProfile } from "../../services/api/types/steam_profile";
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import type { ThemedStyle } from "../../theme/types";
-import { load, save } from "../../utils/storage";
+import { usePlayerSelected } from "src/app/_layout";
+import { SteamImage } from "src/components/profile/SteamImage";
+import { SteamName } from "src/components/profile/SteamName";
+import { Screen } from "src/components/ui/Screen";
+import { Text } from "src/components/ui/Text";
+import { useDebounce } from "src/hooks/useDebounce";
+import { useSearchSteamProfile } from "src/hooks/useSteamProfile";
+import { translate } from "src/i18n/translate";
+import type { SteamProfile } from "src/services/api/types/steam_profile";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle } from "src/theme/types";
+import { load, save } from "src/utils/storage";
 
-export const PlayerSearchScreen: FC = () => {
+export default function PlayerSearchScreen() {
   const router = useRouter();
   const { themed, theme } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
@@ -108,7 +108,7 @@ export const PlayerSearchScreen: FC = () => {
       </View>
     </Screen>
   );
-};
+}
 
 const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (player: SteamProfile) => void }) => {
   const { themed, theme } = useAppTheme();
@@ -147,7 +147,7 @@ const $backButton: ThemedStyle<ViewStyle> = () => ({
   borderColor: "transparent",
 });
 
-const $title: ThemedStyle<ViewStyle> = () => ({
+const $title: ThemedStyle<TextStyle> = () => ({
   flex: 1,
   textAlign: "center",
   fontWeight: "bold",
@@ -169,7 +169,7 @@ const $searchContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
 });
 
-const $searchInput: ThemedStyle<ViewStyle> = ({ typography }) => ({
+const $searchInput: ThemedStyle<TextStyle> = ({ typography }) => ({
   flex: 1,
   fontSize: 16,
   fontFamily: typography.primary.normal,
@@ -186,12 +186,12 @@ const $noResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xl,
 });
 
-const $noResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $noResultsText: ThemedStyle<TextStyle> = ({ spacing }) => ({
   fontWeight: "bold",
   marginBottom: spacing.md,
 });
 
-const $noResultsSubtext: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $noResultsSubtext: ThemedStyle<TextStyle> = ({ spacing }) => ({
   marginBottom: spacing.md,
 });
 
@@ -202,7 +202,7 @@ const $loadingResults: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   paddingVertical: spacing.xl,
 });
 
-const $loadingResultsText: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $loadingResultsText: ThemedStyle<TextStyle> = ({ spacing }) => ({
   fontWeight: "bold",
   marginBottom: spacing.md,
 });

@@ -2,7 +2,7 @@ import { useNavigation } from "expo-router";
 import { useEffect, useLayoutEffect } from "react";
 import { Platform } from "react-native";
 
-import { Header, type HeaderProps } from "../components/ui/Header";
+import { Header, type HeaderProps } from "src/components/ui/Header";
 
 /**
  * A hook that can be used to easily set the Header of an Expo Router screen from within the screen's component.

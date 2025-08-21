@@ -2,7 +2,6 @@ import { type ComponentType, forwardRef, type Ref, useImperativeHandle, useRef }
 import {
   type ImageStyle,
   type StyleProp,
-  // eslint-disable-next-line no-restricted-imports
   TextInput,
   type TextInputProps,
   type TextStyle,
@@ -11,11 +10,11 @@ import {
   type ViewStyle,
 } from "react-native";
 
-import { isRTL } from "../../i18n";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import { $styles } from "../../theme/styles";
-import type { ThemedStyle, ThemedStyleArray } from "../../theme/types";
+import { isRTL } from "src/i18n";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import { $styles } from "src/theme/styles";
+import type { ThemedStyle, ThemedStyleArray } from "src/theme/types";
 
 import { Text, type TextProps } from "./Text";
 

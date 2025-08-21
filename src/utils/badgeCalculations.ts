@@ -1,4 +1,4 @@
-import type { Rank } from "../services/assets-api/types/rank";
+import type { Rank } from "src/services/assets-api/types/rank";
 
 export interface BadgeInfo {
   tier: number;

@@ -1,8 +1,8 @@
 import { type TextStyle, View } from "react-native";
 import type { DimensionValue } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
-import { Text } from "../ui/Text";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
+import { Text } from "src/components/ui/Text";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 
 export interface StatItemProps {
   label: string;

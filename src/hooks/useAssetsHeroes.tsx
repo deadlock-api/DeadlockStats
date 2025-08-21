@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
-import { assetsApi } from "../services/assets-api";
-import type { Hero } from "../services/assets-api/types/hero";
+import { assetsApi } from "src/services/assets-api";
+import type { Hero } from "src/services/assets-api/types/hero";
 
 export const useAssetsHeroes = () => {
   return useQuery({

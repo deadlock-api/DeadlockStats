@@ -1,13 +1,11 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
 import type { TextStyle, ViewStyle } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { translate } from "../../i18n/translate";
-import { useAppTheme } from "../../theme/context";
-import type { ThemedStyle } from "../../theme/types";
+import { translate } from "src/i18n/translate";
+import { useAppTheme } from "src/theme/context";
+import type { ThemedStyle } from "src/theme/types";
 
 export default function TabLayout() {
-  const { bottom } = useSafeAreaInsets();
   const {
     themed,
     theme: { colors },
@@ -18,7 +16,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: themed([$tabBar, { height: bottom + 70 }]),
+        tabBarStyle: themed([$tabBar, { height: 70 }]),
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: colors.text,
         tabBarLabelStyle: themed($tabBarLabel),
@@ -26,7 +24,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="dashboard"
         options={{
           title: translate("mainNavigator:dashboardTab"),
           tabBarIcon: ({ focused }) => (
