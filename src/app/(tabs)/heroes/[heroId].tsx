@@ -77,7 +77,7 @@ export default function HeroDetails() {
 
   if (isLoading) {
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.container}>
         {header}
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
@@ -91,7 +91,7 @@ export default function HeroDetails() {
 
   if (!heroAsset || !heroStat) {
     return (
-      <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.container}>
         {header}
         <View style={themed($errorContainer)}>
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }}>
@@ -114,7 +114,7 @@ export default function HeroDetails() {
   const timePlayed = formatTimePlayed(heroStat.time_played);
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       {header}
       <View style={themed($stats)}>
         <StatCard width="40%" title="Last Played" value={lastPlayed} />

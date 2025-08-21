@@ -28,7 +28,7 @@ export const useDeepLinking = () => {
         setPlayer(response.data);
 
         // Navigate to the dashboard to show the player's stats
-        router.push("/(tabs)/dashboard");
+        router.replace("/(tabs)/dashboard");
       } else {
         Alert.alert(
           translate("profileSharing:sharedProfileError"),

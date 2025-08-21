@@ -16,7 +16,7 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarHideOnKeyboard: true,
-        tabBarStyle: themed([$tabBar, { height: 70 }]),
+        tabBarStyle: themed([$tabBar, { height: 90 }]),
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: colors.text,
         tabBarLabelStyle: themed($tabBarLabel),
@@ -40,6 +40,12 @@ export default function TabLayout() {
             <FontAwesome6 name="bar-chart" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate(route.name, { screen: "index" });
+          },
+        })}
       />
       <Tabs.Screen
         name="heroes"
@@ -49,6 +55,12 @@ export default function TabLayout() {
             <FontAwesome6 name="trophy" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
+        listeners={({ navigation, route }) => ({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate(route.name, { screen: "index" });
+          },
+        })}
       />
       <Tabs.Screen
         name="chat"

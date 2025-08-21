@@ -10,7 +10,7 @@ import {
   type TextStyle,
   TouchableOpacity,
   View,
-  type ViewStyle,
+  type ViewStyle
 } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import Markdown from "react-native-marked";
@@ -365,6 +365,7 @@ const $inputContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   alignItems: "center",
   justifyContent: "space-between",
   gap: spacing.md,
+  paddingBottom: spacing.sm,
   zIndex: 1,
 });
 

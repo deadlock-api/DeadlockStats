@@ -41,7 +41,7 @@ export default function PlayerSearchScreen() {
   const { data: profiles, isLoading } = useSearchSteamProfile(debounceSearchQuery);
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       <View style={themed($header)}>
         <TouchableOpacity
           style={[themed($backButton), { backgroundColor: theme.colors.palette.neutral100 }]}

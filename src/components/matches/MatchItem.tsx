@@ -1,4 +1,4 @@
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { type TextStyle, View, type ViewStyle } from "react-native";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { HeroName } from "src/components/heroes/HeroName";
@@ -13,51 +13,51 @@ import { StatItem } from "./StatItem";
 
 export const MatchItem = ({ match }: { match: MatchHistory }) => {
   const { themed, theme } = useAppTheme();
-  const router = useRouter();
-  const onPress = () => router.push(`/(tabs)/matches/${match.match_id}`);
   return (
-    <Card style={themed($matchItem)} onPress={onPress}>
-      <View style={themed($headerRow)}>
-        <View style={themed($matchHero)}>
-          <HeroImage heroId={match.hero_id} size={40} />
-          <View style={themed($matchInfo)}>
-            <Text numberOfLines={1} style={{ fontFamily: theme.typography.primary.semiBold }}>
-              <HeroName heroId={match.hero_id} />
+    <Link href={`/(tabs)/matches/${match.match_id}`} asChild>
+      <Card style={themed($matchItem)}>
+        <View style={themed($headerRow)}>
+          <View style={themed($matchHero)}>
+            <HeroImage heroId={match.hero_id} size={40} />
+            <View style={themed($matchInfo)}>
+              <Text numberOfLines={1} style={{ fontFamily: theme.typography.primary.semiBold }}>
+                <HeroName heroId={match.hero_id} />
+              </Text>
+              <Text numberOfLines={1} style={themed($timeText)} size="xxs">
+                {match.match_id}
+              </Text>
+              <Text numberOfLines={1} style={themed($timeText)} size="xxs">
+                {parseMatchMode(match.match_mode)}
+              </Text>
+            </View>
+          </View>
+          <View style={themed($matchStats)}>
+            <Text
+              style={[
+                themed($matchResult),
+                { color: isMatchWon(match) ? theme.colors.palette.success500 : theme.colors.palette.failure500 },
+              ]}
+              size="sm"
+            >
+              {isMatchWon(match) ? translate("common:victory") : translate("common:defeat")}
             </Text>
-            <Text numberOfLines={1} style={themed($timeText)} size="xxs">
-              {match.match_id}
+            <Text style={themed($timeText)} size="xxs">
+              {formatMatchDuration(match.match_duration_s)}
             </Text>
-            <Text numberOfLines={1} style={themed($timeText)} size="xxs">
-              {parseMatchMode(match.match_mode)}
+            <Text style={themed($timeText)} size="xxs">
+              {formatRelativeTime(match.start_time)}
             </Text>
           </View>
         </View>
-        <View style={themed($matchStats)}>
-          <Text
-            style={[
-              themed($matchResult),
-              { color: isMatchWon(match) ? theme.colors.palette.success500 : theme.colors.palette.failure500 },
-            ]}
-            size="sm"
-          >
-            {isMatchWon(match) ? translate("common:victory") : translate("common:defeat")}
-          </Text>
-          <Text style={themed($timeText)} size="xxs">
-            {formatMatchDuration(match.match_duration_s)}
-          </Text>
-          <Text style={themed($timeText)} size="xxs">
-            {formatRelativeTime(match.start_time)}
-          </Text>
+        <View style={themed($statsRow)}>
+          <StatItem label="KDA" value={`${match.player_kills}/${match.player_deaths}/${match.player_assists}`} />
+          <StatItem label="Last Hits" value={`${match.last_hits}`} />
+          <StatItem label="Denies" value={`${match.denies}`} />
+          <StatItem label="Level" value={`${match.hero_level}`} />
+          <StatItem label="Net Worth" value={`${(match.net_worth / 1000).toFixed(0).toLocaleString()}k`} />
         </View>
-      </View>
-      <View style={themed($statsRow)}>
-        <StatItem label="KDA" value={`${match.player_kills}/${match.player_deaths}/${match.player_assists}`} />
-        <StatItem label="Last Hits" value={`${match.last_hits}`} />
-        <StatItem label="Denies" value={`${match.denies}`} />
-        <StatItem label="Level" value={`${match.hero_level}`} />
-        <StatItem label="Net Worth" value={`${(match.net_worth / 1000).toFixed(0).toLocaleString()}k`} />
-      </View>
-    </Card>
+      </Card>
+    </Link>
   );
 };
 

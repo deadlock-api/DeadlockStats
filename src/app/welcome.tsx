@@ -14,7 +14,7 @@ import {
   extractSteamIdFromUrl,
   removeSkipWelcomePreference,
   saveSkipWelcomePreference,
-  saveSteamId,
+  saveSteamId
 } from "src/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
@@ -136,7 +136,7 @@ export default function Welcome() {
   }, [handleAuthCallback]);
 
   return (
-    <Screen preset="scroll" contentContainerStyle={themed([$container, { paddingTop: 20 }])} safeAreaEdges={["bottom"]}>
+    <Screen preset="scroll" contentContainerStyle={themed([$container, { paddingTop: 20 }])}>
       <View style={themed($content)}>
         <Text preset="heading" tx="welcomeScreen:title" style={themed($title)} />
 

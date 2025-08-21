@@ -38,7 +38,7 @@ export default function Settings() {
   const hasLinkedSteam = hasSteamId();
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={[$styles.container, themed($container)]}>
+    <Screen preset="scroll" contentContainerStyle={[$styles.container, themed($container)]}>
       <Text style={themed($title)} preset="heading" tx="settingsScreen:title" />
       <SettingsSection title={translate("settingsScreen:appearanceSection")}>
         <SettingsItem

@@ -1,8 +1,7 @@
-import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
-import { ActivityIndicator, FlatList, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { ActivityIndicator, FlatList, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { HeroName } from "src/components/heroes/HeroName";
@@ -56,19 +55,16 @@ export default function HeroesStats() {
         <FlatList
           data={heroStats}
           renderItem={({ item }) => (
-            <HeroStatItem
-              heroStat={item}
-              onPress={() => {
-                router.push(`/(tabs)/heroes/${item.hero_id}`);
-              }}
-            />
+            <Link href={`/(tabs)/heroes/${item.hero_id}`} asChild>
+              <HeroStatItem heroStat={item} />
+            </Link>
           )}
           ListEmptyComponent={() => (
             <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
               <Text tx="heroesStatsScreen:noHeroStatsFound" />
             </View>
           )}
-          keyExtractor={(item) => item.hero_id.toString()}
+          keyExtractor={(i) => i.hero_id.toString()}
           maxToRenderPerBatch={20}
           initialNumToRender={10}
           windowSize={10}
@@ -91,7 +87,6 @@ export default function HeroesStats() {
 
 const HeroStatItem = ({ heroStat, onPress }: { heroStat: HeroStats; onPress?: () => void }) => {
   const { themed, theme } = useAppTheme();
-  const router = useRouter();
 
   const winrate = Math.round((100 * heroStat.wins) / heroStat.matches_played);
   const avgKills = Math.round((10 * heroStat.kills) / heroStat.matches_played) / 10;
@@ -135,17 +130,6 @@ const HeroStatItem = ({ heroStat, onPress }: { heroStat: HeroStats; onPress?: ()
           valueColor={scaleColor(heroStat.accuracy, 0.45, 0.7)}
         />
       </View>
-      <View style={themed($bottomRow)}>
-        <TouchableOpacity
-          style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
-          onPress={() => router.push(`/(tabs)/heroes/${heroStat.hero_id}`)}
-        >
-          <Text size="xs" style={{ color: theme.colors.tint }}>
-            View details
-          </Text>
-          <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />
-        </TouchableOpacity>
-      </View>
     </Card>
   );
 };
@@ -182,14 +166,6 @@ const $heroStatsContent: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexWrap: "wrap",
   gap: spacing.sm,
   marginTop: spacing.sm,
-});
-
-const $bottomRow: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "flex-end",
-  alignItems: "center",
-  gap: spacing.sm,
-  marginTop: spacing.xxs,
 });
 
 const $heroNameText: ThemedStyle<TextStyle> = ({ typography }) => ({

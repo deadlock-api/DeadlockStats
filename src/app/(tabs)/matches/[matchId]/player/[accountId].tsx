@@ -24,7 +24,7 @@ export default function MatchPlayerDetails() {
   const { data: matchData, isLoading, error } = useMatchMetadata(matchIdNumber);
 
   if (!matchId || !accountId) {
-    router.push("/(tabs)/matches");
+    router.replace("/(tabs)/matches");
     return null;
   }
 
@@ -64,7 +64,7 @@ export default function MatchPlayerDetails() {
   };
 
   return (
-    <Screen preset="scroll" safeAreaEdges={["top"]} contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.container}>
       <Card style={themed($container)}>
         <PlayerStats player={highlightedPlayer} updatePlayer={updatePlayer} />
       </Card>

@@ -1,4 +1,3 @@
-// import { useScrollToTop } from "@react-navigation/native"; // Not needed with Expo Router
 import { type ReactNode, useCallback, useRef, useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -10,9 +9,9 @@ import {
   type ScrollViewProps,
   type StyleProp,
   View,
-  type ViewStyle,
+  type ViewStyle
 } from "react-native";
-import { type SystemBarStyle, SystemBars, type SystemBarsProps } from "react-native-edge-to-edge";
+import { SystemBars, type SystemBarsProps, type SystemBarStyle } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { useAppTheme } from "src/theme/context";
@@ -104,7 +103,6 @@ function isNonScrolling(preset?: ScreenPreset) {
 
 /**
  * Custom hook that handles the automatic enabling/disabling of scroll ability based on the content size and screen size.
- * @param {UseAutoPresetProps} props - The props for the `useAutoPreset` hook.
  * @returns {{boolean, Function, Function}} - The scroll state, and the `onContentSizeChange` and `onLayout` functions.
  */
 function useAutoPreset(props: AutoScreenProps): {
@@ -139,7 +137,7 @@ function useAutoPreset(props: AutoScreenProps): {
   }
 
   /**
-   * @param {number} w - The width of the content.
+   * @param _w
    * @param {number} h - The height of the content.
    */
   function onContentSizeChange(_w: number, h: number) {
@@ -247,14 +245,7 @@ export function Screen(props: ScreenProps) {
     theme: { colors },
     themeContext,
   } = useAppTheme();
-  const {
-    backgroundColor,
-    KeyboardAvoidingViewProps,
-    keyboardOffset = 0,
-    safeAreaEdges,
-    SystemBarsProps,
-    systemBarStyle,
-  } = props;
+  const { backgroundColor, KeyboardAvoidingViewProps, keyboardOffset = 0, SystemBarsProps, systemBarStyle } = props;
 
   return (
     <View style={[$containerStyle, { backgroundColor: backgroundColor || colors.background }]}>

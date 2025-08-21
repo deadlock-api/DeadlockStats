@@ -1,13 +1,12 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
-import { useCallback } from "react";
+import { Link, useRouter } from "expo-router";
+import { useCallback, useEffect } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { HeroName } from "src/components/heroes/HeroName";
 import { MatchList } from "src/components/matches/MatchList";
-import { AccountSelector } from "src/components/profile/AccountSelector";
 import { StatCard } from "src/components/profile/StatCard";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
@@ -17,6 +16,7 @@ import { useAssetsHeroes } from "src/hooks/useAssetsHeroes";
 import { useEnemyStats } from "src/hooks/useEnemyStats";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
 import { useMateStats } from "src/hooks/useMateStats";
+import { useSteamProfile } from "src/hooks/useSteamProfile";
 import { translate } from "src/i18n/translate";
 import { api } from "src/services/api";
 import type { MatchHistory } from "src/services/api/types/match_history";
@@ -25,13 +25,20 @@ import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
 import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "src/utils/matchHistoryStats";
 import { scaleColor } from "src/utils/scaleColor";
-import { hasSteamId } from "src/utils/steamAuth";
+import { getSteamId, hasSteamId } from "src/utils/steamAuth";
 
 export default function DashboardScreen() {
   const router = useRouter();
   const { themed, theme } = useAppTheme();
 
-  const [player] = usePlayerSelected();
+  const [player, setPlayer] = usePlayerSelected();
+
+  const steamId = getSteamId();
+  const { data: userProfile } = useSteamProfile(steamId);
+
+  useEffect(() => {
+    if (!player && userProfile) setPlayer(userProfile ?? null);
+  }, [userProfile, setPlayer, player]);
 
   const { data: matchHistory, isLoading, error } = useMatchHistory(player?.account_id ?? null);
 
@@ -40,7 +47,45 @@ export default function DashboardScreen() {
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container} onRefreshing={onRefreshing}>
-      <AccountSelector onSearchPress={() => router.push("/dashboard/player-search")} />
+      <View style={themed($header)}>
+        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+          {(player?.avatar || (!steamId && !player)) && (
+            <View
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 24,
+                backgroundColor: theme.colors.palette.neutral300,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <SteamImage profile={player ?? undefined} size={48} />
+            </View>
+          )}
+          <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>
+            {!steamId && !player && !userProfile ? (
+              translate("common:noSteamAccount")
+            ) : player && player.account_id !== steamId ? (
+              <SteamName profile={player} />
+            ) : (
+              <SteamName profile={userProfile ?? undefined} />
+            )}
+          </Text>
+          {player && player.account_id !== steamId && (
+            <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>
+              <FontAwesome6 name="reply" solid color={theme.colors.error} size={20} />
+            </TouchableOpacity>
+          )}
+        </View>
+        <View style={themed($buttonContainer)}>
+          {/*{player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}*/}
+          <Link href="/(tabs)/dashboard/player-search" asChild>
+            <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
+          </Link>
+        </View>
+      </View>
+
       {matchHistory && matchHistory.length > 0 ? (
         <>
           <StatDisplays accountId={player?.account_id ?? 0} matchHistory={matchHistory} />
@@ -53,17 +98,16 @@ export default function DashboardScreen() {
             }}
           >
             <Text preset="subheading" tx="dashboardScreen:latestMatches" />
-            <TouchableOpacity
-              style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}
-              onPress={() => router.push("/(tabs)/matches")}
-            >
-              <Text
-                size="xxs"
-                style={[themed($viewAllText), { color: theme.colors.tint }]}
-                tx="dashboardScreen:viewAllMatches"
-              />
-              <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={16} />
-            </TouchableOpacity>
+            <Link href="/(tabs)/matches">
+              <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
+                <Text
+                  size="xxs"
+                  style={[themed($viewAllText), { color: theme.colors.tint }]}
+                  tx="dashboardScreen:viewAllMatches"
+                />
+                <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={16} />
+              </View>
+            </Link>
           </View>
           <View style={themed($matchesContainer)}>
             <MatchList matches={matchHistory.slice(0, 5)} />
@@ -217,48 +261,50 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
           valueColor={theme.colors.text}
         />
       )}
-      <StatCard
-        onPress={() => router.push(`/(tabs)/heroes/${mostPlayedHero.heroId}`)}
-        title={translate("dashboardScreen:mainHeroOverall")}
-        value={
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-              marginBottom: theme.spacing.xxs,
-            }}
-          >
-            <HeroImage heroId={mostPlayedHero.heroId} size={30} />
-            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName heroId={mostPlayedHero.heroId} />
-            </Text>
-          </View>
-        }
-        subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
-        valueColor={theme.colors.text}
-      />
-      <StatCard
-        onPress={() => router.push(`/(tabs)/heroes/${highestWinRateHero.heroId}`)}
-        title={translate("dashboardScreen:bestHeroOverall")}
-        value={
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              gap: theme.spacing.xs,
-              marginBottom: theme.spacing.xxs,
-            }}
-          >
-            <HeroImage heroId={highestWinRateHero.heroId} size={30} />
-            <Text numberOfLines={1} style={{ color: theme.colors.text }}>
-              <HeroName heroId={highestWinRateHero.heroId} />
-            </Text>
-          </View>
-        }
-        subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
-        valueColor={theme.colors.text}
-      />
+      <Link href={`/(tabs)/heroes/${mostPlayedHero.heroId}`} asChild>
+        <StatCard
+          title={translate("dashboardScreen:mainHeroOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <HeroImage heroId={mostPlayedHero.heroId} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+                <HeroName heroId={mostPlayedHero.heroId} />
+              </Text>
+            </View>
+          }
+          subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
+          valueColor={theme.colors.text}
+        />
+      </Link>
+      <Link href={`/(tabs)/heroes/${highestWinRateHero.heroId}`} asChild>
+        <StatCard
+          title={translate("dashboardScreen:bestHeroOverall")}
+          value={
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: theme.spacing.xs,
+                marginBottom: theme.spacing.xxs,
+              }}
+            >
+              <HeroImage heroId={highestWinRateHero.heroId} size={30} />
+              <Text numberOfLines={1} style={{ color: theme.colors.text }}>
+                <HeroName heroId={highestWinRateHero.heroId} />
+              </Text>
+            </View>
+          }
+          subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
+          valueColor={theme.colors.text}
+        />
+      </Link>
     </View>
   );
 };
@@ -276,4 +322,16 @@ const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-between",
   flexWrap: "wrap",
   gap: spacing.sm,
+});
+
+const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+  flexDirection: "row",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: spacing.md,
+});
+
+const $buttonContainer: ThemedStyle<ViewStyle> = () => ({
+  flexDirection: "row",
+  alignItems: "center",
 });
