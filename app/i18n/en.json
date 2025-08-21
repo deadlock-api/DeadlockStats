@@ -85,7 +85,7 @@
     "chatPlaceholders": [
       "How often did Bebop win?",
       "Which hero makes most kills?",
-      "Plot the number of matches per month as line plot",
+      "Plot the number of matches per month",
       "Plot a win/loss chart of my matches"
     ],
     "pleaseWaitValidatingCaptcha": "Validating Captcha"
