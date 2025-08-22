@@ -105,6 +105,7 @@ module.exports = (): ExpoConfig => {
         },
       ],
       require("./plugins/withSplashScreen").withSplashScreen,
+      ["react-native-android-widget", require("./plugins/withWidgets").widgetConfig],
     ],
     experiments: {
       tsconfigPaths: true,
