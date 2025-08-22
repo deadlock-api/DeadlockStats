@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useCallback } from "react";
 import { ActivityIndicator, View } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "src/app/_layout";
@@ -8,13 +8,12 @@ import { TimeRangeSelect } from "src/components/select/TimeRangeSelect";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
-import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import { hasSteamId } from "src/utils/steamAuth";
 
 export default function MatchesList() {
+  const router = useRouter();
   const { matchIds } = useLocalSearchParams<{ matchIds?: string }>();
-  const { theme } = useAppTheme();
 
   const [timeRange, _1] = useTimeRangeSelected();
   const [player, _2] = usePlayerSelected();
@@ -41,7 +40,12 @@ export default function MatchesList() {
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
       {!filterMatchIds && <TimeRangeSelect />}
       {matchHistory ? (
-        <MatchList matches={matchHistory} scroll onRefreshing={onRefreshing} />
+        <MatchList
+          matches={matchHistory}
+          scroll
+          onRefreshing={onRefreshing}
+          onPress={(matchId) => router.navigate(`/(tabs)/matches/${matchId}`)}
+        />
       ) : isLoading ? (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
           <ActivityIndicator size="large" />

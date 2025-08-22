@@ -1,5 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Link, useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "src/app/_layout";
@@ -21,8 +21,6 @@ import { scaleColor } from "src/utils/scaleColor";
 import { hasSteamId } from "src/utils/steamAuth";
 
 export default function HeroesStats() {
-  const router = useRouter();
-
   const [timeRange, _1] = useTimeRangeSelected();
   const [player, _2] = usePlayerSelected();
 

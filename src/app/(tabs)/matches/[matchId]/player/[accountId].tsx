@@ -56,7 +56,7 @@ export default function MatchPlayerDetails() {
     api.getSteamProfile(accountId).then((response) => {
       if (response.ok && response.data) {
         setPlayer(response.data);
-        router.push("/(tabs)/dashboard");
+        router.navigate("/(tabs)/dashboard");
       } else {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
       }
