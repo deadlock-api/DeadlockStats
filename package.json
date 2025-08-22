@@ -2,7 +2,7 @@
   "name": "deadlock-stats",
   "version": "0.0.5",
   "private": true,
-  "main": "expo-router/entry",
+  "main": "index.ts",
   "license": "GPL-3.0",
   "scripts": {
     "start": "expo start --dev-client",
@@ -53,6 +53,7 @@
     "react-dom": "19.0.0",
     "react-i18next": "^15.7.1",
     "react-native": "0.79.5",
+    "react-native-android-widget": "^0.17.1",
     "react-native-edge-to-edge": "1.6.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-global-state-hooks": "^11.0.1",

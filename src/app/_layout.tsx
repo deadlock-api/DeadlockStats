@@ -12,6 +12,7 @@ import type { SteamProfile } from "src/services/api/types/steam_profile";
 import { ThemeProvider } from "src/theme/context";
 import { customFontsToLoad } from "src/theme/typography";
 import { loadDateFnsLocale } from "src/utils/formatDate";
+import { MatchHistoryWidget } from "src/widgets/MatchHistoryWidget";
 
 // Globals
 export const usePlayerSelected = createGlobalState<SteamProfile | null>(null);
