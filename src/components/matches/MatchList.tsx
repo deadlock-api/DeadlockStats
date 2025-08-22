@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { FlatList, RefreshControl, type ViewStyle } from "react-native";
+import { FlatList, RefreshControl, TouchableOpacity, type ViewStyle } from "react-native";
 import { Card } from "src/components/ui/Card";
 import { Text } from "src/components/ui/Text";
 import type { MatchHistory } from "src/services/api/types/match_history";
@@ -12,9 +12,10 @@ interface MatchListProps {
   matches: MatchHistory[];
   scroll?: boolean;
   onRefreshing?: () => Promise<void>;
+  onPress?: (matchId: number) => void;
 }
 
-export const MatchList = ({ matches, scroll, onRefreshing }: MatchListProps) => {
+export const MatchList = ({ matches, scroll, onRefreshing, onPress }: MatchListProps) => {
   const [refreshing, setRefreshing] = useState(false);
   const { themed } = useAppTheme();
 
@@ -31,7 +32,11 @@ export const MatchList = ({ matches, scroll, onRefreshing }: MatchListProps) => 
         maxToRenderPerBatch={20}
         initialNumToRender={10}
         windowSize={10}
-        renderItem={({ item }) => <MatchItem match={item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity onPress={() => onPress?.(item.match_id)}>
+            <MatchItem match={item} />
+          </TouchableOpacity>
+        )}
         keyExtractor={(item) => item.match_id.toString()}
         ListEmptyComponent={() => (
           <Card style={themed($noDataView)}>

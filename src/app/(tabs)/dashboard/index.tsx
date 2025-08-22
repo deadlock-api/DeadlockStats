@@ -110,7 +110,10 @@ export default function DashboardScreen() {
             </Link>
           </View>
           <View style={themed($matchesContainer)}>
-            <MatchList matches={matchHistory.slice(0, 5)} />
+            <MatchList
+              matches={matchHistory.slice(0, 5)}
+              onPress={(matchId) => router.navigate(`/(tabs)/matches/${matchId}`)}
+            />
           </View>
         </>
       ) : (

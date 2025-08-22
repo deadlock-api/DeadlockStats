@@ -1,4 +1,4 @@
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
 import { ActivityIndicator, View, type ViewStyle } from "react-native";
 import { usePlayerSelected, useTimeRangeSelected } from "src/app/_layout";
@@ -21,6 +21,7 @@ import { formatRelativeTime, formatTimePlayed } from "src/utils/matchHistoryStat
 import { scaleColor } from "src/utils/scaleColor";
 
 export default function HeroDetails() {
+  const router = useRouter();
   const { heroId } = useLocalSearchParams<{ heroId: string }>();
   const { themed, theme } = useAppTheme();
 
@@ -178,7 +179,10 @@ export default function HeroDetails() {
       <View style={{ marginTop: theme.spacing.md }}>
         <Text preset="subheading" tx="heroDetailsScreen:heroMatches" />
       </View>
-      <MatchList matches={heroMatches} />
+      <MatchList
+        matches={heroMatches}
+        onPress={(matchId) => router.navigate(`/(tabs)/matches/${matchId}`, { withAnchor: true })}
+      />
     </Screen>
   );
 }
