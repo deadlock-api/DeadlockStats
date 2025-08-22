@@ -21,6 +21,8 @@ export default function TabLayout() {
         tabBarInactiveTintColor: colors.text,
         tabBarLabelStyle: themed($tabBarLabel),
         tabBarItemStyle: themed($tabBarItem),
+        lazy: false,
+        popToTopOnBlur: true,
       }}
     >
       <Tabs.Screen
@@ -40,12 +42,6 @@ export default function TabLayout() {
             <FontAwesome6 name="bar-chart" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate(route.name, { screen: "index" });
-          },
-        })}
       />
       <Tabs.Screen
         name="heroes"
@@ -55,12 +51,6 @@ export default function TabLayout() {
             <FontAwesome6 name="trophy" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
         }}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate(route.name, { screen: "index" });
-          },
-        })}
       />
       <Tabs.Screen
         name="chat"
