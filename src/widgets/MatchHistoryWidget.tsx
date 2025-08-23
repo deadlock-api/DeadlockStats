@@ -42,12 +42,14 @@ const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Her
   if (!assetsHero) return null;
   return (
     <FlexWidget
+      clickAction="OPEN_URI"
+      clickActionData={{ uri: `deadlockstats://matches/${match.match_id}` }}
       style={{
         flexDirection: "row",
         alignItems: "center",
         justifyContent: "space-between",
-        paddingVertical: 8,
-        paddingHorizontal: 16,
+        paddingVertical: 2,
+        paddingHorizontal: 8,
         width: "match_parent",
       }}
     >
@@ -56,7 +58,7 @@ const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Her
           flexDirection: "row",
           alignItems: "center",
           justifyContent: "space-between",
-          flexGap: 4,
+          flexGap: 2,
         }}
       >
         <HeroImageWidget hero={assetsHero} />
@@ -67,7 +69,20 @@ const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Her
           }}
         >
           <HeroNameWidget hero={assetsHero} />
-          <TextWidget text={match.match_id.toString()} style={{ color: "#ffffff" }} />
+          {/*<TextWidget*/}
+          {/*  text={`${parseMatchMode(match.match_mode)}`}*/}
+          {/*  style={{*/}
+          {/*    color: "#B6ACA6",*/}
+          {/*    fontSize: 11,*/}
+          {/*  }}*/}
+          {/*/>*/}
+          <TextWidget
+            text={`${(match.net_worth / 1000).toFixed(1)}k Souls | ${match.player_kills}/${match.player_deaths}/${match.player_assists} KDA`}
+            style={{
+              color: "#B6ACA6",
+              fontSize: 11,
+            }}
+          />
         </FlexWidget>
       </FlexWidget>
       <FlexWidget
@@ -81,17 +96,22 @@ const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Her
           text={isMatchWon(match) ? "Victory" : "Defeat"}
           style={{
             color: isMatchWon(match) ? "#42C765" : "#C03403",
+            fontSize: 14,
+            fontWeight: "bold",
+            height: 20,
           }}
         />
         <TextWidget
           style={{
             color: "#B6ACA6",
+            fontSize: 11,
           }}
           text={formatMatchDuration(match.match_duration_s)}
         />
         <TextWidget
           style={{
             color: "#B6ACA6",
+            fontSize: 11,
           }}
           text={formatRelativeTime(match.start_time)}
         />
@@ -104,20 +124,21 @@ const HeroImageWidget = ({ hero }: { hero: Hero }) => {
   const image = HERO_IMAGES[hero.id] ?? `https:${hero.images.icon_image_small_webp}`;
   const getBackgroundColor = (hero: Hero | undefined) => {
     if (!hero) return "transparent";
-    return `rgba(${hero.colors.ui.join(",")}, 0.3)`;
+    return `rgba(${hero.colors.ui.join(",")}, 0.2)`;
   };
   return (
     <ImageWidget
       image={image}
-      imageWidth={40}
-      imageHeight={40}
+      imageWidth={35}
+      imageHeight={35}
       style={{
         backgroundColor: getBackgroundColor(hero),
+        borderRadius: 8,
       }}
     />
   );
 };
 
 const HeroNameWidget = ({ hero }: { hero: Hero }) => {
-  return <TextWidget text={hero.name} style={{ color: "#ffffff" }} />;
+  return <TextWidget text={hero.name} style={{ color: "#ffffff", fontWeight: "bold", fontSize: 14 }} />;
 };
