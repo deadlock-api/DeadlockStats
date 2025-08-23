@@ -34,7 +34,7 @@ export default function MatchDetails() {
 
   if (isLoading) {
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader}>
         <View style={themed($loadingContainer)}>
           <ActivityIndicator size="large" color={theme.colors.tint} />
           <Text preset="subheading" style={{ marginTop: theme.spacing.md }} tx="matchDetailsScreen:loadingMessage" />
@@ -45,7 +45,7 @@ export default function MatchDetails() {
 
   if (error || !matchData || !matchData.players) {
     return (
-      <Screen preset="scroll" contentContainerStyle={$styles.container}>
+      <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader}>
         <View style={themed($errorContainer)}>
           <Text preset="heading" style={{ color: theme.colors.error }} tx="matchDetailsScreen:errorTitle" />
           <Text style={{ marginTop: theme.spacing.sm, textAlign: "center" }} tx="matchDetailsScreen:errorMessage" />
@@ -114,7 +114,7 @@ export default function MatchDetails() {
   };
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container}>
+    <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader}>
       <View style={themed($container)}>
         <View>
           <Text preset="subheading" style={{ marginBottom: theme.spacing.md, textAlign: "center" }}>

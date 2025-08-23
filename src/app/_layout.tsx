@@ -41,7 +41,12 @@ export default function RootLayout() {
       <KeyboardProvider>
         <ThemeProvider>
           <QueryClientProvider client={queryClient}>
-            <Stack screenOptions={{ headerShown: false }} />
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="welcome" />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="player-search" options={{ presentation: "modal" }} />
+            </Stack>
           </QueryClientProvider>
         </ThemeProvider>
       </KeyboardProvider>

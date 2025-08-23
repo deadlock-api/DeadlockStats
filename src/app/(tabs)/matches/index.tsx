@@ -37,7 +37,7 @@ export default function MatchesList() {
   );
 
   return (
-    <Screen preset="fixed" contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" contentContainerStyle={$styles.containerWithHeader}>
       {!filterMatchIds && <TimeRangeSelect />}
       {matchHistory ? (
         <MatchList

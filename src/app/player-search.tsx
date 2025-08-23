@@ -25,6 +25,8 @@ export default function PlayerSearchScreen() {
   const debounceSearchQuery = useDebounce(searchQuery);
 
   const handlePress = (player: SteamProfile) => {
+    router.push("/(tabs)/dashboard");
+    setPlayer(player);
     let newSearches: SteamProfile[];
     if (recentSearches.every((p) => p.account_id !== player.account_id)) {
       newSearches = [player, ...recentSearches].slice(0, 5);
@@ -32,27 +34,14 @@ export default function PlayerSearchScreen() {
       newSearches = recentSearches.filter((p) => p.account_id !== player.account_id);
       newSearches.unshift(player);
     }
-    setRecentSearches(newSearches);
     save("recentSearches", newSearches);
-    setPlayer(player);
-    router.back();
+    setRecentSearches(newSearches);
   };
 
   const { data: profiles, isLoading } = useSearchSteamProfile(debounceSearchQuery);
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container}>
-      <View style={themed($header)}>
-        <TouchableOpacity
-          style={[themed($backButton), { backgroundColor: theme.colors.palette.neutral100 }]}
-          onPress={() => router.back()}
-        >
-          <FontAwesome6 name="chevron-left" solid size={24} color={theme.colors.text} />
-        </TouchableOpacity>
-        <Text style={[themed($title)]} tx="playerSearchScreen:title" preset="subheading" />
-        <View style={themed($placeholder)} />
-      </View>
-
       <View
         style={[
           themed($searchContainer),
@@ -128,35 +117,6 @@ const PlayerResult = ({ onPress, player }: { player: SteamProfile; onPress: (pla
     </TouchableOpacity>
   );
 };
-
-const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: spacing.md,
-});
-
-const $backButton: ThemedStyle<ViewStyle> = () => ({
-  width: 48,
-  height: 48,
-  borderRadius: 12,
-  justifyContent: "center",
-  alignItems: "center",
-  borderWidth: 1,
-  backgroundColor: "transparent",
-  borderColor: "transparent",
-});
-
-const $title: ThemedStyle<TextStyle> = () => ({
-  flex: 1,
-  textAlign: "center",
-  fontWeight: "bold",
-});
-
-const $placeholder: ThemedStyle<ViewStyle> = () => ({
-  width: 48,
-  height: 48,
-});
 
 const $searchContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flexDirection: "row",
