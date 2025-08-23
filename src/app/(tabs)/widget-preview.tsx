@@ -15,10 +15,8 @@ export default function WidgetView() {
   });
   return (
     <Screen preset="fixed" contentContainerStyle={$styles.container}>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center", gap: 16 }}>
-        <View style={{ justifyContent: "center", alignItems: "center" }}>
-          {renderedWidget && <WidgetPreview renderWidget={() => renderedWidget} width={320} height={200} />}
-        </View>
+      <View style={{ justifyContent: "center", alignItems: "center", gap: 16, height: "100%" }}>
+        {renderedWidget && <WidgetPreview renderWidget={() => renderedWidget} width={320} height={200} />}
         <Button title="Update" onPress={() => queryClient.refetchQueries({ queryKey: ["widget"] })} />
       </View>
     </Screen>
