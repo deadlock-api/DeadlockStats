@@ -1,8 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Galeria } from "@nandorojo/galeria";
 import Clipboard from "@react-native-clipboard/clipboard";
-import { useNavigation, useRouter } from "expo-router";
-import { createRef, type Ref, useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "expo-router";
+import { createRef, type Ref, useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -74,8 +74,6 @@ export default function Chat() {
   }
 
   const router = useRouter();
-  const navigation = useNavigation();
-
   const { themed, theme } = useAppTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [token, setToken] = useState<string | null>(captchaToken);
@@ -98,22 +96,6 @@ export default function Chat() {
     setPrompt("");
     setMemoryId(null);
   }, []);
-
-  useEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerRight: () => (
-        <Pressable style={{ marginRight: theme.spacing.md }} onPress={reset}>
-          <View style={{ flexDirection: "column", alignItems: "center" }}>
-            <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
-            <Text style={{ color: theme.colors.error }} size="xxs">
-              Reset
-            </Text>
-          </View>
-        </Pressable>
-      ),
-    });
-  }, [reset, navigation, theme]);
 
   const handleSend = useCallback(() => {
     if (lock) return;
@@ -225,6 +207,7 @@ export default function Chat() {
     return (
       <Screen preset="fixed" contentContainerStyle={[$styles.container, { flex: 1 }]}>
         <View style={{ flex: 1, gap: theme.spacing.md }}>
+          <Text preset="heading" style={themed($heading)} text="AI Assistant" />
           <Text style={$styles.textCenter} text="Please link your Steam account to use the AI Assistant." />
 
           <View style={{ backgroundColor: theme.colors.palette.neutral100, borderRadius: 12 }}>
@@ -248,6 +231,17 @@ export default function Chat() {
     <Screen preset="fixed" contentContainerStyle={[$styles.container, { flex: 1 }]}>
       <View style={{ flex: 1, gap: theme.spacing.md }}>
         <View style={{ flex: 1 }}>
+          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+            <Text preset="heading" style={themed($heading)} text="AI Assistant" />
+            <Pressable onPress={reset}>
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
+                <Text style={{ color: theme.colors.error }} size="xxs">
+                  Reset
+                </Text>
+              </View>
+            </Pressable>
+          </View>
           <FlatList
             data={messages.concat(inflightMessage ? [inflightMessage] : [])}
             renderItem={({ item }) => <Message message={item} />}
@@ -261,6 +255,7 @@ export default function Chat() {
           token ? (
             <View style={[themed($inputContainer)]}>
               <TextInput
+                autoFocus
                 autoCapitalize="sentences"
                 value={prompt}
                 onChangeText={setPrompt}
@@ -350,6 +345,11 @@ const Message = ({ message }: { message: Message }) => {
     </View>
   );
 };
+
+const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
+  textAlign: "center",
+  marginBottom: spacing.xs,
+});
 
 const $messageContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   flexDirection: "column",

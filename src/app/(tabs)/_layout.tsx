@@ -1,7 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Link, Tabs } from "expo-router";
 import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
 import { usePlayerSelected } from "src/app/_layout";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
@@ -108,18 +107,9 @@ export default function TabLayout() {
         name="chat"
         options={{
           title: translate("mainNavigator:chatBotTab"),
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="comments" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
-          ),
-          headerRight: () => (
-            <Pressable style={{ marginRight: spacing.md }}>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
-                <FontAwesome6 name="rotate" solid color={colors.error} size={20} />
-                <Text style={{ color: colors.error }} size="xxs">
-                  Reset
-                </Text>
-              </View>
-            </Pressable>
           ),
         }}
       />
