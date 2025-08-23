@@ -28,9 +28,9 @@ export const MatchList = ({ matches, scroll, onRefreshing, onPress }: MatchListP
   return (
     <FlatList
       data={matches}
-      maxToRenderPerBatch={20}
+      maxToRenderPerBatch={10}
       initialNumToRender={10}
-      windowSize={10}
+      windowSize={20}
       renderItem={({ item }) => (
         <TouchableOpacity onPress={() => onPress?.(item.match_id)}>
           <MatchItem match={item} />
