@@ -26,27 +26,25 @@ export const MatchList = ({ matches, scroll, onRefreshing, onPress }: MatchListP
   }, [onRefreshing]);
 
   return (
-    <>
-      <FlatList
-        data={matches}
-        maxToRenderPerBatch={20}
-        initialNumToRender={10}
-        windowSize={10}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => onPress?.(item.match_id)}>
-            <MatchItem match={item} />
-          </TouchableOpacity>
-        )}
-        keyExtractor={(item) => item.match_id.toString()}
-        ListEmptyComponent={() => (
-          <Card style={themed($noDataView)}>
-            <Text style={$styles.textCenter} tx="matchesListScreen:noMatchesFound" />
-          </Card>
-        )}
-        refreshControl={onRefreshing && <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
-        scrollEnabled={scroll ?? false}
-      />
-    </>
+    <FlatList
+      data={matches}
+      maxToRenderPerBatch={20}
+      initialNumToRender={10}
+      windowSize={10}
+      renderItem={({ item }) => (
+        <TouchableOpacity onPress={() => onPress?.(item.match_id)}>
+          <MatchItem match={item} />
+        </TouchableOpacity>
+      )}
+      keyExtractor={(item) => item.match_id.toString()}
+      ListEmptyComponent={() => (
+        <Card style={themed($noDataView)}>
+          <Text style={$styles.textCenter} tx="matchesListScreen:noMatchesFound" />
+        </Card>
+      )}
+      refreshControl={onRefreshing && <RefreshControl onRefresh={handleRefresh} refreshing={refreshing} />}
+      scrollEnabled={scroll ?? false}
+    />
   );
 };
 
