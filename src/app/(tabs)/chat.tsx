@@ -1,8 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Galeria } from "@nandorojo/galeria";
 import Clipboard from "@react-native-clipboard/clipboard";
-import { useRouter } from "expo-router";
-import { createRef, type Ref, useCallback, useMemo, useState } from "react";
+import { useNavigation, useRouter } from "expo-router";
+import { createRef, type Ref, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -10,24 +10,24 @@ import {
   type TextStyle,
   TouchableOpacity,
   View,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 import { Pressable } from "react-native-gesture-handler";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
+import { usePlayerSelected } from "src/app/_layout";
 import { SettingsItem } from "src/app/(tabs)/settings";
 import { Turnstile } from "src/components/captcha";
 import { AutoImage } from "src/components/ui/AutoImage";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import Config from "src/config";
-import { useSteamProfile } from "src/hooks/useSteamProfile";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
 import { sample } from "src/utils/random";
-import { getSteamId, removeSkipWelcomePreference } from "src/utils/steamAuth";
+import { removeSkipWelcomePreference } from "src/utils/steamAuth";
 import { loadString, remove, saveString } from "src/utils/storage";
 
 interface Message {
@@ -74,6 +74,8 @@ export default function Chat() {
   }
 
   const router = useRouter();
+  const navigation = useNavigation();
+
   const { themed, theme } = useAppTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [token, setToken] = useState<string | null>(captchaToken);
@@ -81,8 +83,7 @@ export default function Chat() {
   const [prompt, setPrompt] = useState("");
   const [memoryId, setMemoryId] = useState<string | null>(null);
   const [lock, setLock] = useState<boolean>(false);
-  const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile(steamId);
+  const [player] = usePlayerSelected();
   const flatListRef: Ref<FlatList<Message>> | undefined = createRef();
 
   const handleToken = useCallback((newToken: string) => {
@@ -97,6 +98,22 @@ export default function Chat() {
     setPrompt("");
     setMemoryId(null);
   }, []);
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerRight: () => (
+        <Pressable style={{ marginRight: theme.spacing.md }} onPress={reset}>
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
+            <Text style={{ color: theme.colors.error }} size="xxs">
+              Reset
+            </Text>
+          </View>
+        </Pressable>
+      ),
+    });
+  }, [reset, navigation, theme]);
 
   const handleSend = useCallback(() => {
     if (lock) return;
@@ -128,8 +145,8 @@ export default function Chat() {
     if (memoryId) {
       url.searchParams.append("memory_id", memoryId);
     }
-    if (userProfile) {
-      url.searchParams.append("steam_id", userProfile.account_id.toString());
+    if (player) {
+      url.searchParams.append("steam_id", player.account_id.toString());
     }
 
     setMessages((prev) => [...prev, { text: prompt.trim(), role: "user" }]);
@@ -197,18 +214,17 @@ export default function Chat() {
       flatListRef?.current?.scrollToEnd({ animated: true });
       es.close();
     });
-  }, [token, lock, prompt, memoryId, userProfile, flatListRef]);
+  }, [token, lock, prompt, memoryId, player, flatListRef]);
 
   const handleLinkToSteam = useCallback(() => {
     removeSkipWelcomePreference();
     router.replace("/welcome");
   }, [router.replace]);
 
-  if (!userProfile) {
+  if (!player) {
     return (
       <Screen preset="fixed" contentContainerStyle={[$styles.container, { flex: 1 }]}>
         <View style={{ flex: 1, gap: theme.spacing.md }}>
-          <Text preset="heading" style={themed($heading)} text="AI Assistant" />
           <Text style={$styles.textCenter} text="Please link your Steam account to use the AI Assistant." />
 
           <View style={{ backgroundColor: theme.colors.palette.neutral100, borderRadius: 12 }}>
@@ -232,17 +248,6 @@ export default function Chat() {
     <Screen preset="fixed" contentContainerStyle={[$styles.container, { flex: 1 }]}>
       <View style={{ flex: 1, gap: theme.spacing.md }}>
         <View style={{ flex: 1 }}>
-          <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-            <Text preset="heading" style={themed($heading)} text="AI Assistant" />
-            <Pressable onPress={reset}>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
-                <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
-                <Text style={{ color: theme.colors.error }} size="xxs">
-                  Reset
-                </Text>
-              </View>
-            </Pressable>
-          </View>
           <FlatList
             data={messages.concat(inflightMessage ? [inflightMessage] : [])}
             renderItem={({ item }) => <Message message={item} />}
@@ -345,11 +350,6 @@ const Message = ({ message }: { message: Message }) => {
     </View>
   );
 };
-
-const $heading: ThemedStyle<TextStyle> = ({ spacing }) => ({
-  textAlign: "center",
-  marginBottom: spacing.xs,
-});
 
 const $messageContainer: ThemedStyle<ViewStyle> = ({ colors, spacing }) => ({
   flexDirection: "column",
