@@ -1,5 +1,5 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
@@ -17,7 +17,6 @@ import type { ThemedStyle } from "src/theme/types";
 import { load, save } from "src/utils/storage";
 
 export default function PlayerSearchScreen() {
-  const router = useRouter();
   const { themed, theme } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [_, setPlayer] = usePlayerSelected();
@@ -25,7 +24,6 @@ export default function PlayerSearchScreen() {
   const debounceSearchQuery = useDebounce(searchQuery);
 
   const handlePress = (player: SteamProfile) => {
-    router.push("/(tabs)/dashboard");
     setPlayer(player);
     let newSearches: SteamProfile[];
     if (recentSearches.every((p) => p.account_id !== player.account_id)) {
@@ -63,19 +61,25 @@ export default function PlayerSearchScreen() {
 
       <View style={themed($resultsSection)}>
         {!searchQuery ? (
-          <View>
+          <>
             {recentSearches && recentSearches.length > 0 && (
               <Text preset="subheading" tx="playerSearchScreen:recentSearches" />
             )}
             {recentSearches.map((player) => (
-              <PlayerResult key={player.account_id} player={player} onPress={handlePress} />
+              <Link key={player.account_id} href="/(tabs)/dashboard" asChild>
+                <PlayerResult player={player} onPress={handlePress} />
+              </Link>
             ))}
-          </View>
+          </>
         ) : (
-          <View>
+          <>
             <Text preset="subheading" tx="playerSearchScreen:searchResults" />
             {profiles && profiles.length > 0 ? (
-              profiles?.map((item) => <PlayerResult key={item.account_id} onPress={handlePress} player={item} />)
+              profiles?.map((item) => (
+                <Link key={item.account_id} href="/(tabs)/dashboard" asChild>
+                  <PlayerResult player={item} onPress={handlePress} />
+                </Link>
+              ))
             ) : isLoading ? (
               <View style={[themed($loadingResults), { backgroundColor: theme.colors.palette.neutral100 }]}>
                 <ActivityIndicator size="large" color={theme.colors.tint} />
@@ -92,7 +96,7 @@ export default function PlayerSearchScreen() {
                 />
               </View>
             )}
-          </View>
+          </>
         )}
       </View>
     </Screen>
