@@ -11,7 +11,6 @@ export const widgetConfig: WithAndroidWidgetsParams = {
       previewImage: "./assets/map/minimap.webp", // Path to widget preview image
       resizeMode: "horizontal|vertical",
       updatePeriodMillis: 30 * 60 * 1000, // 30 minutes
-      widgetFeatures: "reconfigurable",
     },
   ],
 };
