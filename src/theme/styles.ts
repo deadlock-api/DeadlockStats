@@ -14,6 +14,10 @@ export const $styles = {
     paddingHorizontal: spacing.lg,
   } as ViewStyle,
 
+  containerWithHeader: {
+    padding: spacing.lg,
+  } as ViewStyle,
+
   toggleInner: {
     width: "100%",
     height: "100%",

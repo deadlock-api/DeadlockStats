@@ -1,28 +1,80 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Tabs } from "expo-router";
-import type { TextStyle, ViewStyle } from "react-native";
+import { Link, Tabs } from "expo-router";
+import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { Pressable } from "react-native-gesture-handler";
+import { usePlayerSelected } from "src/app/_layout";
+import { SteamImage } from "src/components/profile/SteamImage";
+import { SteamName } from "src/components/profile/SteamName";
+import { Text } from "src/components/ui/Text";
+import { useSteamProfile } from "src/hooks/useSteamProfile";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
+import { getSteamId } from "src/utils/steamAuth";
 
 export default function TabLayout() {
   const {
     themed,
-    theme: { colors },
+    theme: { colors, spacing },
   } = useAppTheme();
+
+  const steamId = getSteamId();
+  const { data: userProfile } = useSteamProfile(steamId);
+  const [player, setPlayer] = usePlayerSelected();
 
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
         tabBarHideOnKeyboard: true,
         tabBarStyle: themed([$tabBar, { height: 90 }]),
         tabBarActiveTintColor: colors.text,
         tabBarInactiveTintColor: colors.text,
         tabBarLabelStyle: themed($tabBarLabel),
         tabBarItemStyle: themed($tabBarItem),
-        lazy: false,
         popToTopOnBlur: true,
+        headerShown: true,
+        headerStyle: themed($headerStyle),
+        headerBackButtonDisplayMode: "default",
+        headerTitle: () => (
+          <View style={{ flexDirection: "row", alignItems: "center", gap: spacing.xs }}>
+            {player?.avatar && (
+              <View
+                style={{
+                  width: 48,
+                  height: 48,
+                  borderRadius: 24,
+                  backgroundColor: colors.palette.neutral300,
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <SteamImage profile={player ?? undefined} size={48} />
+              </View>
+            )}
+            <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>
+              {player ? <SteamName profile={player} /> : translate("common:noSteamAccount")}
+            </Text>
+            {player && player.account_id !== steamId && (
+              <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>
+                <FontAwesome6 name="reply" solid color={colors.error} size={20} />
+              </TouchableOpacity>
+            )}
+          </View>
+        ),
+        headerRight: () => (
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              gap: spacing.xs,
+              marginRight: spacing.md,
+            }}
+          >
+            <Link href="/player-search" asChild>
+              <FontAwesome6 name="magnifying-glass" solid color={colors.text} size={24} />
+            </Link>
+          </View>
+        ),
       }}
     >
       <Tabs.Screen
@@ -59,11 +111,22 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="comments" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
+          headerRight: () => (
+            <Pressable style={{ marginRight: spacing.md }}>
+              <View style={{ flexDirection: "column", alignItems: "center" }}>
+                <FontAwesome6 name="rotate" solid color={colors.error} size={20} />
+                <Text style={{ color: colors.error }} size="xxs">
+                  Reset
+                </Text>
+              </View>
+            </Pressable>
+          ),
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
+          headerShown: false,
           title: translate("mainNavigator:settingsTab"),
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="gear" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
@@ -88,4 +151,9 @@ const $tabBarLabel: ThemedStyle<TextStyle> = ({ colors, typography }) => ({
   fontFamily: typography.primary.medium,
   lineHeight: 18,
   color: colors.text,
+});
+
+const $headerStyle: ThemedStyle<ViewStyle> = ({ colors }) => ({
+  backgroundColor: colors.palette.neutral100,
+  borderBottomColor: colors.transparent,
 });

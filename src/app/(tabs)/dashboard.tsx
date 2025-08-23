@@ -2,7 +2,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import { Link, useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
-import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { HeroName } from "src/components/heroes/HeroName";
@@ -46,46 +46,7 @@ export default function DashboardScreen() {
   const onRefreshing = useCallback(async () => await queryClient.refetchQueries({ type: "active" }), [queryClient]);
 
   return (
-    <Screen preset="scroll" contentContainerStyle={$styles.container} onRefreshing={onRefreshing}>
-      <View style={themed($header)}>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.xs }}>
-          {(player?.avatar || (!steamId && !player)) && (
-            <View
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: 24,
-                backgroundColor: theme.colors.palette.neutral300,
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <SteamImage profile={player ?? undefined} size={48} />
-            </View>
-          )}
-          <Text numberOfLines={1} preset="subheading" style={{ maxWidth: 160 }}>
-            {!steamId && !player && !userProfile ? (
-              translate("common:noSteamAccount")
-            ) : player && player.account_id !== steamId ? (
-              <SteamName profile={player} />
-            ) : (
-              <SteamName profile={userProfile ?? undefined} />
-            )}
-          </Text>
-          {player && player.account_id !== steamId && (
-            <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>
-              <FontAwesome6 name="reply" solid color={theme.colors.error} size={20} />
-            </TouchableOpacity>
-          )}
-        </View>
-        <View style={themed($buttonContainer)}>
-          {/*{player && <ShareButton player={player} style={{ marginRight: theme.spacing.xs }} />}*/}
-          <Link href="/(tabs)/dashboard/player-search" asChild>
-            <FontAwesome6 name="magnifying-glass" solid color={theme.colors.text} size={24} />
-          </Link>
-        </View>
-      </View>
-
+    <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader} onRefreshing={onRefreshing}>
       {matchHistory && matchHistory.length > 0 ? (
         <>
           <StatDisplays accountId={player?.account_id ?? 0} matchHistory={matchHistory} />
@@ -137,7 +98,6 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
   const [_, setPlayer] = usePlayerSelected();
 
   const { themed, theme } = useAppTheme();
-  const router = useRouter();
 
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
@@ -325,16 +285,4 @@ const $statDisplaysContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   justifyContent: "space-between",
   flexWrap: "wrap",
   gap: spacing.sm,
-});
-
-const $header: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: spacing.md,
-});
-
-const $buttonContainer: ThemedStyle<ViewStyle> = () => ({
-  flexDirection: "row",
-  alignItems: "center",
 });

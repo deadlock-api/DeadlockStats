@@ -9,7 +9,7 @@ import {
   type ScrollViewProps,
   type StyleProp,
   View,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 import { SystemBars, type SystemBarsProps, type SystemBarStyle } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
@@ -223,9 +223,7 @@ function ScreenWithScrolling(props: ScreenProps) {
       }}
       style={[$outerStyle, ScrollViewProps?.style, style]}
       contentContainerStyle={[$innerStyle, ScrollViewProps?.contentContainerStyle, contentContainerStyle]}
-      refreshControl={
-        onRefreshing && <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} progressViewOffset={128} />
-      }
+      refreshControl={onRefreshing && <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
     >
       {children}
     </KeyboardAwareScrollView>

@@ -46,7 +46,7 @@ export default function HeroesStats() {
   }, [onRefreshing]);
 
   return (
-    <Screen preset="fixed" contentContainerStyle={$styles.container}>
+    <Screen preset="fixed" contentContainerStyle={$styles.containerWithHeader}>
       <TimeRangeSelect />
 
       {heroStats && heroStats.length > 0 ? (
