@@ -29,7 +29,7 @@ export const MatchHistoryWidget = (props: MatchHistoryWidgetProps): JSX.Element 
       }}
     >
       <ListWidget>
-        {props.matchHistory.slice(0, 20).map((match) => (
+        {props.matchHistory.slice(0, 30).map((match) => (
           <MatchHistoryItem key={match.match_id} match={match} heroes={props.heroes} />
         ))}
       </ListWidget>
