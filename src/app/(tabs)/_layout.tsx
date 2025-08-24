@@ -75,20 +75,7 @@ export default function TabLayout() {
           </View>
         ),
       }}
-      initialRouteName={__DEV__ ? "widget-preview" : "dashboard"}
     >
-      {__DEV__ && (
-        <Tabs.Screen
-          name="widget-preview"
-          options={{
-            headerShown: false,
-            title: "Widget Preview",
-            tabBarIcon: ({ focused }) => (
-              <FontAwesome6 name="clapperboard" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
-            ),
-          }}
-        />
-      )}
       <Tabs.Screen
         name="dashboard"
         options={{
