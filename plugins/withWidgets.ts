@@ -5,8 +5,10 @@ export const widgetConfig: WithAndroidWidgetsParams = {
   widgets: [
     {
       name: "MatchHistory",
-      minHeight: "100dp",
+      minHeight: "20dp",
       minWidth: "180dp",
+      targetCellHeight: 2,
+      targetCellWidth: 3,
       description: "Check your music in different formats",
       previewImage: "./assets/widgets/match-history-preview.webp",
       resizeMode: "horizontal|vertical",
