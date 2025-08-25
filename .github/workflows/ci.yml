@@ -49,6 +49,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Install dependencies
+        run: pnpm install -g eas-cli
+
       - name: Bundle android
         run: pnpm build:android:sim --non-interactive
         env:
