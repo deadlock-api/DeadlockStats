@@ -1,8 +1,9 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { Galeria } from "@nandorojo/galeria";
 import Clipboard from "@react-native-clipboard/clipboard";
+import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import { createRef, type Ref, useCallback, useMemo, useState } from "react";
+import { createRef, type Ref, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -89,6 +90,26 @@ export default function Chat() {
     saveString("captchaTokenWithExpire", `${newToken} ${expire}`);
     setToken(newToken);
   }, []);
+
+  const { data: isCaptchaValid } = useQuery({
+    queryKey: ["isCaptchaValid", token],
+    queryFn: async () => {
+      if (!token) return false;
+      const url = new URL(`${Config.AI_ASSISTANT_API_URL}/validate-captcha`);
+      url.searchParams.append("captcha_token", token);
+      const response = await fetch(url, { method: "POST" });
+      if (!response.ok) return false;
+      return ((await response.json()) as { valid: boolean }).valid;
+    },
+    staleTime: 60 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (token && isCaptchaValid === false) {
+      remove("captchaTokenWithExpire");
+      setToken(null);
+    }
+  }, [token, isCaptchaValid]);
 
   const reset = useCallback(() => {
     setMessages([]);
