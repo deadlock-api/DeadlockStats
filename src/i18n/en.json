@@ -26,10 +26,10 @@
   },
   "mainNavigator": {
     "dashboardTab": "Dashboard",
+    "performanceTab": "Performance",
     "matchesTab": "Matches",
     "heroesTab": "Heroes",
     "chatBotTab": "AI Chat",
-    "profileTab": "Profile",
     "settingsTab": "Settings"
   },
   "welcomeScreen": {
@@ -150,5 +150,19 @@
     "linkToSteam": "Link to Steam",
     "linkSteamAccount": "Link your Steam account to view stats",
     "version": "Version"
+  },
+  "performanceScreen": {
+    "title": "Performance",
+    "playerVsCommunity": "Player vs Community",
+    "loadingMetrics": "Loading performance metrics...",
+    "noPlayerSelected": "No player selected",
+    "noDataAvailable": "No performance data available",
+    "errorLoadingData": "Failed to load performance data",
+    "retryLoading": "Try Again",
+    "percentileLabel": "Percentile",
+    "communityLabel": "Community",
+    "playerLabel": "You",
+    "errorTitle": "Performance Data Error",
+    "errorMessage": "We couldn't load your performance metrics. Please check your connection and try again."
   }
 }

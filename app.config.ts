@@ -73,6 +73,7 @@ module.exports = (): ExpoConfig => {
             enableProguardInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
             extraProguardRules: `
+            -keep class com.shopify.reactnative.skia.** { *; }
             # Fixes a crash in android Production channel due to missing classes. '@nandorojo/galeria' library
             -keep class nandorojo.modules.galeria.** { *; }
             -keep class com.zeego.imageviewer.** { *; }        # Galeria’s delegate library

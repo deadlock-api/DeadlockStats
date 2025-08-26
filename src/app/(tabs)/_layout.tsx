@@ -86,6 +86,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="performance"
+        options={{
+          title: translate("mainNavigator:performanceTab"),
+          tabBarIcon: ({ focused }) => (
+            <FontAwesome6 name="chart-line" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="matches"
         options={{
           title: translate("mainNavigator:matchesTab"),

@@ -32,6 +32,7 @@
     "@nandorojo/galeria": "^1.2.0",
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-clipboard/clipboard": "^1.16.3",
+    "@shopify/react-native-skia": "2.0.0-next.4",
     "@tanstack/react-query": "^5.85.5",
     "apisauce": "3.2.0",
     "date-fns": "^4.1.0",
@@ -66,7 +67,9 @@
     "react-native-sse": "^1.2.1",
     "react-native-svg": "^15.11.2",
     "react-native-turnstile": "^1.0.9",
-    "react-native-webview": "13.13.5"
+    "react-native-webview": "13.13.5",
+    "reanimated-tab-view": "^0.4.0",
+    "victory-native": "^41.19.3"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.2",

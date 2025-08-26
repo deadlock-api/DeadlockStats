@@ -1,6 +1,7 @@
 import { type ApiResponse, type ApisauceInstance, create } from "apisauce";
 
 import Config from "src/config";
+import type { PlayerStatsMetrics } from "src/services/api/types/player_stats_metrics";
 import type { EnemyStats } from "./types/enemy_stats";
 import type { HeroStats } from "./types/hero_stats";
 import type { MatchHistory } from "./types/match_history";
@@ -15,7 +16,7 @@ export interface ApiConfig {
 
 export const DEFAULT_API_CONFIG: ApiConfig = {
   apiUrl: Config.API_URL,
-  timeout: 5000,
+  timeout: 10000,
 };
 
 export class Api {
@@ -53,6 +54,17 @@ export class Api {
     console.log("getHeroStats", playerId, minUnixTimestamp);
     return await this.api.get(`v1/players/${playerId}/hero-stats`, {
       min_unix_timestamp: minUnixTimestamp,
+    });
+  }
+
+  async getPlayerStatsMetrics(
+    minUnixTimestamp?: number | null,
+    playerId?: number | null,
+  ): Promise<ApiResponse<PlayerStatsMetrics>> {
+    console.log("getPlayerStatsMetrics", minUnixTimestamp, playerId);
+    return await this.api.get(`v1/analytics/player-stats/metrics`, {
+      min_unix_timestamp: minUnixTimestamp,
+      account_ids: playerId ?? undefined,
     });
   }
 
