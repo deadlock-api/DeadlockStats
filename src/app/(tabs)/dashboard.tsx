@@ -47,9 +47,9 @@ export default function DashboardScreen() {
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader} onRefreshing={onRefreshing}>
-      {matchHistory && matchHistory.length > 0 ? (
+      {player?.account_id && matchHistory && matchHistory.length > 0 ? (
         <>
-          <StatDisplays accountId={player?.account_id ?? 0} matchHistory={matchHistory} />
+          <StatDisplays accountId={player?.account_id} matchHistory={matchHistory} />
           <View
             style={{
               flexDirection: "row",
