@@ -21,8 +21,8 @@ import { scaleColor } from "src/utils/scaleColor";
 import { hasSteamId } from "src/utils/steamAuth";
 
 export default function HeroesStats() {
-  const [timeRange, _1] = useTimeRangeSelected();
-  const [player, _2] = usePlayerSelected();
+  const [timeRange] = useTimeRangeSelected();
+  const [player] = usePlayerSelected();
 
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
