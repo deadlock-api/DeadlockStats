@@ -81,14 +81,8 @@ export default function PerformanceScreen() {
       const playerMetric = playerStatsMetrics?.[props.route.key];
 
       // Show no data state
-      if (!communityMetric || !playerMetric || !player?.account_id) {
-        return (
-          <ErrorMessage
-            messageTx="performanceScreen:noDataAvailable"
-            retryTx="performanceScreen:retryLoading"
-            onRetry={handleRetry}
-          />
-        );
+      if (!communityMetric || !playerMetric || !communityMetric.avg || !playerMetric.avg || !player?.account_id) {
+        return <ErrorMessage messageTx="performanceScreen:noDataAvailable" retryTx="performanceScreen:retryLoading" />;
       }
 
       // Render chart component

@@ -31,10 +31,10 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Log the error to crash reporting service
     reportCrash(error, ErrorType.HANDLED);
-    
+
     // Call custom error handler if provided
     this.props.onError?.(error, errorInfo);
-    
+
     // Log to console in development
     if (__DEV__) {
       console.error("ErrorBoundary caught an error:", error, errorInfo);

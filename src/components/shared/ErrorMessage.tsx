@@ -77,9 +77,13 @@ export const ErrorMessage = React.memo<ErrorMessageProps>(function ErrorMessage(
     centered = true,
   } = props;
 
-  const { themed } = useAppTheme();
+  const { themed, theme } = useAppTheme();
 
-  const $containerStyles = [centered && themed($centeredContainer), $styleOverride];
+  const $containerStyles = [
+    centered && themed($centeredContainer),
+    { marginVertical: theme.spacing.xl },
+    $styleOverride,
+  ];
 
   const hasTitle = title || titleTx;
   const hasMessage = message || messageTx;
