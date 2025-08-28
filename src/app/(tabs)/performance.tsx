@@ -14,41 +14,13 @@ import { Text } from "src/components/ui/Text";
 import { usePerformanceMetrics } from "src/hooks/usePerformanceMetrics";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
+import { NAMES_MAP } from "src/utils/performanceMetrics";
 
 // Configure reanimated logger to reduce noise
 configureReanimatedLogger({
   level: ReanimatedLogLevel.warn,
   strict: false,
 });
-
-const NAMES_MAP: Record<string, string> = {
-  accuracy: "Accuracy",
-  assists: "Assists",
-  boss_damage: "Boss Dmg",
-  boss_damage_per_min: "Boss Dmg/min",
-  crit_shot_rate: "Crit Rate",
-  deaths: "Deaths",
-  denies: "Denies",
-  healing: "Healing",
-  healing_per_min: "Heal/min",
-  kd: "K/D",
-  kda: "KDA",
-  kills: "Kills",
-  kills_plus_assists: "Kill-Participation",
-  last_hits: "Last Hits",
-  net_worth: "Net Worth",
-  net_worth_per_min: "Net/min",
-  neutral_damage: "Neutral Dmg",
-  neutral_damage_per_min: "Neutral Dmg/min",
-  player_damage: "Player Dmg",
-  player_damage_per_health: "Dmg/Health",
-  player_damage_per_min: "Player Dmg/min",
-  player_damage_taken_per_min: "Dmg Taken/min",
-  player_healing: "Player Heal",
-  player_healing_per_min: "Player Heal/min",
-  self_healing: "Self Heal",
-  self_healing_per_min: "Self Heal/min",
-};
 
 /**
  * Performance screen component with optimized data loading and error handling
@@ -89,7 +61,6 @@ export default function PerformanceScreen() {
   // Memoize scene renderer to prevent unnecessary re-renders
   const renderScene = useCallback(
     (props: SceneRendererProps) => {
-      console.log("rendering scene", props.route.key);
       // Show loading state
       if (isLoading) return <LoadingIndicator messageTx="performanceScreen:loadingMetrics" />;
 
@@ -126,6 +97,7 @@ export default function PerformanceScreen() {
           accountId={player.account_id}
           communityMetric={communityMetric}
           playerMetric={playerMetric}
+          metricName={NAMES_MAP[props.route.key] ?? props.route.key}
         />
       );
     },
@@ -149,7 +121,7 @@ export default function PerformanceScreen() {
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader} onRefreshing={onRefreshing}>
       <TimeRangeSelect />
-      <Card style={{ height: 400 }}>
+      <Card style={{ height: 500 }}>
         <View style={{ flex: 1, gap: theme.spacing.sm }}>
           <View style={{ flexDirection: "row", justifyContent: "center", gap: theme.spacing.sm }}>
             <Text preset="subheading" tx="performanceScreen:playerLabel" style={[{ color: theme.colors.tint }]} />

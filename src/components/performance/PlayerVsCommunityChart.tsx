@@ -5,7 +5,14 @@ import { Text } from "src/components/ui/Text";
 import type { Metrics } from "src/services/api/types/player_stats_metrics";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
-import { calculateDataRange, formatXAxisLabel, formatYAxisLabel } from "src/utils/performanceMetrics";
+import {
+  calculateDataRange,
+  formatXAxisLabel,
+  formatYAxisLabel,
+  getCommunityPercentileRank,
+  LOWER_IS_BETTER_NAMES
+} from "src/utils/performanceMetrics";
+import { scaleColor } from "src/utils/scaleColor";
 import { CartesianChart, Line } from "victory-native";
 
 export interface PlayerVsCommunityChartProps {
@@ -21,16 +28,13 @@ export interface PlayerVsCommunityChartProps {
    * Player account ID (currently unused but kept for future use)
    */
   accountId: number;
+  /**
+   * Metric name for display purposes
+   */
+  metricName: string;
 }
 
-/**
- * Optimized chart component for displaying player vs community performance metrics
- * Uses React.memo for performance optimization and memoized calculations
- */
-export const PlayerVsCommunityChart = React.memo<PlayerVsCommunityChartProps>(function PlayerVsCommunityChart({
-  communityMetric,
-  playerMetric,
-}) {
+export const PlayerVsCommunityChart = ({ communityMetric, playerMetric, metricName }: PlayerVsCommunityChartProps) => {
   const { theme, themed } = useAppTheme();
   const font = useFont(require("@assets/fonts/SpaceGrotesk-Medium.ttf"));
 
@@ -59,10 +63,14 @@ export const PlayerVsCommunityChart = React.memo<PlayerVsCommunityChartProps>(fu
       lineColor: theme.colors.text,
       labelColor: theme.colors.text,
       formatXLabel: formatXAxisLabel,
-      formatYLabel: (y: unknown) => formatYAxisLabel(y as number, minValue, maxValue),
+      formatYLabel: (y: unknown) => formatYAxisLabel(minValue, maxValue, y as number),
     }),
     [font, theme.colors.text, minValue, maxValue],
   );
+
+  const isLowerIsBetter = LOWER_IS_BETTER_NAMES.has(metricName);
+  const communityRank = getCommunityPercentileRank(playerMetric.avg, communityMetric, isLowerIsBetter);
+  const formatStat = formatYAxisLabel.bind(undefined, minValue, maxValue);
 
   return (
     <View style={themed($container)}>
@@ -74,9 +82,57 @@ export const PlayerVsCommunityChart = React.memo<PlayerVsCommunityChartProps>(fu
       </CartesianChart>
 
       <Text size="xs" tx="performanceScreen:percentileLabel" style={$percentileLabel} />
+
+      <View
+        style={{
+          marginTop: theme.spacing.md,
+          gap: theme.spacing.xs,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: theme.spacing.sm,
+          }}
+        >
+          <View style={{ flexDirection: "column", alignItems: "center", width: "30%", minWidth: 90 }}>
+            <Text size="xs" style={{ color: theme.colors.tint, fontWeight: "bold", fontSize: 16 }}>
+              You
+            </Text>
+            <Text style={{ color: theme.colors.text }}>{formatStat(playerMetric.avg)}</Text>
+            <Text style={{ color: theme.colors.text }}>{formatStat(playerMetric.std)}</Text>
+          </View>
+          <View style={{ flexDirection: "column", alignItems: "center" }}>
+            <Text size="xs" style={{ color: theme.colors.palette.failure500, fontWeight: "bold", fontSize: 16 }}></Text>
+            <Text style={{ color: theme.colors.textDim }}>AVG</Text>
+            <Text style={{ color: theme.colors.textDim }}>STD</Text>
+          </View>
+          <View style={{ flexDirection: "column", alignItems: "center", width: "30%", minWidth: 90 }}>
+            <Text size="xs" style={{ color: theme.colors.palette.failure500, fontWeight: "bold", fontSize: 16 }}>
+              Community
+            </Text>
+            <Text style={{ color: theme.colors.text }}>{formatStat(communityMetric.avg)}</Text>
+            <Text style={{ color: theme.colors.text }}>{formatStat(communityMetric.std)}</Text>
+          </View>
+        </View>
+
+        <Text
+          size="xs"
+          style={{
+            fontWeight: "bold",
+            fontSize: 16,
+            textAlign: "center",
+          }}
+        >
+          You are in the Top{" "}
+          <Text style={{ color: scaleColor(communityRank, 0, 100) }}>{(100 - communityRank).toFixed(0)}%</Text> of the
+          community
+        </Text>
+      </View>
     </View>
   );
-});
+};
 
 const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1,
@@ -87,10 +143,3 @@ const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
 const $percentileLabel: TextStyle = {
   textAlign: "center",
 };
-
-const $legend: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  flexDirection: "row",
-  gap: spacing.sm,
-  marginTop: spacing.xs,
-  marginHorizontal: "auto",
-});
