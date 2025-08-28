@@ -12,7 +12,6 @@ module.exports = (): ExpoConfig => {
     slug: "DeadlockStats",
     scheme: "deadlockstats",
     version: "0.0.5",
-    orientation: "portrait",
     platforms: ["android", "ios"],
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
