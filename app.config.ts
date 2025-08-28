@@ -74,6 +74,9 @@ module.exports = (): ExpoConfig => {
             enableShrinkResourcesInReleaseBuilds: true,
             extraProguardRules: `
             -keep class com.shopify.reactnative.skia.** { *; }
+            -keep public class com.horcrux.svg.** {*;}
+            -keep class com.swmansion.reanimated.** { *; }
+            -keep class com.facebook.react.turbomodule.** { *; }
             # Fixes a crash in android Production channel due to missing classes. '@nandorojo/galeria' library
             -keep class nandorojo.modules.galeria.** { *; }
             -keep class com.zeego.imageviewer.** { *; }        # Galeria’s delegate library
