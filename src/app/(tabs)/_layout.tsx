@@ -97,6 +97,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="matches"
         options={{
+          href: null,
           title: translate("mainNavigator:matchesTab"),
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="bar-chart" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
