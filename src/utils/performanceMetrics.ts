@@ -57,10 +57,12 @@ export function calculateDataRange(data: ChartDataPoint[]): { minValue: number; 
  * @param value - The value to format
  * @returns Formatted string for display
  */
-export function formatYAxisLabel(minValue: number, maxValue: number, value: number): string {
+export function formatYAxisLabel(minValue: number, maxValue: number, value?: number): string {
+  if (!value) return "N/A";
+
   // If values are between 0 and 1, format as percentage
   if (0 <= minValue && minValue <= maxValue && maxValue <= 1) {
-    return `${(100 * value).toFixed(0)}%`;
+    return `${(100 * value).toFixed(value < 0.01 ? 2 : value < 0.1 ? 1 : 0)}%`;
   }
 
   // if values are between -100 and 100, format as decimal
