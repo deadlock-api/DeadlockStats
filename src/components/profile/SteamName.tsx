@@ -12,8 +12,9 @@ export function SteamName({ profile, accountId }: SteamNameProps) {
 }
 
 export function SteamNameFetch(props: Pick<SteamNameProps, "accountId">) {
-  const { data: profile } = useSteamProfile({ accountId: props.accountId ?? 0 });
-  return <SteamNameFromProfile profile={profile ?? undefined} />;
+  const { data: profiles } = useSteamProfile({ accountIds: [props.accountId ?? 0] });
+  if (!profiles) return null;
+  return <SteamNameFromProfile profile={profiles[0] ?? undefined} />;
 }
 
 export function SteamNameFromProfile({ profile }: Pick<SteamNameProps, "profile">) {

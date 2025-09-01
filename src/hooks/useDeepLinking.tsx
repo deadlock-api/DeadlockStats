@@ -21,11 +21,11 @@ export const useDeepLinking = () => {
       }
 
       // Fetch the player profile
-      const response = await api.players_api.steam({ accountId: accountIdNumber });
+      const response = await api.players_api.steam({ accountIds: [accountIdNumber] });
 
       if (response.status === 200 && response.data) {
         // Set the player as selected
-        setPlayer(response.data);
+        setPlayer(response.data[0]);
 
         // Navigate to the dashboard to show the player's stats
         router.replace("/(tabs)/dashboard");

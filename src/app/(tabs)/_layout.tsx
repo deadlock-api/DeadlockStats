@@ -18,7 +18,7 @@ export default function TabLayout() {
   } = useAppTheme();
 
   const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile({ accountId: steamId ?? 0 });
+  const { data: userProfiles } = useSteamProfile({ accountIds: [steamId ?? 0] });
   const [player, setPlayer] = usePlayerSelected();
 
   return (
@@ -54,7 +54,7 @@ export default function TabLayout() {
               {player ? <SteamName profile={player} /> : translate("common:noSteamAccount")}
             </Text>
             {player && player.account_id !== steamId && (
-              <TouchableOpacity onPress={() => setPlayer(userProfile ?? null)}>
+              <TouchableOpacity onPress={() => userProfiles && setPlayer(userProfiles[0] ?? null)}>
                 <FontAwesome6 name="reply" solid color={colors.error} size={20} />
               </TouchableOpacity>
             )}

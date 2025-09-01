@@ -1,12 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import type { PlayersApiSteamRequest, PlayersApiSteamSearchRequest } from "deadlock-api-client/api";
+import type { PlayersApiSteamRequest } from "deadlock-api-client";
+import type { PlayersApiSteamSearchRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
 export const useSteamProfile = (query: PlayersApiSteamRequest) => {
   return useQuery({
-    queryKey: ["api-steam-profile", query],
+    queryKey: ["api-steam-profiles", query],
     queryFn: async () => {
-      if (!query.accountId) return null;
+      if (!query.accountIds || !query.accountIds[0]) return null;
       const response = await api.players_api.steam(query);
       if (response.status === 200) {
         return response.data;

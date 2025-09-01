@@ -18,10 +18,10 @@ export function SteamImage(props: SteamImageProps) {
 }
 
 export function SteamImageFetch({ accountId, size }: Omit<SteamImageProps, "account">) {
-  const { data: profile } = useSteamProfile({ accountId: accountId ?? 0 });
+  const { data: profiles } = useSteamProfile({ accountIds: [accountId ?? 0] });
 
-  if (!profile) return null;
-  return <SteamImageProfile profile={profile} size={size} />;
+  if (!profiles) return null;
+  return <SteamImageProfile profile={profiles[0]} size={size} />;
 }
 
 export function SteamImageProfile({ profile, size }: Omit<SteamImageProps, "accountId">) {

@@ -10,7 +10,7 @@ import {
   formatXAxisLabel,
   formatYAxisLabel,
   getCommunityPercentileRank,
-  LOWER_IS_BETTER_NAMES
+  LOWER_IS_BETTER_NAMES,
 } from "src/utils/performanceMetrics";
 import { scaleColor } from "src/utils/scaleColor";
 import { CartesianChart, Line } from "victory-native";

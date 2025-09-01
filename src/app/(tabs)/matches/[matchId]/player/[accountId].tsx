@@ -53,9 +53,9 @@ export default function MatchPlayerDetails() {
   }
 
   const updatePlayer = (accountId: number) => {
-    api.players_api.steam({ accountId }).then((response) => {
+    api.players_api.steam({ accountIds: [accountId] }).then((response) => {
       if (response.status === 200 && response.data) {
-        setPlayer(response.data);
+        setPlayer(response.data[0]);
         router.navigate("/(tabs)/dashboard");
       } else {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);

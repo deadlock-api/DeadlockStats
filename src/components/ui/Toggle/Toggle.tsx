@@ -10,7 +10,7 @@ import {
   type TouchableOpacityProps,
   View,
   type ViewProps,
-  type ViewStyle
+  type ViewStyle,
 } from "react-native";
 import { Text, type TextProps } from "src/components/ui/Text";
 import { useAppTheme } from "src/theme/context";

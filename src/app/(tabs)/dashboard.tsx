@@ -34,11 +34,11 @@ export default function DashboardScreen() {
   const [player, setPlayer] = usePlayerSelected();
 
   const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile({ accountId: steamId ?? 0 });
+  const { data: userProfiles } = useSteamProfile({ accountIds: [steamId ?? 0] });
 
   useEffect(() => {
-    if (!player && userProfile) setPlayer(userProfile ?? null);
-  }, [userProfile, setPlayer, player]);
+    if (!player && userProfiles) setPlayer(userProfiles[0] ?? null);
+  }, [userProfiles, setPlayer, player]);
 
   const { data: matchHistory, isLoading, error } = useMatchHistory({ accountId: player?.account_id ?? 0 });
 
@@ -151,10 +151,10 @@ export const StatDisplays = ({
     .sort((a, b) => b.winRate - a.winRate)[0];
 
   function updatePlayer(accountId: number) {
-    api.players_api.steam({ accountId }).then((response) => {
+    api.players_api.steam({ accountIds: [accountId] }).then((response) => {
       if (response.status === 200) {
         if (response.data) {
-          setPlayer(response.data);
+          setPlayer(response.data[0]);
         }
       } else {
         throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
