@@ -2,6 +2,7 @@ import type { HeroV2 } from "assets-deadlock-api-client";
 import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
 import type { JSX } from "react";
 import { FlexWidget, ImageWidget, ListWidget, TextWidget } from "react-native-android-widget";
+import type { ColorProp } from "react-native-android-widget/src/widgets/utils/style.props";
 import { HERO_IMAGES } from "src/components/heroes/HeroImage";
 import { formatMatchDuration, formatRelativeTime, isMatchWon } from "src/utils/matchHistoryStats";
 
@@ -25,7 +26,7 @@ export const MatchHistoryWidget = (props: MatchHistoryWidgetProps): JSX.Element 
         width: "match_parent",
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.68)",
+        backgroundColor: "rgba(0, 0, 0, 0.68)",
       }}
     >
       <ListWidget>
@@ -122,9 +123,10 @@ const MatchHistoryItem = ({ match, heroes }: { match: PlayerMatchHistoryEntry; h
 
 const HeroImageWidget = ({ hero }: { hero: HeroV2 }) => {
   const image = HERO_IMAGES[hero.id] ?? `https:${hero.images.icon_image_small_webp}`;
-  const getBackgroundColor = (hero: HeroV2 | undefined) => {
-    if (!hero) return "transparent";
-    return `rgba(${hero.colors.ui.join(",")}, 0.2)`;
+  const getBackgroundColor = (hero: HeroV2 | undefined): ColorProp => {
+    if (!hero) return "rgba(0, 0, 0, 0)";
+    const [r, g, b] = hero.colors.ui;
+    return `rgba(${r}, ${g}, ${b}, 0.2)`;
   };
   return (
     <ImageWidget
