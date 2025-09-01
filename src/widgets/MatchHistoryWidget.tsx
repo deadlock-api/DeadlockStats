@@ -1,14 +1,14 @@
+import type { HeroV2 } from "assets-deadlock-api-client";
+import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
 import type { JSX } from "react";
 import { FlexWidget, ImageWidget, ListWidget, TextWidget } from "react-native-android-widget";
 import { HERO_IMAGES } from "src/components/heroes/HeroImage";
-import type { MatchHistory } from "src/services/api/types/match_history";
-import type { Hero } from "src/services/assets-api/types/hero";
 import { formatMatchDuration, formatRelativeTime, isMatchWon } from "src/utils/matchHistoryStats";
 
 export interface MatchHistoryWidgetProps {
   accountId?: number;
-  matchHistory?: MatchHistory[];
-  heroes?: Hero[];
+  matchHistory?: PlayerMatchHistoryEntry[];
+  heroes?: HeroV2[];
 }
 
 export const MatchHistoryWidget = (props: MatchHistoryWidgetProps): JSX.Element => {
@@ -37,7 +37,7 @@ export const MatchHistoryWidget = (props: MatchHistoryWidgetProps): JSX.Element 
   );
 };
 
-const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Hero[] }) => {
+const MatchHistoryItem = ({ match, heroes }: { match: PlayerMatchHistoryEntry; heroes?: HeroV2[] }) => {
   const assetsHero = heroes?.find((h) => h.id === match.hero_id);
   if (!assetsHero) return null;
   return (
@@ -120,9 +120,9 @@ const MatchHistoryItem = ({ match, heroes }: { match: MatchHistory; heroes?: Her
   );
 };
 
-const HeroImageWidget = ({ hero }: { hero: Hero }) => {
+const HeroImageWidget = ({ hero }: { hero: HeroV2 }) => {
   const image = HERO_IMAGES[hero.id] ?? `https:${hero.images.icon_image_small_webp}`;
-  const getBackgroundColor = (hero: Hero | undefined) => {
+  const getBackgroundColor = (hero: HeroV2 | undefined) => {
     if (!hero) return "transparent";
     return `rgba(${hero.colors.ui.join(",")}, 0.2)`;
   };
@@ -139,6 +139,6 @@ const HeroImageWidget = ({ hero }: { hero: Hero }) => {
   );
 };
 
-const HeroNameWidget = ({ hero }: { hero: Hero }) => {
+const HeroNameWidget = ({ hero }: { hero: HeroV2 }) => {
   return <TextWidget text={hero.name} style={{ color: "#ffffff", fontWeight: "bold", fontSize: 14 }} />;
 };

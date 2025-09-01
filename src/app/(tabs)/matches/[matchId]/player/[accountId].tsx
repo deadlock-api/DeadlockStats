@@ -21,7 +21,7 @@ export default function MatchPlayerDetails() {
   const matchIdNumber = Number(matchId);
   const playerNumber = Number(accountId);
 
-  const { data: matchData, isLoading, error } = useMatchMetadata(matchIdNumber);
+  const { data: matchData, isLoading, error } = useMatchMetadata({ matchId: matchIdNumber });
 
   if (!matchId || !accountId) {
     router.replace("/(tabs)/matches");
@@ -53,8 +53,8 @@ export default function MatchPlayerDetails() {
   }
 
   const updatePlayer = (accountId: number) => {
-    api.getSteamProfile(accountId).then((response) => {
-      if (response.ok && response.data) {
+    api.players_api.steam({ accountId }).then((response) => {
+      if (response.status === 200 && response.data) {
         setPlayer(response.data);
         router.navigate("/(tabs)/dashboard");
       } else {

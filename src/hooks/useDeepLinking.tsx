@@ -21,9 +21,9 @@ export const useDeepLinking = () => {
       }
 
       // Fetch the player profile
-      const response = await api.getSteamProfile(accountIdNumber);
+      const response = await api.players_api.steam({ accountId: accountIdNumber });
 
-      if (response.ok && response.data) {
+      if (response.status === 200 && response.data) {
         // Set the player as selected
         setPlayer(response.data);
 

@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PlayersApiPlayerHeroStatsRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
-export const useHeroStats = (steamId: number | null, minUnixTimestamp?: number | null) => {
+export const useHeroStats = (query: PlayersApiPlayerHeroStatsRequest) => {
   return useQuery({
-    queryKey: ["api-hero-stats", steamId, minUnixTimestamp],
+    queryKey: ["api-hero-stats", query],
     queryFn: async () => {
-      if (!steamId) {
-        return [];
-      }
-      const response = await api.getHeroStats(steamId, minUnixTimestamp);
-      if (response.ok) {
+      if (!query.accountIds || !query.accountIds[0]) return [];
+      const response = await api.players_api.playerHeroStats(query);
+      if (response.status === 200) {
         return response.data;
       } else {
         throw new Error(`Error fetching hero stats: ${JSON.stringify(response)}`);

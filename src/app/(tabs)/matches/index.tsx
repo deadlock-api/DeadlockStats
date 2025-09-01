@@ -21,7 +21,7 @@ export default function MatchesList() {
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
   const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : 0;
-  let { data: matchHistory, isLoading } = useMatchHistory(player?.account_id ?? null);
+  let { data: matchHistory, isLoading } = useMatchHistory({ accountId: player?.account_id ?? 0 });
 
   const filterMatchIds = matchIds ? JSON.parse(matchIds) : undefined;
   if (filterMatchIds) {

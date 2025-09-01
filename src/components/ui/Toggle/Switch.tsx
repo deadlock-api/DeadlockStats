@@ -149,8 +149,8 @@ function SwitchInput(props: SwitchInputProps) {
         ]}
       />
 
-      <SwitchAccessibilityLabel {...props} />
-      <SwitchAccessibilityLabel {...props} />
+      <SwitchAccessibilityLabel role="on" {...props} />
+      <SwitchAccessibilityLabel role="on" {...props} />
 
       <Animated.View
         style={[

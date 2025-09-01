@@ -1,5 +1,5 @@
+import type { HashMapValue } from "deadlock-api-client/api";
 import { useCallback } from "react";
-import type { PlayerStatsMetrics } from "src/services/api/types/player_stats_metrics";
 import { usePlayerStatsMetrics } from "./usePlayerStatsMetrics";
 
 /**
@@ -13,8 +13,8 @@ export interface PerformanceMetricsState {
   isLoading: boolean;
   hasError: boolean;
   error: Error | null;
-  communityStatsMetrics?: PlayerStatsMetrics;
-  playerStatsMetrics?: PlayerStatsMetrics;
+  communityStatsMetrics?: { [key: string]: HashMapValue };
+  playerStatsMetrics?: { [key: string]: HashMapValue };
   refetch: () => Promise<void>;
 }
 
@@ -31,7 +31,7 @@ export function usePerformanceMetrics(accountId?: number, minUnixTimestamp?: num
     isLoading: isLoadingCommunity,
     error: communityError,
     refetch: refetchCommunity,
-  } = usePlayerStatsMetrics(minUnixTimestamp);
+  } = usePlayerStatsMetrics({ minUnixTimestamp });
 
   // Fetch player metrics
   const {
@@ -39,7 +39,7 @@ export function usePerformanceMetrics(accountId?: number, minUnixTimestamp?: num
     isLoading: isLoadingPlayer,
     error: playerError,
     refetch: refetchPlayer,
-  } = usePlayerStatsMetrics(minUnixTimestamp, accountId);
+  } = usePlayerStatsMetrics({ minUnixTimestamp, accountIds: accountId ? [accountId] : undefined });
 
   // Combine loading states
   const isLoading = isLoadingCommunity || isLoadingPlayer;

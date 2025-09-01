@@ -1,5 +1,5 @@
+import type { SteamProfile } from "deadlock-api-client";
 import { useSteamProfile } from "src/hooks/useSteamProfile";
-import type { SteamProfile } from "src/services/api/types/steam_profile";
 
 export interface SteamNameProps {
   profile?: SteamProfile;
@@ -12,7 +12,7 @@ export function SteamName({ profile, accountId }: SteamNameProps) {
 }
 
 export function SteamNameFetch(props: Pick<SteamNameProps, "accountId">) {
-  const { data: profile } = useSteamProfile(props.accountId);
+  const { data: profile } = useSteamProfile({ accountId: props.accountId ?? 0 });
   return <SteamNameFromProfile profile={profile ?? undefined} />;
 }
 

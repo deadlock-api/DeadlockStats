@@ -1,4 +1,5 @@
 import { FontAwesome6 } from "@expo/vector-icons";
+import type { SteamProfile } from "deadlock-api-client";
 import { Link } from "expo-router";
 import { useState } from "react";
 import { ActivityIndicator, TextInput, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
@@ -10,7 +11,6 @@ import { Text } from "src/components/ui/Text";
 import { useDebounce } from "src/hooks/useDebounce";
 import { useSearchSteamProfile } from "src/hooks/useSteamProfile";
 import { translate } from "src/i18n/translate";
-import type { SteamProfile } from "src/services/api/types/steam_profile";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
@@ -36,7 +36,7 @@ export default function PlayerSearchScreen() {
     setRecentSearches(newSearches);
   };
 
-  const { data: profiles, isLoading } = useSearchSteamProfile(debounceSearchQuery);
+  const { data: profiles, isLoading } = useSearchSteamProfile({ searchQuery: debounceSearchQuery });
 
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.container}>

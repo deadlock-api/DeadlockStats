@@ -1,9 +1,9 @@
+import type { HeroV2 } from "assets-deadlock-api-client";
 import { useAssetsHero } from "src/hooks/useAssetsHeroes";
-import type { Hero } from "src/services/assets-api/types/hero";
 
 export interface HeroNameProps {
   heroId?: number;
-  hero?: Hero;
+  hero?: HeroV2;
 }
 
 export function HeroName(props: HeroNameProps) {

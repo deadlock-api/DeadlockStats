@@ -1,21 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PlayersApiEnemyStatsRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
-export const useEnemyStats = (
-  steamId: number | null,
-  query?: { minUnixTimestamp?: number | null; minMatchesPlayed?: number },
-) => {
+export const useEnemyStats = (query: PlayersApiEnemyStatsRequest) => {
   return useQuery({
-    queryKey: ["api-enemy-stats", steamId, query?.minUnixTimestamp, query?.minMatchesPlayed],
+    queryKey: ["api-enemy-stats", query],
     queryFn: async () => {
-      if (!steamId) {
-        return [];
-      }
-      const response = await api.getEnemyStats(steamId, {
-        min_unix_timestamp: query?.minUnixTimestamp ?? undefined,
-        min_matches_played: query?.minMatchesPlayed ?? undefined,
-      });
-      if (response.ok) {
+      if (!query.accountId) return [];
+      const response = await api.players_api.enemyStats(query);
+      if (response.status === 200) {
         return response.data;
       } else {
         throw new Error(`Error fetching enemy stats: ${JSON.stringify(response)}`);

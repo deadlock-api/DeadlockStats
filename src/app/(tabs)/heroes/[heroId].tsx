@@ -1,3 +1,4 @@
+import type { HeroStats, PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useMemo } from "react";
 import { ActivityIndicator, View, type ViewStyle } from "react-native";
@@ -12,8 +13,6 @@ import { Text } from "src/components/ui/Text";
 import { useAssetsHero } from "src/hooks/useAssetsHeroes";
 import { useHeroStats } from "src/hooks/useHeroStats";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
-import type { HeroStats } from "src/services/api/types/hero_stats";
-import type { MatchHistory } from "src/services/api/types/match_history";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
@@ -35,18 +34,20 @@ export default function HeroDetails() {
   const heroIdNumber = Number(heroId);
 
   const { data: heroAsset, isLoading: isHeroLoading } = useAssetsHero(heroIdNumber);
-  const { data: heroStatsAll, isLoading: isHeroStatsLoading } = useHeroStats(
-    player?.account_id ?? null,
+  const { data: heroStatsAll, isLoading: isHeroStatsLoading } = useHeroStats({
+    accountIds: player?.account_id ? [player?.account_id] : [],
     minUnixTimestamp,
-  );
-  const { data: matchHistory, isLoading: isMatchHistoryLoading } = useMatchHistory(player?.account_id ?? null);
+  });
+  const { data: matchHistory, isLoading: isMatchHistoryLoading } = useMatchHistory({
+    accountId: player?.account_id ?? 0,
+  });
 
   const heroStat: HeroStats | undefined = useMemo(
     () => heroStatsAll?.find((h) => h.hero_id === heroIdNumber),
     [heroIdNumber, heroStatsAll],
   );
 
-  const heroMatches: MatchHistory[] = useMemo(
+  const heroMatches: PlayerMatchHistoryEntry[] = useMemo(
     () =>
       (matchHistory ?? [])
         .filter((m) => !minUnixTimestamp || m.start_time >= minUnixTimestamp)

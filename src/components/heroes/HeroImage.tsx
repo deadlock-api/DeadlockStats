@@ -1,6 +1,7 @@
+import type { HeroV2 } from "assets-deadlock-api-client";
+import type { ImageRequireSource } from "react-native";
 import { AutoImage } from "src/components/ui/AutoImage";
 import { useAssetsHero } from "src/hooks/useAssetsHeroes";
-import type { Hero } from "src/services/assets-api/types/hero";
 
 const DEFAULT_SIZE = 70;
 
@@ -55,7 +56,7 @@ export const HERO_IMAGES = {
   73: require("@assets/heroes/73.webp"),
   74: require("@assets/heroes/74.webp"),
   75: require("@assets/heroes/75.webp"),
-} as Record<number, unknown>;
+} as Record<number, ImageRequireSource>;
 
 export interface HeroImageProps {
   heroId: number;
@@ -63,9 +64,9 @@ export interface HeroImageProps {
 }
 
 export function HeroImage(props: HeroImageProps) {
-  const { data: hero } = useAssetsHero(props.heroId) as { data: Hero | undefined };
+  const { data: hero } = useAssetsHero(props.heroId) as { data: HeroV2 | undefined };
 
-  const getBackgroundColor = (hero: Hero | undefined) => {
+  const getBackgroundColor = (hero: HeroV2 | undefined) => {
     if (!hero) return "transparent";
     return `rgba(${hero.colors.ui.join(",")}, 0.3)`;
   };

@@ -1,15 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PlayersApiMatchHistoryRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
-export const useMatchHistory = (steamId: number | null) => {
+export const useMatchHistory = (query: PlayersApiMatchHistoryRequest) => {
   return useQuery({
-    queryKey: ["api-match-history", steamId],
+    queryKey: ["api-match-history", query],
     queryFn: async () => {
-      if (!steamId) {
-        return [];
-      }
-      const response = await api.getMatchHistory(steamId);
-      if (response.ok) {
+      if (!query.accountId) return [];
+      const response = await api.players_api.matchHistory(query);
+      if (response.status === 200) {
         return response.data;
       } else {
         throw new Error(`Error fetching match history: ${JSON.stringify(response)}`);

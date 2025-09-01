@@ -10,9 +10,9 @@ import {
   type TouchableOpacityProps,
   View,
   type ViewProps,
-  type ViewStyle,
+  type ViewStyle
 } from "react-native";
-import { Text, type TextProps } from "src/Text";
+import { Text, type TextProps } from "src/components/ui/Text";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
@@ -145,7 +145,7 @@ export function Toggle<T>(props: ToggleProps<T>) {
     themed,
   } = useAppTheme();
 
-  const disabled = editable === false || status === "disabled" || props.disabled;
+  const disabled = !editable || status === "disabled" || props.disabled;
 
   const Wrapper = useMemo(
     () => (disabled ? View : TouchableOpacity) as ComponentType<TouchableOpacityProps | ViewProps>,

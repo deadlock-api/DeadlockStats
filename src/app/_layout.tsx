@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { SteamProfile } from "deadlock-api-client";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
@@ -8,11 +9,9 @@ import { KeyboardProvider } from "react-native-keyboard-controller";
 import { DEFAULT_TIME_RANGE, type TimeRange } from "src/components/select/TimeRangeSelect";
 import { useDeepLinking } from "src/hooks/useDeepLinking";
 import { initI18n } from "src/i18n";
-import type { SteamProfile } from "src/services/api/types/steam_profile";
 import { ThemeProvider } from "src/theme/context";
 import { customFontsToLoad } from "src/theme/typography";
 import { loadDateFnsLocale } from "src/utils/formatDate";
-import { MatchHistoryWidget } from "src/widgets/MatchHistoryWidget";
 
 // Globals
 export const usePlayerSelected = createGlobalState<SteamProfile | null>(null);

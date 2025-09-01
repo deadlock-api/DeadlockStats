@@ -5,8 +5,8 @@ export const useAssetsMap = () => {
   return useQuery({
     queryKey: ["assets-map"],
     queryFn: async () => {
-      const response = await assetsApi.getMap();
-      if (response.ok) {
+      const response = await assetsApi.default_api.getMapV1MapGet();
+      if (response.status === 200) {
         return response.data;
       } else {
         throw new Error(`Error fetching map: ${JSON.stringify(response)}`);

@@ -77,8 +77,8 @@ export default function PerformanceScreen() {
       }
 
       // Get metrics for current route
-      const communityMetric = communityStatsMetrics?.[props.route.key];
-      const playerMetric = playerStatsMetrics?.[props.route.key];
+      const communityMetric = communityStatsMetrics?.[Number(props.route.key)];
+      const playerMetric = playerStatsMetrics?.[Number(props.route.key)];
 
       // Show no data state
       if (!communityMetric || !playerMetric || !communityMetric.avg || !playerMetric.avg || !player?.account_id) {

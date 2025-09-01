@@ -1,11 +1,11 @@
-import type { MatchHistory } from "src/services/api/types/match_history";
+import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
 
 /**
  * Filters match history to only include matches from the last 7 days
  * @param matches Array of match history objects
  * @returns Filtered array of matches from the last 7 days
  */
-export function filterLast7Days(matches: MatchHistory[]): MatchHistory[] {
+export function filterLast7Days(matches: PlayerMatchHistoryEntry[]): PlayerMatchHistoryEntry[] {
   const thirtyDaysAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
   return matches.filter((match) => match.start_time >= thirtyDaysAgo);
 }
@@ -15,7 +15,7 @@ export function filterLast7Days(matches: MatchHistory[]): MatchHistory[] {
  * @param matches Array of match history objects
  * @returns Win rate as a percentage (0-100)
  */
-export function calculateWinRate(matches: MatchHistory[]): number {
+export function calculateWinRate(matches: PlayerMatchHistoryEntry[]): number {
   if (matches.length === 0) return 0;
 
   const wins = matches.filter((match) => isMatchWon(match)).length;
@@ -27,7 +27,7 @@ export function calculateWinRate(matches: MatchHistory[]): number {
  * @param matches Array of match history objects
  * @returns Object with total kills, deaths, assists, and KDA ratio
  */
-export function calculateKDA(matches: MatchHistory[]): {
+export function calculateKDA(matches: PlayerMatchHistoryEntry[]): {
   kills: number;
   deaths: number;
   assists: number;
@@ -57,38 +57,11 @@ export function calculateKDA(matches: MatchHistory[]): {
 }
 
 /**
- * Calculates average net worth across all matches
- * @param matches Array of match history objects
- * @returns Average net worth rounded to nearest integer
- */
-export function calculateAverageNetWorth(matches: MatchHistory[]): number {
-  if (matches.length === 0) return 0;
-
-  const totalNetWorth = matches.reduce((sum, match) => sum + match.net_worth, 0);
-  return Math.round(totalNetWorth / matches.length);
-}
-
-/**
- * Calculates average match duration in minutes
- * @param matches Array of match history objects
- * @returns Average match duration in minutes, rounded to 1 decimal place
- */
-export function calculateAverageMatchDuration(matches: MatchHistory[]): number {
-  if (matches.length === 0) return 0;
-
-  const totalDuration = matches.reduce((sum, match) => sum + match.match_duration_s, 0);
-  const averageSeconds = totalDuration / matches.length;
-  const averageMinutes = averageSeconds / 60;
-
-  return Math.round(averageMinutes * 10) / 10; // Round to 1 decimal place
-}
-
-/**
  * Gets most played heroes with their play count and win rate
  * @param matches Array of match history objects
  * @returns Array of hero statistics sorted by play count (descending)
  */
-export function getHeroStats(matches: MatchHistory[]): Array<{
+export function getHeroStats(matches: PlayerMatchHistoryEntry[]): Array<{
   heroId: number;
   playCount: number;
   winRate: number;
@@ -126,30 +99,6 @@ export function getHeroStats(matches: MatchHistory[]): Array<{
 }
 
 /**
- * Formats a number with appropriate suffixes (K, M, etc.)
- * @param num Number to format
- * @returns Formatted string with suffix
- */
-export function formatNumber(num: number): string {
-  if (num >= 1000000) {
-    return `${(num / 1000000).toFixed(1)}M`;
-  }
-  if (num >= 1000) {
-    return `${(num / 1000).toFixed(1)}K`;
-  }
-  return num.toString();
-}
-
-/**
- * Formats duration in minutes to a readable string
- * @param minutes Duration in minutes
- * @returns Formatted duration string (e.g., "25.5 min")
- */
-export function formatDuration(minutes: number): string {
-  return `${minutes} min`;
-}
-
-/**
  * Formats duration in seconds to a readable string
  * @param seconds Duration in seconds
  * @param leadingZero Whether to include a leading zero for minutes
@@ -167,10 +116,10 @@ export function formatMatchDuration(seconds: number, leadingZero: boolean = fals
 
 /**
  * Determines if a match was won by the player
- * @param match MatchHistory object
+ * @param match PlayerMatchHistoryEntry object
  * @returns true if the player won, false if they lost
  */
-export function isMatchWon(match: MatchHistory): boolean {
+export function isMatchWon(match: PlayerMatchHistoryEntry): boolean {
   return match.match_result === match.player_team;
 }
 

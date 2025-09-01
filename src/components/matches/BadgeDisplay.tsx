@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { type ImageStyle, type TextStyle, View, type ViewStyle } from "react-native";
+import { type ImageRequireSource, type ImageStyle, type TextStyle, View, type ViewStyle } from "react-native";
 import { AutoImage } from "src/components/ui/AutoImage";
 import { Text } from "src/components/ui/Text";
 import { useAssetsRanks } from "src/hooks/useAssetsRanks";
@@ -75,7 +75,7 @@ const BADGE_IMAGES = {
   114: require("@assets/ranks/114.webp"),
   115: require("@assets/ranks/115.webp"),
   116: require("@assets/ranks/116.webp"),
-} as const;
+} as Record<number, ImageRequireSource>;
 
 export interface BadgeDisplayProps {
   badge?: number;

@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import type { HeroStats } from "deadlock-api-client";
 import { Link } from "expo-router";
 import { useCallback, useState } from "react";
 import { ActivityIndicator, FlatList, type TextStyle, View, type ViewStyle } from "react-native";
@@ -11,8 +12,6 @@ import { Card } from "src/components/ui/Card";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useHeroStats } from "src/hooks/useHeroStats";
-
-import type { HeroStats } from "src/services/api/types/hero_stats";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
@@ -27,7 +26,7 @@ export default function HeroesStats() {
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
   const minUnixTimestamp = timeRange.value ? nextFullHour - timeRange.value : 0;
-  let { data: heroStats, isLoading } = useHeroStats(player?.account_id ?? null, minUnixTimestamp);
+  let { data: heroStats, isLoading } = useHeroStats({ accountIds: [player?.account_id ?? 0], minUnixTimestamp });
   heroStats = heroStats
     ?.filter((heroStat) => heroStat.matches_played > 0)
     .sort((a, b) => b.last_played - a.last_played);

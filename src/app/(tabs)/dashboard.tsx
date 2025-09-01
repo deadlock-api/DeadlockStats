@@ -1,5 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
+import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { Link, useRouter } from "expo-router";
 import { useCallback, useEffect } from "react";
 import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
@@ -19,7 +20,6 @@ import { useMateStats } from "src/hooks/useMateStats";
 import { useSteamProfile } from "src/hooks/useSteamProfile";
 import { translate } from "src/i18n/translate";
 import { api } from "src/services/api";
-import type { MatchHistory } from "src/services/api/types/match_history";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
@@ -34,13 +34,13 @@ export default function DashboardScreen() {
   const [player, setPlayer] = usePlayerSelected();
 
   const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile(steamId);
+  const { data: userProfile } = useSteamProfile({ accountId: steamId ?? 0 });
 
   useEffect(() => {
     if (!player && userProfile) setPlayer(userProfile ?? null);
   }, [userProfile, setPlayer, player]);
 
-  const { data: matchHistory, isLoading, error } = useMatchHistory(player?.account_id ?? null);
+  const { data: matchHistory, isLoading, error } = useMatchHistory({ accountId: player?.account_id ?? 0 });
 
   const queryClient = useQueryClient();
   const onRefreshing = useCallback(async () => await queryClient.refetchQueries({ type: "active" }), [queryClient]);
@@ -94,7 +94,13 @@ export default function DashboardScreen() {
   );
 }
 
-export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; matchHistory: MatchHistory[] }) => {
+export const StatDisplays = ({
+  accountId,
+  matchHistory,
+}: {
+  accountId: number;
+  matchHistory: PlayerMatchHistoryEntry[];
+}) => {
   const [_, setPlayer] = usePlayerSelected();
 
   const { themed, theme } = useAppTheme();
@@ -102,12 +108,14 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
   const now = Math.floor(Date.now() / 1000);
   const nextFullHour = Math.ceil(now / 3600) * 3600;
   const minUnixTimestamp = nextFullHour - 30 * 24 * 60 * 60;
-  const { data: mateStats, isLoading: mateLoading } = useMateStats(accountId ?? null, {
+  const { data: mateStats, isLoading: mateLoading } = useMateStats({
+    accountId: accountId ?? 0,
     sameParty: true,
     minMatchesPlayed: 10,
     minUnixTimestamp,
   });
-  const { data: enemyStats, isLoading: enemyLoading } = useEnemyStats(accountId ?? null, {
+  const { data: enemyStats, isLoading: enemyLoading } = useEnemyStats({
+    accountId: accountId ?? 0,
     minUnixTimestamp,
   });
   const uniqueMatchesPlayedMates = [...new Set(mateStats?.map((m) => m.matches_played))];
@@ -143,8 +151,8 @@ export const StatDisplays = ({ accountId, matchHistory }: { accountId: number; m
     .sort((a, b) => b.winRate - a.winRate)[0];
 
   function updatePlayer(accountId: number) {
-    api.getSteamProfile(accountId).then((response) => {
-      if (response.ok) {
+    api.players_api.steam({ accountId }).then((response) => {
+      if (response.status === 200) {
         if (response.data) {
           setPlayer(response.data);
         }

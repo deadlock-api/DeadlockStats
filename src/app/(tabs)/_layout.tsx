@@ -18,7 +18,7 @@ export default function TabLayout() {
   } = useAppTheme();
 
   const steamId = getSteamId();
-  const { data: userProfile } = useSteamProfile(steamId);
+  const { data: userProfile } = useSteamProfile({ accountId: steamId ?? 0 });
   const [player, setPlayer] = usePlayerSelected();
 
   return (

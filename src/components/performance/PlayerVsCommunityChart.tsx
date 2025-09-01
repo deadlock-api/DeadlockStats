@@ -1,8 +1,8 @@
 import { useFont } from "@shopify/react-native-skia";
+import type { HashMapValue } from "deadlock-api-client/api";
 import React, { useMemo } from "react";
 import { type TextStyle, View, type ViewStyle } from "react-native";
 import { Text } from "src/components/ui/Text";
-import type { Metrics } from "src/services/api/types/player_stats_metrics";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
 import {
@@ -19,11 +19,11 @@ export interface PlayerVsCommunityChartProps {
   /**
    * Community metrics data
    */
-  communityMetric: Metrics;
+  communityMetric: HashMapValue;
   /**
    * Player metrics data
    */
-  playerMetric: Metrics;
+  playerMetric: HashMapValue;
   /**
    * Player account ID (currently unused but kept for future use)
    */

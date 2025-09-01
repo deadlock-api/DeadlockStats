@@ -1,4 +1,4 @@
-import type { Metrics } from "src/services/api/types/player_stats_metrics";
+import type { HashMapValue } from "deadlock-api-client/api";
 
 export const NAMES_MAP: Record<string, string> = {
   accuracy: "Accuracy",
@@ -88,14 +88,14 @@ export function formatXAxisLabel(value: number): string {
   return `${value}%`;
 }
 
-export const getCommunityPercentileRank = (value: number, communityMetrics: Metrics, isLowerBetter: boolean) => {
-  const keyToPercentile = (k: keyof Metrics) => Number(k.replace("percentile", ""));
-  let pcts = Object.keys(communityMetrics).filter((k) => k.startsWith("percentile")) as (keyof Metrics)[];
+export const getCommunityPercentileRank = (value: number, communityMetrics: HashMapValue, isLowerBetter: boolean) => {
+  const keyToPercentile = (k: keyof HashMapValue) => Number(k.replace("percentile", ""));
+  let pcts = Object.keys(communityMetrics).filter((k) => k.startsWith("percentile")) as (keyof HashMapValue)[];
 
   if (isLowerBetter) pcts = pcts.sort((a, b) => keyToPercentile(a) - keyToPercentile(b));
   else pcts = pcts.sort((a, b) => keyToPercentile(b) - keyToPercentile(a));
 
-  let [lowerBound, upperBound]: [keyof Metrics, keyof Metrics] = isLowerBetter
+  let [lowerBound, upperBound]: [keyof HashMapValue, keyof HashMapValue] = isLowerBetter
     ? ["percentile1", "percentile99"]
     : ["percentile99", "percentile1"];
   for (let i = 0; i < pcts.length - 1; i++) {

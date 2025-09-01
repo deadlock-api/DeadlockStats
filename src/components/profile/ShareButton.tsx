@@ -1,7 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
+import type { SteamProfile } from "deadlock-api-client";
 import { Alert, Share, TouchableOpacity, type ViewStyle } from "react-native";
 import { translate } from "src/i18n/translate";
-import type { SteamProfile } from "src/services/api/types/steam_profile";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
 

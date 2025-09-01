@@ -1,15 +1,15 @@
+import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { useCallback, useState } from "react";
 import { FlatList, RefreshControl, TouchableOpacity, type ViewStyle } from "react-native";
 import { Card } from "src/components/ui/Card";
 import { Text } from "src/components/ui/Text";
-import type { MatchHistory } from "src/services/api/types/match_history";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
 import { MatchItem } from "./MatchItem";
 
 interface MatchListProps {
-  matches: MatchHistory[];
+  matches: PlayerMatchHistoryEntry[];
   scroll?: boolean;
   onRefreshing?: () => Promise<void>;
   onPress?: (matchId: number) => void;

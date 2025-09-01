@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 import { I18nManager } from "react-native";
 import "intl-pluralrules";
 
+import type { Language } from "assets-deadlock-api-client/api";
 import en from "./en.json";
 
 export type Translations = typeof en;
@@ -28,7 +29,7 @@ const pickSupportedLocale: () => Localization.Locale | undefined = () => {
 
 const locale = pickSupportedLocale();
 
-export const deadlock_locale = {
+export const deadlock_locale: Language = {
   pt: "portuguese",
   bg: "bulgarian",
   cs: "czech",
@@ -55,7 +56,7 @@ export const deadlock_locale = {
   tr: "turkish",
   uk: "ukrainian",
   vi: "vietnamese",
-}[(locale?.languageTag ?? fallbackLocale).split("-")[0]];
+}[(locale?.languageTag ?? fallbackLocale).split("-")[0]] as Language;
 
 export let isRTL = false;
 

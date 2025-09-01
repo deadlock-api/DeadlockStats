@@ -1,9 +1,9 @@
-import type { Rank } from "src/services/assets-api/types/rank";
+import type { RankV2 } from "assets-deadlock-api-client";
 
 export interface BadgeInfo {
   tier: number;
   subtier: number;
-  rank: Rank;
+  rank: RankV2;
 }
 
 /**
@@ -13,7 +13,7 @@ export interface BadgeInfo {
  * @param ranks Array of available ranks
  * @returns BadgeInfo object or null if invalid
  */
-export function parseBadgeNumber(badgeNumber: number, ranks: Rank[]): BadgeInfo | null {
+export function parseBadgeNumber(badgeNumber: number, ranks: RankV2[]): BadgeInfo | null {
   if (!badgeNumber || badgeNumber <= 0 || !ranks || ranks.length === 0) {
     return null;
   }
@@ -37,53 +37,4 @@ export function parseBadgeNumber(badgeNumber: number, ranks: Rank[]): BadgeInfo 
     subtier,
     rank,
   };
-}
-
-/**
- * Calculates the average badge for a team
- * @param playerBadges Array of badge numbers from team players
- * @returns Average badge number rounded to nearest integer
- */
-export function calculateAverageBadge(playerBadges: (number | undefined)[]): number | undefined {
-  const validBadges = playerBadges.filter((badge): badge is number => badge !== undefined && badge > 0);
-
-  if (validBadges.length === 0) {
-    return undefined;
-  }
-
-  const sum = validBadges.reduce((acc, badge) => acc + badge, 0);
-  return Math.round(sum / validBadges.length);
-}
-
-/**
- * Gets the display name for a badge
- * @param badgeNumber The badge number
- * @param ranks Array of available ranks
- * @returns Display name string
- */
-export function getBadgeDisplayName(badgeNumber: number | undefined, ranks: Rank[]): string {
-  if (!badgeNumber || !ranks) {
-    return "Unranked";
-  }
-
-  const badgeInfo = parseBadgeNumber(badgeNumber, ranks);
-  if (!badgeInfo) {
-    return "Unranked";
-  }
-
-  return badgeInfo.subtier > 0 ? `${badgeInfo.rank.name} ${badgeInfo.subtier}` : badgeInfo.rank.name;
-}
-
-/**
- * Compares two badge numbers for sorting
- * @param a First badge number
- * @param b Second badge number
- * @returns Comparison result for sorting (higher badges first)
- */
-export function compareBadges(a: number | undefined, b: number | undefined): number {
-  // Treat undefined as 0 for comparison
-  const badgeA = a ?? 0;
-  const badgeB = b ?? 0;
-
-  return badgeB - badgeA; // Higher badges first
 }

@@ -1,22 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
+import type { PlayersApiMateStatsRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
-export const useMateStats = (
-  steamId: number | null,
-  query?: { minUnixTimestamp?: number | null; sameParty?: boolean; minMatchesPlayed?: number },
-) => {
+export const useMateStats = (query: PlayersApiMateStatsRequest) => {
   return useQuery({
-    queryKey: ["api-mate-stats", steamId, query?.minUnixTimestamp, query?.sameParty, query?.minMatchesPlayed],
+    queryKey: ["api-mate-stats", query],
     queryFn: async () => {
-      if (!steamId) {
-        return [];
-      }
-      const response = await api.getMateStats(steamId, {
-        min_unix_timestamp: query?.minUnixTimestamp ?? undefined,
-        same_party: query?.sameParty ?? false,
-        min_matches_played: query?.minMatchesPlayed ?? undefined,
-      });
-      if (response.ok) {
+      if (!query?.accountId) return [];
+      const response = await api.players_api.mateStats(query);
+      if (response.status === 200) {
         return response.data;
       } else {
         throw new Error(`Error fetching mate stats: ${JSON.stringify(response)}`);

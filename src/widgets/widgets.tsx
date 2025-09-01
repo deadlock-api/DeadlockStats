@@ -1,4 +1,5 @@
 import { TextWidget } from "react-native-android-widget";
+import { deadlock_locale } from "src/i18n";
 import { api } from "src/services/api";
 import { assetsApi } from "src/services/assets-api";
 import { getSteamId } from "src/utils/steamAuth";
@@ -17,8 +18,14 @@ export default class {
     switch (this.name) {
       case "MatchHistory": {
         const accountId = getSteamId() ?? undefined;
-        const matchHistory = accountId ? ((await api.getMatchHistory(accountId)).data ?? []) : [];
-        const assetsHeroes = (await assetsApi.getHeroes()).data ?? [];
+        const matchHistory = accountId ? ((await api.players_api.matchHistory({ accountId })).data ?? []) : [];
+        const assetsHeroes =
+          (
+            await assetsApi.heroes_api.getHeroesV2HeroesGet({
+              onlyActive: true,
+              language: deadlock_locale,
+            })
+          ).data ?? [];
         return <MatchHistoryWidget accountId={accountId} matchHistory={matchHistory} heroes={assetsHeroes} />;
       }
       default:

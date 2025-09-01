@@ -24,7 +24,7 @@ export default function MatchDetails() {
 
   const matchIdNumber = Number(matchId);
 
-  const { data: matchData, isLoading, error } = useMatchMetadata(matchIdNumber);
+  const { data: matchData, isLoading, error } = useMatchMetadata({ matchId: matchIdNumber });
   const { data: mapData } = useAssetsMap();
 
   if (!matchId) {
