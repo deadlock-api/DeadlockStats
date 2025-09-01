@@ -250,18 +250,6 @@ const $inputWrapper: ViewStyle = {
   alignItems: "center",
 };
 
-export const $inputOuterBase: ViewStyle = {
-  height: 24,
-  width: 24,
-  borderWidth: 2,
-  alignItems: "center",
-  overflow: "hidden",
-  flexGrow: 0,
-  flexShrink: 0,
-  justifyContent: "space-between",
-  flexDirection: "row",
-};
-
 const $helper: ThemedStyle<TextStyle> = ({ spacing }) => ({
   marginTop: spacing.xs,
 });
