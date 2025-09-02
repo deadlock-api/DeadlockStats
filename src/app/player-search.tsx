@@ -9,7 +9,7 @@ import { SteamName } from "src/components/profile/SteamName";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useDebounce } from "src/hooks/useDebounce";
-import { useSearchSteamProfile } from "src/hooks/useSteamProfile";
+import { useSearchSteamProfile } from "src/hooks/useSteamProfiles";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";

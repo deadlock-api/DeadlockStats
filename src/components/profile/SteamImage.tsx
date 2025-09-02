@@ -1,7 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import type { SteamProfile } from "deadlock-api-client";
 import { AutoImage } from "src/components/ui/AutoImage";
-import { useSteamProfile } from "src/hooks/useSteamProfile";
+import { useSteamProfiles } from "src/hooks/useSteamProfiles";
 import { useAppTheme } from "src/theme/context";
 
 const DEFAULT_SIZE = 48;
@@ -18,7 +18,7 @@ export function SteamImage(props: SteamImageProps) {
 }
 
 export function SteamImageFetch({ accountId, size }: Omit<SteamImageProps, "account">) {
-  const { data: profiles } = useSteamProfile({ accountIds: [accountId ?? 0] });
+  const { data: profiles } = useSteamProfiles({ accountIds: [accountId ?? 0] });
 
   if (!profiles) return null;
   return <SteamImageProfile profile={profiles[0]} size={size} />;

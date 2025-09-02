@@ -5,7 +5,7 @@ import { usePlayerSelected } from "src/app/_layout";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
 import { Text } from "src/components/ui/Text";
-import { useSteamProfile } from "src/hooks/useSteamProfile";
+import { useSteamProfiles } from "src/hooks/useSteamProfiles";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
@@ -18,7 +18,7 @@ export default function TabLayout() {
   } = useAppTheme();
 
   const steamId = getSteamId();
-  const { data: userProfiles } = useSteamProfile({ accountIds: [steamId ?? 0] });
+  const { data: userProfiles } = useSteamProfiles({ accountIds: [steamId ?? 0] });
   const [player, setPlayer] = usePlayerSelected();
 
   return (

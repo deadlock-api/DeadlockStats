@@ -3,7 +3,7 @@ import type { PlayersApiSteamRequest } from "deadlock-api-client";
 import type { PlayersApiSteamSearchRequest } from "deadlock-api-client/api";
 import { api } from "src/services/api";
 
-export const useSteamProfile = (query: PlayersApiSteamRequest) => {
+export const useSteamProfiles = (query: PlayersApiSteamRequest) => {
   return useQuery({
     queryKey: ["api-steam-profiles", query],
     queryFn: async () => {
@@ -12,7 +12,7 @@ export const useSteamProfile = (query: PlayersApiSteamRequest) => {
       if (response.status === 200) {
         return response.data;
       } else {
-        throw new Error(`Error fetching steam profile: ${JSON.stringify(response)}`);
+        throw new Error(`Error fetching steam profiles: ${JSON.stringify(response)}`);
       }
     },
     staleTime: 60 * 60 * 1000,

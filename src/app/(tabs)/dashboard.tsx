@@ -17,7 +17,7 @@ import { useAssetsHeroes } from "src/hooks/useAssetsHeroes";
 import { useEnemyStats } from "src/hooks/useEnemyStats";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
 import { useMateStats } from "src/hooks/useMateStats";
-import { useSteamProfile } from "src/hooks/useSteamProfile";
+import { useSteamProfiles } from "src/hooks/useSteamProfiles";
 import { translate } from "src/i18n/translate";
 import { api } from "src/services/api";
 import { useAppTheme } from "src/theme/context";
@@ -34,7 +34,7 @@ export default function DashboardScreen() {
   const [player, setPlayer] = usePlayerSelected();
 
   const steamId = getSteamId();
-  const { data: userProfiles } = useSteamProfile({ accountIds: [steamId ?? 0] });
+  const { data: userProfiles } = useSteamProfiles({ accountIds: [steamId ?? 0] });
 
   useEffect(() => {
     if (!player && userProfiles) setPlayer(userProfiles[0] ?? null);
