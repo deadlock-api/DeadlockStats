@@ -1,6 +1,7 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, type TextStyle, View, type ViewStyle } from "react-native";
 import { Button } from "src/components/ui/Button";
@@ -9,20 +10,26 @@ import { Text } from "src/components/ui/Text";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
+import { isAnalyticsEnabled } from "src/utils/analytics";
 import {
   convertToSteamID3,
   extractSteamIdFromUrl,
+  getSkipWelcomePreference,
   removeSkipWelcomePreference,
   saveSkipWelcomePreference,
-  saveSteamId,
+  saveSteamId
 } from "src/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
 
 export default function Welcome() {
+  const posthog = usePostHog();
   const router = useRouter();
   const { themed, theme } = useAppTheme();
   const [isLoading, setIsLoading] = useState(false);
+
+  const skipWelcome = getSkipWelcomePreference();
+  if (skipWelcome) router.replace("/(tabs)/dashboard");
 
   /**
    * Initiates the Steam OpenID Connect authentication flow
@@ -76,6 +83,7 @@ export default function Welcome() {
 
           // Save to storage
           const saved = saveSteamId(steamId3);
+          if (isAnalyticsEnabled()) posthog.identify(steamId3.toString());
 
           if (saved) {
             // Remove skip preference since user has now linked Steam
@@ -99,7 +107,7 @@ export default function Welcome() {
         ]);
       }
     },
-    [router],
+    [router, posthog],
   );
 
   /**

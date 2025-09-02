@@ -3,6 +3,7 @@ import { Galeria } from "@nandorojo/galeria";
 import Clipboard from "@react-native-clipboard/clipboard";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { usePostHog } from "posthog-react-native";
 import { createRef, type Ref, useCallback, useEffect, useMemo, useState } from "react";
 import {
   ActivityIndicator,
@@ -27,6 +28,7 @@ import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
+import { isAnalyticsEnabled } from "src/utils/analytics";
 import { sample } from "src/utils/random";
 import { removeSkipWelcomePreference } from "src/utils/steamAuth";
 import { loadString, remove, saveString } from "src/utils/storage";
@@ -63,6 +65,7 @@ interface FormattedResponseEvent {
 export type AgentStep = ActionEvent | FinalAnswerEvent | FormattedResponseEvent;
 
 export default function Chat() {
+  const posthog = usePostHog();
   const tokenWithExpire = loadString("captchaTokenWithExpire");
   let captchaToken: string | null = null;
   if (tokenWithExpire) {
@@ -139,6 +142,12 @@ export default function Chat() {
     }
 
     setLock(true);
+
+    if (isAnalyticsEnabled()) {
+      posthog.capture("chat_message_sent", {
+        prompt,
+      });
+    }
 
     const url = new URL(`${Config.AI_ASSISTANT_API_URL}/invoke`);
     url.searchParams.append("prompt", prompt);
