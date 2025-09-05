@@ -1,8 +1,8 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
-import type { PlayerMatchHistoryEntry } from "deadlock-api-client";
+import type { MMRHistory, PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { Link, useRouter } from "expo-router";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
@@ -11,12 +11,15 @@ import { MatchList } from "src/components/matches/MatchList";
 import { StatCard } from "src/components/profile/StatCard";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
+import { RankImage } from "src/components/rank/RankImage";
+import { RankName } from "src/components/rank/RankName";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useAssetsHeroes } from "src/hooks/useAssetsHeroes";
 import { useEnemyStats } from "src/hooks/useEnemyStats";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
 import { useMateStats } from "src/hooks/useMateStats";
+import { useMMRHistory } from "src/hooks/useMMRHistory";
 import { useSteamProfiles } from "src/hooks/useSteamProfiles";
 import { translate } from "src/i18n/translate";
 import { api } from "src/services/api";
@@ -26,6 +29,7 @@ import type { ThemedStyle } from "src/theme/types";
 import { calculateKDA, calculateWinRate, filterLast7Days, getHeroStats, isMatchWon } from "src/utils/matchHistoryStats";
 import { scaleColor } from "src/utils/scaleColor";
 import { getSteamId, hasSteamId } from "src/utils/steamAuth";
+import { CartesianChart, Line } from "victory-native";
 
 export default function DashboardScreen() {
   const router = useRouter();
@@ -41,6 +45,7 @@ export default function DashboardScreen() {
   }, [userProfiles, setPlayer, player]);
 
   const { data: matchHistory, isLoading, error } = useMatchHistory({ accountId: player?.account_id ?? 0 });
+  const { data: rankData } = useMMRHistory({ accountId: player?.account_id ?? 0 });
 
   const queryClient = useQueryClient();
   const onRefreshing = useCallback(async () => await queryClient.refetchQueries({ type: "active" }), [queryClient]);
@@ -49,7 +54,7 @@ export default function DashboardScreen() {
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader} onRefreshing={onRefreshing}>
       {player?.account_id && matchHistory && matchHistory.length > 0 ? (
         <>
-          <StatDisplays accountId={player?.account_id} matchHistory={matchHistory} />
+          <StatDisplays accountId={player?.account_id} matchHistory={matchHistory} rankData={rankData} />
           <View
             style={{
               flexDirection: "row",
@@ -97,9 +102,11 @@ export default function DashboardScreen() {
 export const StatDisplays = ({
   accountId,
   matchHistory,
+  rankData,
 }: {
   accountId: number;
   matchHistory: PlayerMatchHistoryEntry[];
+  rankData?: MMRHistory[];
 }) => {
   const [_, setPlayer] = usePlayerSelected();
 
@@ -166,21 +173,74 @@ export const StatDisplays = ({
     return <ActivityIndicator />;
   }
 
+  const chartData = rankData
+    ?.sort((a, b) => b.match_id - a.match_id)
+    .slice(0, 50)
+    .map((rd, row) => ({ row, rank: rd.player_score }));
+
   return (
     <View style={themed($statDisplaysContainer)}>
-      <StatCard
-        title={translate("dashboardScreen:winRate7Days")}
-        value={`${winRate}%`}
-        valueChange={wins - losses}
-        valueColor={wins + losses > 0 ? scaleColor(winRate, 30, 70) : theme.colors.text}
-        subtitle={`${wins}W ${losses}L`}
-      />
-      <StatCard
-        title={translate("dashboardScreen:avgKda7Days")}
-        value={kda.ratio > 0 ? kda.ratio : "N/A"}
-        subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
-        valueColor={kda.ratio > 0 ? scaleColor(kda.ratio, 0.5, 4) : theme.colors.text}
-      />
+      <View style={{ flexDirection: "row", justifyContent: "space-between", gap: theme.spacing.sm }}>
+        {rankData && (
+          <StatCard
+            value={
+              <>
+                <View style={[$styles.column, { alignItems: "center" }]}>
+                  <RankImage rank={rankData?.[0].rank} size={40} />
+                  <Text size="md" style={{ color: theme.colors.text }}>
+                    <RankName rank={rankData?.[0].rank} />
+                  </Text>
+                  <Text
+                    size="xxs"
+                    style={{ textAlign: "center", color: theme.colors.textDim, lineHeight: theme.spacing.xs }}
+                    text="Average from last 50 matches"
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                  />
+                </View>
+                <View style={{ height: 60, marginTop: theme.spacing.xs }}>
+                  {chartData && (
+                    <CartesianChart
+                      data={chartData}
+                      xKey="row"
+                      yKeys={["rank"]}
+                      yAxis={[
+                        {
+                          lineWidth: 0,
+                          lineColor: "transparent",
+                        },
+                      ]}
+                      xAxis={{
+                        lineWidth: 0,
+                        lineColor: "transparent",
+                      }}
+                    >
+                      {({ points }) => <Line points={points.rank} color={theme.colors.tint} strokeWidth={3} />}
+                    </CartesianChart>
+                  )}
+                </View>
+              </>
+            }
+            valueColor={theme.colors.text}
+          />
+        )}
+
+        <View style={{ flexDirection: "column", gap: theme.spacing.xs, justifyContent: "space-between" }}>
+          <StatCard
+            title={translate("dashboardScreen:winRate7Days")}
+            value={`${winRate}%`}
+            valueChange={wins - losses}
+            valueColor={wins + losses > 0 ? scaleColor(winRate, 30, 70) : theme.colors.text}
+            subtitle={`${wins}W ${losses}L`}
+          />
+          <StatCard
+            title={translate("dashboardScreen:avgKda7Days")}
+            value={kda.ratio > 0 ? kda.ratio : "N/A"}
+            subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
+            valueColor={kda.ratio > 0 ? scaleColor(kda.ratio, 0.5, 4) : theme.colors.text}
+          />
+        </View>
+      </View>
       {bestMate && (
         <StatCard
           onPress={() => updatePlayer(bestMate.mate_id)}
@@ -207,6 +267,7 @@ export const StatDisplays = ({
           }
           subtitle={`${((100 * (bestMate?.wins ?? 0)) / (bestMate?.matches_played ?? 1)).toFixed(0)}% WR | ${bestMate.matches_played} M`}
           valueColor={theme.colors.text}
+          width="48%"
         />
       )}
       {worstEnemy && (
@@ -230,6 +291,7 @@ export const StatDisplays = ({
           }
           subtitle={`${((100 * (worstEnemy?.wins ?? 0)) / (worstEnemy?.matches_played ?? 1)).toFixed(0)}% WR | ${worstEnemy.matches_played} M`}
           valueColor={theme.colors.text}
+          width="48%"
         />
       )}
       <Link href={`/(tabs)/heroes/${mostPlayedHero.heroId}`} asChild>
@@ -252,6 +314,7 @@ export const StatDisplays = ({
           }
           subtitle={`${mostPlayedHero.winRate}% WR | ${mostPlayedHero.playCount} M`}
           valueColor={theme.colors.text}
+          width="48%"
         />
       </Link>
       <Link href={`/(tabs)/heroes/${highestWinRateHero.heroId}`} asChild>
@@ -274,6 +337,7 @@ export const StatDisplays = ({
           }
           subtitle={`${highestWinRateHero.winRate}% WR | ${highestWinRateHero.playCount} M`}
           valueColor={theme.colors.text}
+          width="48%"
         />
       </Link>
     </View>

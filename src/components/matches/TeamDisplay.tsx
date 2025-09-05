@@ -1,9 +1,9 @@
 import { type TextStyle, View, type ViewStyle } from "react-native";
+import { RankImage } from "src/components/rank/RankImage";
 import { Text } from "src/components/ui/Text";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
-import { BadgeDisplay } from "./BadgeDisplay";
 
 export interface TeamDisplayProps {
   /**
@@ -87,7 +87,7 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
   return (
     <View style={themed($teamContainer)}>
       <View style={[themed($teamContainerTop), themed(isLeft ? $teamContainerTopLeft : $teamContainerTopRight)]}>
-        {isLeft && <BadgeDisplay badge={badge} />}
+        {isLeft && badge && <RankImage rank={badge} />}
         <View style={themed(isLeft ? $leftTeamNameContainer : $rightTeamNameContainer)}>
           <Text size="md" style={themed(isLeft ? $leftTeamName : $rightTeamName)}>
             {teamName}
@@ -99,7 +99,7 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
             }}
           />
         </View>
-        {!isLeft && <BadgeDisplay badge={badge} />}
+        {!isLeft && badge && <RankImage rank={badge} />}
       </View>
       <View style={themed(isLeft ? $leftTeamStats : $rightTeamStats)}>
         {kda}

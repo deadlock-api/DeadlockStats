@@ -1,13 +1,10 @@
-import { useMemo } from "react";
-import { type ImageRequireSource, type ImageStyle, type TextStyle, View, type ViewStyle } from "react-native";
+import type { ImageRequireSource } from "react-native";
 import { AutoImage } from "src/components/ui/AutoImage";
-import { Text } from "src/components/ui/Text";
 import { useAssetsRanks } from "src/hooks/useAssetsRanks";
-import { useAppTheme } from "src/theme/context";
-import type { ThemedStyle } from "src/theme/types";
-import { parseBadgeNumber } from "src/utils/badgeCalculations";
 
-const BADGE_IMAGES = {
+const DEFAULT_SIZE = 70;
+
+const RANK_IMAGES = {
   0: require("@assets/ranks/0.webp"),
   11: require("@assets/ranks/11.webp"),
   12: require("@assets/ranks/12.webp"),
@@ -77,84 +74,30 @@ const BADGE_IMAGES = {
   116: require("@assets/ranks/116.webp"),
 } as Record<number, ImageRequireSource>;
 
-export interface BadgeDisplayProps {
-  badge?: number;
+export interface RankImageProps {
+  rank: number;
   size?: number;
-  showName?: boolean;
 }
 
-export function BadgeDisplay(props: BadgeDisplayProps) {
-  const { badge, size = 40, showName = false } = props;
-  const { themed } = useAppTheme();
+const division = (rank: number) => Math.floor(rank / 10);
+const subrank = (rank: number) => rank % 10;
+
+export function RankImage(props: RankImageProps) {
   const { data: ranks } = useAssetsRanks();
 
-  const badgeInfo = useMemo(() => {
-    if (!badge || !ranks) return null;
-    return parseBadgeNumber(badge, ranks);
-  }, [badge, ranks]);
-
-  if (!badgeInfo) {
-    return (
-      <View style={themed($container)}>
-        <View style={[themed($placeholder), { width: size, height: size }]}>
-          <Text style={themed($placeholderText)} size="md">
-            ?
-          </Text>
-        </View>
-        {showName && <Text style={themed($rankName)} numberOfLines={1} tx="matchDetailsScreen:unranked" size="xxs" />}
-      </View>
-    );
-  }
-
-  const imageUri =
-    badgeInfo.subtier > 0
-      ? badgeInfo.rank.images[`small_subrank${badgeInfo.subtier}_webp` as keyof typeof badgeInfo.rank.images]
-      : badgeInfo.rank.images.small_webp;
+  const rank = ranks?.find((r) => r.tier === division(props.rank));
+  // @ts-expect-error
+  const image = rank?.images[`small_subrank${subrank(props.rank)}_webp`] as string;
 
   return (
-    <View style={themed($container)}>
-      <AutoImage
-        source={BADGE_IMAGES[badge ?? 0] ?? { uri: imageUri }}
-        style={[
-          themed($badgeImage),
-          {
-            width: size,
-            height: size,
-          },
-        ]}
-      />
-      {showName && (
-        <Text style={themed($rankName)} numberOfLines={1}>
-          {badgeInfo.rank.name}
-          {badgeInfo.subtier > 0 && ` ${badgeInfo.subtier}`}
-        </Text>
-      )}
-    </View>
+    <AutoImage
+      source={RANK_IMAGES[props.rank] ?? { uri: image }}
+      style={[
+        {
+          width: props.size ?? DEFAULT_SIZE,
+          height: props.size ?? DEFAULT_SIZE,
+        },
+      ]}
+    />
   );
 }
-
-const $container: ThemedStyle<ViewStyle> = ({ spacing }) => ({
-  alignItems: "center",
-  gap: spacing.xxs,
-});
-
-const $badgeImage: ThemedStyle<ImageStyle> = () => ({
-  borderRadius: 4,
-});
-
-const $placeholder: ThemedStyle<ViewStyle> = ({ colors }) => ({
-  backgroundColor: colors.palette.neutral300,
-  borderRadius: 4,
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-const $placeholderText: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  fontWeight: "bold",
-});
-
-const $rankName: ThemedStyle<TextStyle> = ({ colors }) => ({
-  color: colors.textDim,
-  textAlign: "center",
-});

@@ -17,7 +17,7 @@ import {
   getSkipWelcomePreference,
   removeSkipWelcomePreference,
   saveSkipWelcomePreference,
-  saveSteamId
+  saveSteamId,
 } from "src/utils/steamAuth";
 
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";

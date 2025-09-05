@@ -4,10 +4,12 @@ import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-n
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { TeamDisplay } from "src/components/matches/TeamDisplay";
 import { SteamName } from "src/components/profile/SteamName";
+import { RankImage } from "src/components/rank/RankImage";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useAssetsMap } from "src/hooks/useAssetsMap";
 import { useMatchMetadata } from "src/hooks/useMatchMetadata";
+import { useMMRBatch } from "src/hooks/useMMRBatch";
 import { translate } from "src/i18n/translate";
 import { LobbyTeam } from "src/services/api/types/match_metadata";
 import { useAppTheme } from "src/theme/context";
@@ -19,15 +21,18 @@ const PARTY_COLORS = ["#FBDCA0", "#BDCBFF", "#FFA500", "#00BFFF", "#FFC0CB", "#0
 
 export default function MatchDetails() {
   const router = useRouter();
-  const { matchId } = useLocalSearchParams<{ matchId: string }>();
+  const { matchId: matchIdStr } = useLocalSearchParams<{ matchId: string }>();
   const { themed, theme } = useAppTheme();
 
-  const matchIdNumber = Number(matchId);
+  const matchId = Number(matchIdStr);
 
-  const { data: matchData, isLoading, error } = useMatchMetadata({ matchId: matchIdNumber });
+  const { data: matchData, isLoading, error } = useMatchMetadata({ matchId });
   const { data: mapData } = useAssetsMap();
 
-  if (!matchId) {
+  const accountIds = matchData?.players?.map((player) => player.account_id ?? 0).filter((v) => v > 0) ?? [];
+  const { data: rankData } = useMMRBatch({ accountIds, maxMatchId: matchId });
+
+  if (!matchIdStr) {
     router.replace("/(tabs)/matches");
     return null;
   }
@@ -113,12 +118,20 @@ export default function MatchDetails() {
     return mapData?.zipline_paths[laneIdx]?.color ?? "transparent";
   };
 
+  const playerRanks = rankData?.reduce(
+    (acc, rd) => {
+      acc[rd.account_id] = rd.rank;
+      return acc;
+    },
+    {} as Record<number, number>,
+  );
+
   return (
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader}>
       <View style={themed($container)}>
         <View>
           <Text preset="subheading" style={{ marginBottom: theme.spacing.md, textAlign: "center" }}>
-            {translate("matchDetailsScreen:title")} {matchIdNumber}
+            {translate("matchDetailsScreen:title")} {matchId}
           </Text>
           <View style={themed($headerContainer)}>
             <View style={{ alignItems: "flex-end" }}>
@@ -153,7 +166,7 @@ export default function MatchDetails() {
               tx="matchDetailsScreen:playerNameLabel"
             />
             {[...team0Players, ...team1Players].map((player) => (
-              <Link key={player.account_id} href={`/(tabs)/matches/${matchIdNumber}/player/${player.account_id}`}>
+              <Link key={player.account_id} href={`/(tabs)/matches/${matchId}/player/${player.account_id}`}>
                 <View
                   style={{
                     flexDirection: "row",
@@ -162,7 +175,7 @@ export default function MatchDetails() {
                     borderRadius: theme.spacing.xxs,
                     paddingLeft: theme.spacing.xxs,
                     borderLeftColor: getPartyColor(player.account_id ?? 0),
-                    gap: theme.spacing.xxxs,
+                    gap: theme.spacing.xxxxs,
                   }}
                 >
                   <LinearGradient
@@ -171,15 +184,18 @@ export default function MatchDetails() {
                     end={{ x: 0.1, y: 0 }}
                   />
                   <HeroImage heroId={player.hero_id ?? 1} size={20} />
+                  {playerRanks && player.account_id && playerRanks[player.account_id] && (
+                    <RankImage rank={playerRanks[player.account_id]} size={20} />
+                  )}
                   <View
                     style={{
-                      marginLeft: theme.spacing.xs,
-                      marginRight: theme.spacing.xxs,
+                      marginLeft: theme.spacing.xxs,
+                      marginRight: theme.spacing.xxxs,
                       padding: theme.spacing.xxs,
                       backgroundColor: getLaneColor(player.account_id ?? 0),
                     }}
                   ></View>
-                  <Text numberOfLines={1} style={[themed($playerStat), themed($playerName)]} size={"xs"}>
+                  <Text numberOfLines={1} style={[themed($playerStat), themed($playerName)]} size="xs">
                     {player.account_id && <SteamName accountId={player.account_id} />}
                   </Text>
                 </View>
@@ -209,19 +225,6 @@ export default function MatchDetails() {
             {[...team0Players, ...team1Players].map((player) => (
               <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"xs"}>
                 {((player.net_worth ?? 0) / 1000).toFixed(0)}k
-              </Text>
-            ))}
-          </View>
-          <View style={themed($playersStatsContainer)}>
-            <Text
-              numberOfLines={1}
-              style={[themed($playerHeader)]}
-              size={"sm"}
-              tx="matchDetailsScreen:playerDamageLabelShort"
-            />
-            {[...team0Players, ...team1Players].map((player) => (
-              <Text numberOfLines={1} key={player.account_id} style={[themed($playerStat)]} size={"xs"}>
-                {((player.stats[player.stats.length - 1]?.player_damage ?? 0) / 1000).toFixed(0)}k
               </Text>
             ))}
           </View>

@@ -9,12 +9,13 @@ import type { ThemedStyle } from "src/theme/types";
 const { width: screenWidth } = Dimensions.get("window");
 
 export interface StatCardProps {
-  title: string;
+  title?: string;
   value: string | number | React.ReactNode;
   unit?: string;
   valueChange?: number;
   valueColor?: string;
   subtitle?: string;
+  centerSubtitle?: boolean;
   width?: DimensionValue;
   size?: TextProps["size"];
   onPress?: () => void;
@@ -25,6 +26,7 @@ export const StatCard = ({
   value,
   unit,
   subtitle,
+  centerSubtitle,
   valueChange,
   valueColor,
   width,
@@ -44,10 +46,12 @@ export const StatCard = ({
       ]}
       onPress={onPress}
     >
-      <View style={themed($statCardHeader)}>
-        <Text size="xs" text={title} />
-        {onPress && <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />}
-      </View>
+      {title && (
+        <View style={themed($statCardHeader)}>
+          <Text size="xs" text={title} />
+          {onPress && <FontAwesome6 name="chevron-right" solid color={theme.colors.tint} size={14} />}
+        </View>
+      )}
       {React.isValidElement(value) ? (
         <View>{value}</View>
       ) : (
@@ -63,7 +67,15 @@ export const StatCard = ({
           <StatCardValueChange valueChange={valueChange} />
         </View>
       )}
-      {subtitle && <Text size="xxs" style={themed($statSubtitleText)} text={subtitle} />}
+      {subtitle && (
+        <Text
+          size="xxs"
+          style={[themed($statSubtitleText), centerSubtitle && { textAlign: "center" }]}
+          text={subtitle}
+          adjustsFontSizeToFit
+          numberOfLines={1}
+        />
+      )}
     </Card>
   );
 };
@@ -97,7 +109,6 @@ const StatCardValueChange: React.FC<{ valueChange?: number }> = ({ valueChange }
 const $statCard: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "column",
   justifyContent: "space-between",
-  flexGrow: 1,
 });
 
 const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
@@ -108,6 +119,7 @@ const $statCardHeader: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   flex: 1,
 });
 
-const $statSubtitleText: ThemedStyle<TextStyle> = (theme) => ({
-  color: theme.colors.textDim,
+const $statSubtitleText: ThemedStyle<TextStyle> = ({ colors, spacing }) => ({
+  color: colors.textDim,
+  lineHeight: spacing.sm,
 });
