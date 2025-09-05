@@ -12,7 +12,8 @@ module.exports = (): ExpoConfig => {
     slug: "DeadlockStats",
     scheme: "deadlockstats",
     version: "0.0.5",
-    platforms: ["android", "ios"],
+    platforms: ["android"],
+    // platforms: ["android", "ios"],
     userInterfaceStyle: "automatic",
     icon: "./assets/images/app-icon-all.png",
     updates: {
@@ -44,25 +45,25 @@ module.exports = (): ExpoConfig => {
         resizeMode: "contain",
       },
     },
-    ios: {
-      icon: "./assets/images/app-icon-ios.png",
-      supportsTablet: true,
-      bundleIdentifier: "com.deadlockapi.deadlockstats",
-      associatedDomains: ["applinks:deadlock-api.com"],
-      privacyManifests: {
-        NSPrivacyAccessedAPITypes: [
-          {
-            NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategoryUserDefaults",
-            NSPrivacyAccessedAPITypeReasons: ["CA92.1"], // CA92.1 = "Access info from same app, per documentation"
-          },
-        ],
-      },
-      splash: {
-        backgroundColor: "#0F172A",
-        image: "./assets/images/splash-logo-ios-mobile.png",
-        resizeMode: "contain",
-      },
-    },
+    // ios: {
+    //   icon: "./assets/images/app-icon-ios.png",
+    //   supportsTablet: true,
+    //   bundleIdentifier: "com.deadlockapi.deadlockstats",
+    //   associatedDomains: ["applinks:deadlock-api.com"],
+    //   privacyManifests: {
+    //     NSPrivacyAccessedAPITypes: [
+    //       {
+    //         NSPrivacyAccessedAPIType: "NSPrivacyAccessedAPICategoryUserDefaults",
+    //         NSPrivacyAccessedAPITypeReasons: ["CA92.1"], // CA92.1 = "Access info from same app, per documentation"
+    //       },
+    //     ],
+    //   },
+    //   splash: {
+    //     backgroundColor: "#0F172A",
+    //     image: "./assets/images/splash-logo-ios-mobile.png",
+    //     resizeMode: "contain",
+    //   },
+    // },
     plugins: [
       "expo-router",
       [
