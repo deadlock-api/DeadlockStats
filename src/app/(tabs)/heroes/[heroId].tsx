@@ -119,8 +119,8 @@ export default function HeroDetails() {
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader}>
       {header}
       <View style={themed($stats)}>
-        <StatCard width="40%" title="Last Played" value={lastPlayed} />
-        <StatCard width="40%" title="Playtime" value={timePlayed} />
+        <StatCard width="48%" title="Last Played" value={lastPlayed} />
+        <StatCard width="48%" title="Playtime" value={timePlayed} />
         <StatCard
           width="30%"
           title="Winrate"
