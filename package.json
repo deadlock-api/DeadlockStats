@@ -33,7 +33,7 @@
     "@react-native-async-storage/async-storage": "2.1.2",
     "@react-native-clipboard/clipboard": "^1.16.3",
     "@shopify/react-native-skia": "2.0.0-next.4",
-    "@tanstack/react-query": "^5.85.6",
+    "@tanstack/react-query": "^5.86.0",
     "assets-deadlock-api-client": "github:deadlock-api/openapi-clients#path:/typescript/assets-api",
     "axios": "^1.11.0",
     "date-fns": "^4.1.0",
@@ -52,7 +52,7 @@
     "expo-router": "~5.1.5",
     "expo-splash-screen": "~0.30.10",
     "expo-system-ui": "~5.0.11",
-    "i18next": "^25.4.2",
+    "i18next": "^25.5.1",
     "intl-pluralrules": "^2.0.1",
     "posthog-react-native": "^4.5.0",
     "posthog-react-native-session-replay": "^1.1.3",
@@ -64,9 +64,9 @@
     "react-native-edge-to-edge": "1.6.0",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-global-state-hooks": "^11.0.1",
-    "react-native-keyboard-controller": "^1.18.5",
+    "react-native-keyboard-controller": "^1.18.6",
     "react-native-marked": "^7.0.2",
-    "react-native-mmkv": "^3.3.0",
+    "react-native-mmkv": "^3.3.1",
     "react-native-reanimated": "~3.17.5",
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.11.1",
@@ -75,7 +75,7 @@
     "react-native-turnstile": "^1.0.9",
     "react-native-webview": "13.13.5",
     "reanimated-tab-view": "^0.4.0",
-    "victory-native": "^41.19.3"
+    "victory-native": "^41.20.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.2.2",
