@@ -8,20 +8,20 @@ import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
-import { useDebounce } from "src/hooks/useDebounce";
 import { useSearchSteamProfile } from "src/hooks/useSteamProfiles";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
 import { load, save } from "src/utils/storage";
+import { useDebounce } from "use-debounce";
 
 export default function PlayerSearchScreen() {
   const { themed, theme } = useAppTheme();
   const [searchQuery, setSearchQuery] = useState("");
   const [_, setPlayer] = usePlayerSelected();
   const [recentSearches, setRecentSearches] = useState<SteamProfile[]>(load("recentSearches") ?? []);
-  const debounceSearchQuery = useDebounce(searchQuery);
+  const [debounceSearchQuery] = useDebounce(searchQuery, 300);
 
   const handlePress = (player: SteamProfile) => {
     setPlayer(player);
