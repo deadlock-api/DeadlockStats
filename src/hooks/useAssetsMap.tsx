@@ -13,6 +13,5 @@ export const useAssetsMap = () => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };

@@ -16,7 +16,6 @@ export const useSteamProfiles = (query: PlayersApiSteamRequest) => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };
 
@@ -40,6 +39,5 @@ export const useSearchSteamProfile = (query: PlayersApiSteamSearchRequest) => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };

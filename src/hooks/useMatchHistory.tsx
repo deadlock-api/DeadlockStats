@@ -15,6 +15,5 @@ export const useMatchHistory = (query: PlayersApiMatchHistoryRequest) => {
       }
     },
     staleTime: 5 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };

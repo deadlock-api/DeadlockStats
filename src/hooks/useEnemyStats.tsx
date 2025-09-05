@@ -15,6 +15,5 @@ export const useEnemyStats = (query: PlayersApiEnemyStatsRequest) => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };

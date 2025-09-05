@@ -15,6 +15,5 @@ export const useHeroStats = (query: PlayersApiPlayerHeroStatsRequest) => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };

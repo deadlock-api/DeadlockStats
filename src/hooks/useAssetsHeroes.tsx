@@ -18,7 +18,6 @@ export const useAssetsHeroes = () => {
       }
     },
     staleTime: 60 * 60 * 1000,
-    networkMode: "offlineFirst",
   });
 };
 
