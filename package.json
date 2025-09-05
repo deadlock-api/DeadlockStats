@@ -93,7 +93,8 @@
           "intl-pluralrules",
           "react-native-global-state-hooks",
           "react-native-turnstile",
-          "services"
+          "deadlock-api-client",
+          "assets-deadlock-api-client"
         ]
       }
     }
