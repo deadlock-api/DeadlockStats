@@ -159,12 +159,12 @@ const $rightTeamName: ThemedStyle<TextStyle> = ({ typography }) => ({
   lineHeight: 20,
 });
 
-const $leftTeamStats: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $leftTeamStats: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "column",
   alignItems: "flex-start",
 });
 
-const $rightTeamStats: ThemedStyle<ViewStyle> = ({ spacing }) => ({
+const $rightTeamStats: ThemedStyle<ViewStyle> = () => ({
   flexDirection: "column",
   alignItems: "flex-end",
 });
