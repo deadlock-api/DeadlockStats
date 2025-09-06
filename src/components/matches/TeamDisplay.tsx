@@ -87,7 +87,7 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
   return (
     <View style={themed($teamContainer)}>
       <View style={[themed($teamContainerTop), themed(isLeft ? $teamContainerTopLeft : $teamContainerTopRight)]}>
-        {isLeft && badge && <RankImage rank={badge} />}
+        {isLeft && badge && <RankImage rank={badge} size={32} />}
         <View style={themed(isLeft ? $leftTeamNameContainer : $rightTeamNameContainer)}>
           <Text size="md" style={themed(isLeft ? $leftTeamName : $rightTeamName)}>
             {teamName}
@@ -99,7 +99,7 @@ export function TeamDisplay({ teamName, badge, isWinner, stats }: TeamDisplayPro
             }}
           />
         </View>
-        {!isLeft && badge && <RankImage rank={badge} />}
+        {!isLeft && badge && <RankImage rank={badge} size={32} />}
       </View>
       <View style={themed(isLeft ? $leftTeamStats : $rightTeamStats)}>
         {kda}
@@ -139,22 +139,24 @@ const $teamContainerTopRight: ThemedStyle<ViewStyle> = () => ({
 
 const $leftTeamNameContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   alignItems: "flex-start",
-  gap: spacing.xxs,
+  gap: spacing.xxxs,
 });
 
 const $rightTeamNameContainer: ThemedStyle<ViewStyle> = ({ spacing }) => ({
   alignItems: "flex-end",
-  gap: spacing.xxs,
+  gap: spacing.xxxs,
 });
 
 const $leftTeamName: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.bold,
   textAlign: "left",
+  lineHeight: 20,
 });
 
 const $rightTeamName: ThemedStyle<TextStyle> = ({ typography }) => ({
   fontFamily: typography.primary.bold,
   textAlign: "right",
+  lineHeight: 20,
 });
 
 const $leftTeamStats: ThemedStyle<ViewStyle> = ({ spacing }) => ({

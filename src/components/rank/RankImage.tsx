@@ -2,7 +2,7 @@ import type { ImageRequireSource } from "react-native";
 import { AutoImage } from "src/components/ui/AutoImage";
 import { useAssetsRanks } from "src/hooks/useAssetsRanks";
 
-const DEFAULT_SIZE = 70;
+const DEFAULT_SIZE = 40;
 
 const RANK_IMAGES = {
   0: require("@assets/ranks/0.webp"),
