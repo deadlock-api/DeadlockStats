@@ -2,7 +2,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { MMRHistory, PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { Link, useRouter } from "expo-router";
-import React, { useCallback, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
@@ -176,19 +176,19 @@ export const StatDisplays = ({
   const chartData = rankData
     ?.sort((a, b) => b.match_id - a.match_id)
     .slice(0, 50)
-    .map((rd, row) => ({ row, rank: rd.player_score }));
+    .map((rd, row) => ({ row, rank: rd.player_score ?? 0 }));
 
   return (
     <View style={themed($statDisplaysContainer)}>
-      <View style={{ flexDirection: "row", justifyContent: "space-between", gap: theme.spacing.sm }}>
-        {rankData && (
+      {rankData?.[0]?.rank ? (
+        <View style={{ flexDirection: "row", justifyContent: "space-between", gap: theme.spacing.sm }}>
           <StatCard
             value={
               <>
                 <View style={[$styles.column, { alignItems: "center" }]}>
-                  <RankImage rank={rankData?.[0].rank} size={40} />
+                  <RankImage rank={rankData?.[0]?.rank} size={40} />
                   <Text size="md" style={{ color: theme.colors.text }}>
-                    <RankName rank={rankData?.[0].rank} />
+                    <RankName rank={rankData?.[0]?.rank} />
                   </Text>
                   <Text
                     size="xxs"
@@ -223,9 +223,25 @@ export const StatDisplays = ({
             }
             valueColor={theme.colors.text}
           />
-        )}
 
-        <View style={{ flexDirection: "column", gap: theme.spacing.xs, justifyContent: "space-between" }}>
+          <View style={{ flexDirection: "column", gap: theme.spacing.xs, justifyContent: "space-between" }}>
+            <StatCard
+              title={translate("dashboardScreen:winRate7Days")}
+              value={`${winRate}%`}
+              valueChange={wins - losses}
+              valueColor={wins + losses > 0 ? scaleColor(winRate, 30, 70) : theme.colors.text}
+              subtitle={`${wins}W ${losses}L`}
+            />
+            <StatCard
+              title={translate("dashboardScreen:avgKda7Days")}
+              value={kda.ratio > 0 ? kda.ratio : "N/A"}
+              subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
+              valueColor={kda.ratio > 0 ? scaleColor(kda.ratio, 0.5, 4) : theme.colors.text}
+            />
+          </View>
+        </View>
+      ) : (
+        <>
           <StatCard
             title={translate("dashboardScreen:winRate7Days")}
             value={`${winRate}%`}
@@ -239,8 +255,9 @@ export const StatDisplays = ({
             subtitle={`${kda.kills}/${kda.deaths}/${kda.assists}`}
             valueColor={kda.ratio > 0 ? scaleColor(kda.ratio, 0.5, 4) : theme.colors.text}
           />
-        </View>
-      </View>
+        </>
+      )}
+
       {bestMate && (
         <StatCard
           onPress={() => updatePlayer(bestMate.mate_id)}
