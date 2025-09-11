@@ -1,4 +1,4 @@
-import { type ComponentType, forwardRef, type ReactElement } from "react";
+import { forwardRef, type ReactElement } from "react";
 import {
   type StyleProp,
   type TextStyle,
@@ -128,7 +128,7 @@ export const ListItem = forwardRef<View, ListItemProps>(function ListItem(props:
 
   const $touchableStyles = [$styles.row, $touchableStyle, { minHeight: height }, style];
 
-  const Wrapper: ComponentType<TouchableOpacityProps> = isTouchable ? TouchableOpacity : View;
+  const Wrapper = isTouchable ? TouchableOpacity : View;
 
   return (
     <View ref={ref} style={themed($containerStyles)}>
