@@ -121,6 +121,7 @@ export default function Chat() {
     setMemoryId(null);
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: it's a not changing function
   const handleSend = useCallback(() => {
     if (lock) return;
 
