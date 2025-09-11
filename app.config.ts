@@ -23,7 +23,6 @@ module.exports = (): ExpoConfig => {
     android: {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.deadlockapi.deadlockstats",
-      edgeToEdgeEnabled: true,
       userInterfaceStyle: "automatic",
       versionCode: 2,
       intentFilters: [
@@ -70,7 +69,7 @@ module.exports = (): ExpoConfig => {
         "expo-build-properties",
         {
           android: {
-            enableProguardInReleaseBuilds: true,
+            enableMinifyInReleaseBuilds: true,
             enableShrinkResourcesInReleaseBuilds: true,
             extraProguardRules: `
             -keep class com.shopify.reactnative.skia.** { *; }
@@ -104,6 +103,7 @@ module.exports = (): ExpoConfig => {
     experiments: {
       tsconfigPaths: true,
       typedRoutes: true,
+      reactCompiler: true,
     },
     extra: {
       ignite: {
