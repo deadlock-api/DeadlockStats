@@ -1,6 +1,6 @@
 import { useFont } from "@shopify/react-native-skia";
 import type { HashMapValue } from "deadlock-api-client/api";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { type TextStyle, View, type ViewStyle } from "react-native";
 import { Text } from "src/components/ui/Text";
 import { useAppTheme } from "src/theme/context";
