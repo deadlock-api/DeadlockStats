@@ -8,13 +8,13 @@ import { createRef, type Ref, useCallback, useEffect, useMemo, useState } from "
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   TextInput,
   type TextStyle,
   TouchableOpacity,
   View,
   type ViewStyle,
 } from "react-native";
-import { Pressable } from "react-native-gesture-handler";
 import Markdown from "react-native-marked";
 import EventSource, { type ErrorEvent } from "react-native-sse";
 import { usePlayerSelected } from "src/app/_layout";
