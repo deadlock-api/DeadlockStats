@@ -167,5 +167,31 @@
     "playerLabel": "You",
     "errorTitle": "Performance Data Error",
     "errorMessage": "We couldn't load your performance metrics. Please check your connection and try again."
+  },
+  "rankHistoryScreen": {
+    "title": "Rank History",
+    "currentRank": "Current Rank",
+    "loadingRankHistory": "Loading rank history...",
+    "noRankDataAvailable": "No rank data available",
+    "errorLoadingRankData": "Failed to load rank data",
+    "retryLoading": "Try Again",
+    "matchesAnalyzed": "matches analyzed",
+    "averageRank": "Average Rank",
+    "highestRank": "Highest Rank",
+    "lowestRank": "Lowest Rank",
+    "rankTrend": "Rank Trend",
+    "recentMatches": "Recent {{count}} Matches",
+    "allTimeStats": "All Time Stats",
+    "rankDistribution": "Rank Distribution",
+    "noSteamAccountLinked": "Link your Steam account to view your rank history"
+  },
+  "rankChartPopover": {
+    "title": "Rank History",
+    "currentRank": "Current Rank",
+    "matchesAnalyzed": "matches analyzed",
+    "lookbackPeriod": "Lookback Period",
+    "showingLastMatches": "Showing last {{count}} matches",
+    "xAxisLabel": "Match Number",
+    "yAxisLabel": "Rank Tier"
   }
 }

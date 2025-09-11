@@ -2,8 +2,8 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { MMRHistory, PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { Link, useRouter } from "expo-router";
-import { useCallback, useEffect } from "react";
-import { ActivityIndicator, type TextStyle, View, type ViewStyle } from "react-native";
+import { useCallback, useEffect, useState } from "react";
+import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
 import { HeroName } from "src/components/heroes/HeroName";
@@ -11,6 +11,7 @@ import { MatchList } from "src/components/matches/MatchList";
 import { StatCard } from "src/components/profile/StatCard";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
+import { RankChartPopover } from "src/components/rank/RankChartPopover";
 import { RankImage } from "src/components/rank/RankImage";
 import { RankName } from "src/components/rank/RankName";
 import { Screen } from "src/components/ui/Screen";
@@ -36,6 +37,7 @@ export default function DashboardScreen() {
   const { themed, theme } = useAppTheme();
 
   const [player, setPlayer] = usePlayerSelected();
+  const [showRankPopover, setShowRankPopover] = useState(false);
 
   const steamId = getSteamId();
   const { data: userProfiles } = useSteamProfiles({ accountIds: [steamId ?? 0] });
@@ -54,7 +56,12 @@ export default function DashboardScreen() {
     <Screen preset="scroll" contentContainerStyle={$styles.containerWithHeader} onRefreshing={onRefreshing}>
       {player?.account_id && matchHistory && matchHistory.length > 0 ? (
         <>
-          <StatDisplays accountId={player?.account_id} matchHistory={matchHistory} rankData={rankData} />
+          <StatDisplays
+            accountId={player?.account_id}
+            matchHistory={matchHistory}
+            rankData={rankData}
+            onShowRankPopover={() => setShowRankPopover(true)}
+          />
           <View
             style={{
               flexDirection: "row",
@@ -95,6 +102,8 @@ export default function DashboardScreen() {
           )}
         </View>
       )}
+
+      <RankChartPopover visible={showRankPopover} onClose={() => setShowRankPopover(false)} rankData={rankData} />
     </Screen>
   );
 }
@@ -103,12 +112,15 @@ export const StatDisplays = ({
   accountId,
   matchHistory,
   rankData,
+  onShowRankPopover,
 }: {
   accountId: number;
   matchHistory: PlayerMatchHistoryEntry[];
   rankData?: MMRHistory[];
+  onShowRankPopover?: () => void;
 }) => {
   const [_, setPlayer] = usePlayerSelected();
+  const _router = useRouter();
 
   const { themed, theme } = useAppTheme();
 
@@ -185,7 +197,11 @@ export const StatDisplays = ({
           <StatCard
             value={
               <>
-                <View style={[$styles.column, { alignItems: "center" }]}>
+                <TouchableOpacity
+                  style={[$styles.column, { alignItems: "center" }]}
+                  onPress={onShowRankPopover}
+                  activeOpacity={0.7}
+                >
                   <RankImage rank={rankData?.[0]?.rank} size={40} />
                   <Text size="md" style={{ color: theme.colors.text }}>
                     <RankName rank={rankData?.[0]?.rank} />
@@ -197,8 +213,12 @@ export const StatDisplays = ({
                     adjustsFontSizeToFit
                     numberOfLines={1}
                   />
-                </View>
-                <View style={{ height: 60, marginTop: theme.spacing.xs }}>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ height: 60, marginTop: theme.spacing.xs }}
+                  onPress={onShowRankPopover}
+                  activeOpacity={0.7}
+                >
                   {chartData && (
                     <CartesianChart
                       data={chartData}
@@ -218,7 +238,7 @@ export const StatDisplays = ({
                       {({ points }) => <Line points={points.rank} color={theme.colors.tint} strokeWidth={3} />}
                     </CartesianChart>
                   )}
-                </View>
+                </TouchableOpacity>
               </>
             }
             valueColor={theme.colors.text}
