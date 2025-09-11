@@ -1,4 +1,5 @@
 import type { ImageRequireSource } from "react-native";
+import { division, subrank } from "src/components/rank/RankName";
 import { AutoImage } from "src/components/ui/AutoImage";
 import { useAssetsRanks } from "src/hooks/useAssetsRanks";
 
@@ -78,9 +79,6 @@ export interface RankImageProps {
   rank: number;
   size?: number;
 }
-
-const division = (rank: number) => Math.floor(rank / 10);
-const subrank = (rank: number) => (rank % 10).toFixed(0);
 
 export function RankImage(props: RankImageProps) {
   const { data: ranks } = useAssetsRanks();
