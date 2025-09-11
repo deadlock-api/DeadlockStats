@@ -11,7 +11,6 @@ import {
   View,
   type ViewStyle,
 } from "react-native";
-import { SystemBars, type SystemBarsProps, type SystemBarStyle } from "react-native-edge-to-edge";
 import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 
 import { useAppTheme } from "src/theme/context";
@@ -37,10 +36,6 @@ interface BaseScreenProps {
    */
   backgroundColor?: string;
   /**
-   * System bar setting. Defaults to dark.
-   */
-  systemBarStyle?: SystemBarStyle;
-  /**
    * By how much should we offset the keyboard? Defaults to 0.
    */
   keyboardOffset?: number;
@@ -48,10 +43,6 @@ interface BaseScreenProps {
    * By how much we scroll up when the keyboard is shown. Defaults to 50.
    */
   keyboardBottomOffset?: number;
-  /**
-   * Pass any additional props directly to the SystemBars component.
-   */
-  SystemBarsProps?: SystemBarsProps;
   /**
    * Pass any additional props directly to the KeyboardAvoidingView component.
    */
@@ -241,14 +232,11 @@ function ScreenWithScrolling(props: ScreenProps) {
 export function Screen(props: ScreenProps) {
   const {
     theme: { colors },
-    themeContext,
   } = useAppTheme();
-  const { backgroundColor, KeyboardAvoidingViewProps, keyboardOffset = 0, SystemBarsProps, systemBarStyle } = props;
+  const { backgroundColor, KeyboardAvoidingViewProps, keyboardOffset = 0 } = props;
 
   return (
     <View style={[$containerStyle, { backgroundColor: backgroundColor || colors.background }]}>
-      <SystemBars style={systemBarStyle || (themeContext === "dark" ? "light" : "dark")} {...SystemBarsProps} />
-
       <KeyboardAvoidingView
         behavior={isIos ? "padding" : "height"}
         keyboardVerticalOffset={keyboardOffset}

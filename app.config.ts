@@ -87,7 +87,6 @@ module.exports = (): ExpoConfig => {
           },
         },
       ],
-      "react-native-edge-to-edge",
       "expo-localization",
       "expo-font",
       [
@@ -97,15 +96,6 @@ module.exports = (): ExpoConfig => {
           imageWidth: 200,
           resizeMode: "cover",
           backgroundColor: "#191015",
-        },
-      ],
-      [
-        "react-native-edge-to-edge",
-        {
-          android: {
-            parentTheme: "Light",
-            enforceNavigationBarContrast: false,
-          },
         },
       ],
       require("./plugins/withSplashScreen").withSplashScreen,

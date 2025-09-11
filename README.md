@@ -218,10 +218,6 @@ The app supports deep linking for:
 - **Preview**: Internal testing and distribution
 - **Production**: App store releases
 
-### Platform-Specific Features
-- **Android**: Edge-to-edge display, intent filters for deep linking
-- **iOS**: Native navigation, proper safe area handling
-
 ## 🤝 Contributing
 
 This project follows Infinite Red's React Native boilerplate structure and best practices. When contributing:
