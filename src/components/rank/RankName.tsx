@@ -6,7 +6,7 @@ export interface RankNameProps {
 }
 
 const division = (rank: number) => Math.floor(rank / 10);
-const subrank = (rank: number) => rank % 10;
+const subrank = (rank: number) => (rank % 10).toFixed(0);
 
 export function RankName(props: RankNameProps) {
   if (props.rankName) return <RankNameFromAssets rankName={props.rankName} />;

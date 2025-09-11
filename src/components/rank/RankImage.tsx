@@ -80,7 +80,7 @@ export interface RankImageProps {
 }
 
 const division = (rank: number) => Math.floor(rank / 10);
-const subrank = (rank: number) => rank % 10;
+const subrank = (rank: number) => (rank % 10).toFixed(0);
 
 export function RankImage(props: RankImageProps) {
   const { data: ranks } = useAssetsRanks();
