@@ -2,7 +2,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import { useQueryClient } from "@tanstack/react-query";
 import type { MMRHistory, PlayerMatchHistoryEntry } from "deadlock-api-client";
 import { Link, useRouter } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { ActivityIndicator, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { HeroImage } from "src/components/heroes/HeroImage";
@@ -47,7 +47,8 @@ export default function DashboardScreen() {
   }, [userProfiles, setPlayer, player]);
 
   const { data: matchHistory, isLoading, error } = useMatchHistory({ accountId: player?.account_id ?? 0 });
-  const { data: rankData } = useMMRHistory({ accountId: player?.account_id ?? 0 });
+  const { data: rankDataRaw } = useMMRHistory({ accountId: player?.account_id ?? 0 });
+  const rankData = rankDataRaw?.sort((a, b) => b.match_id - a.match_id)?.slice(0, 100);
 
   const queryClient = useQueryClient();
   const onRefreshing = useCallback(async () => await queryClient.refetchQueries({ type: "active" }), [queryClient]);
@@ -120,7 +121,6 @@ export const StatDisplays = ({
   onShowRankPopover?: () => void;
 }) => {
   const [_, setPlayer] = usePlayerSelected();
-  const _router = useRouter();
 
   const { themed, theme } = useAppTheme();
 
@@ -137,6 +137,19 @@ export const StatDisplays = ({
     accountId: accountId ?? 0,
     minUnixTimestamp,
   });
+
+  const chartData = useMemo(
+    () =>
+      rankData
+        ?.map((rd) => ({
+          player_score: rd.player_score ?? 0,
+          startTime: rd.start_time,
+          matchId: rd.match_id,
+        }))
+        .sort((a, b) => a.matchId - b.matchId),
+    [rankData],
+  );
+
   const uniqueMatchesPlayedMates = [...new Set(mateStats?.map((m) => m.matches_played))];
   const avgMatchesPlayedMates =
     uniqueMatchesPlayedMates.reduce((sum, val) => sum + val, 0) / uniqueMatchesPlayedMates.length;
@@ -185,11 +198,6 @@ export const StatDisplays = ({
     return <ActivityIndicator />;
   }
 
-  const chartData = rankData
-    ?.sort((a, b) => b.match_id - a.match_id)
-    .slice(0, 50)
-    .map((rd, row) => ({ row, rank: rd.player_score ?? 0 }));
-
   return (
     <View style={themed($statDisplaysContainer)}>
       {rankData?.[0]?.rank ? (
@@ -222,8 +230,8 @@ export const StatDisplays = ({
                   {chartData && (
                     <CartesianChart
                       data={chartData}
-                      xKey="row"
-                      yKeys={["rank"]}
+                      xKey="startTime"
+                      yKeys={["player_score"]}
                       yAxis={[
                         {
                           lineWidth: 0,
@@ -235,7 +243,7 @@ export const StatDisplays = ({
                         lineColor: "transparent",
                       }}
                     >
-                      {({ points }) => <Line points={points.rank} color={theme.colors.tint} strokeWidth={3} />}
+                      {({ points }) => <Line points={points.player_score} color={theme.colors.tint} strokeWidth={3} />}
                     </CartesianChart>
                   )}
                 </TouchableOpacity>

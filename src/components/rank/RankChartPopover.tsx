@@ -23,21 +23,20 @@ export function RankChartPopover({ visible, onClose, rankData }: RankChartPopove
   const font = useFont(require("@assets/fonts/SpaceGrotesk-Medium.ttf"));
   const { data: ranks } = useAssetsRanks();
 
-  const sortedData = useMemo(() => {
-    if (!rankData || rankData.length === 0) return [];
-    return rankData.sort((a, b) => a.match_id - b.match_id);
-  }, [rankData]);
-
   // Filtered chart data based on lookback period
-  const chartData = useMemo(() => {
-    if (sortedData.length === 0) return [];
-    return sortedData.slice(Math.max(0, sortedData.length - 100)).map((rd) => ({
-      player_score: rd.player_score ?? 0,
-      startTime: rd.start_time,
-    }));
-  }, [sortedData]);
+  const chartData = useMemo(
+    () =>
+      rankData
+        ?.map((rd) => ({
+          player_score: rd.player_score ?? 0,
+          startTime: rd.start_time,
+          matchId: rd.match_id,
+        }))
+        .sort((a, b) => a.matchId - b.matchId),
+    [rankData],
+  );
 
-  const currentRank = rankData?.[rankData.length - 1]?.rank;
+  const currentRank = rankData?.[0]?.rank;
 
   if (!visible) return null;
 
@@ -66,7 +65,7 @@ export function RankChartPopover({ visible, onClose, rankData }: RankChartPopove
 
               {/* Chart */}
               <View style={themed($chartContainer)}>
-                {chartData.length > 0 ? (
+                {chartData && chartData.length > 0 ? (
                   <CartesianChart
                     data={chartData}
                     xKey="startTime"
@@ -110,7 +109,7 @@ export function RankChartPopover({ visible, onClose, rankData }: RankChartPopove
               {/* Footer info */}
               <View style={themed($footer)}>
                 <Text size="xs" style={{ color: theme.colors.textDim, textAlign: "center" }}>
-                  {chartData.length > 0
+                  {chartData && chartData.length > 0
                     ? `Last ${chartData.length} Matches`
                     : translate("rankHistoryScreen:noRankDataAvailable")}
                 </Text>
