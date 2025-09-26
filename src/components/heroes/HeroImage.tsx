@@ -79,6 +79,8 @@ export function HeroImage(props: HeroImageProps) {
           width: props.size ?? DEFAULT_SIZE,
           height: props.size ?? DEFAULT_SIZE,
           borderRadius: (props.size ?? DEFAULT_SIZE) / 2,
+          borderWidth: 1,
+          borderColor: "rgba(0, 0, 0, 0.2)",
           backgroundColor: getBackgroundColor(hero),
         },
       ]}
