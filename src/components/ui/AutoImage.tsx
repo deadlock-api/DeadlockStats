@@ -1,5 +1,14 @@
 import { useLayoutEffect, useState } from "react";
-import { Image, type ImageProps, type ImageURISource, PixelRatio, Platform } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  type ImageProps,
+  type ImageURISource,
+  PixelRatio,
+  Platform,
+  View,
+} from "react-native";
+import { useAppTheme } from "src/theme/context";
 
 export interface AutoImageProps extends ImageProps {
   /**
@@ -10,9 +19,16 @@ export interface AutoImageProps extends ImageProps {
    * How tall should the image be?
    */
   maxHeight?: number;
+  /**
+   * Optional headers for the image request.
+   */
   headers?: {
     [key: string]: string;
   };
+  /**
+   * Whether to show a loading skeleton (ActivityIndicator) while loading. Defaults to true.
+   */
+  showSkeleton?: boolean;
 }
 
 /**
@@ -72,7 +88,8 @@ export function useAutoImage(
  * @returns {JSX.Element} The rendered `AutoImage` component.
  */
 export function AutoImage(props: AutoImageProps) {
-  const { maxWidth, maxHeight, ...ImageProps } = props;
+  const { theme } = useAppTheme();
+  const { maxWidth, maxHeight, style, showSkeleton = true, ...ImageProps } = props;
   const source = props.source as ImageURISource;
   const headers = source?.headers;
 
@@ -85,5 +102,15 @@ export function AutoImage(props: AutoImageProps) {
     [maxWidth, maxHeight],
   );
 
-  return <Image {...ImageProps} style={[{ width, height }, props.style]} />;
+  const [loading, setLoading] = useState(true);
+
+  // Determine the diameter for the circle (use the smaller of width/height)
+  const diameter = Math.max(16, Math.min(width, height) * 0.8);
+
+  return (
+    <View style={[{ width, height, justifyContent: "center", alignItems: "center" }, style]}>
+      {showSkeleton && loading && diameter > 0 && <ActivityIndicator size={diameter} color={theme.colors.tint} />}
+      <Image {...ImageProps} style={[{ width, height }, style]} onLoadEnd={() => setLoading(false)} />
+    </View>
+  );
 }
