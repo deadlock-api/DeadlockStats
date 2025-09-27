@@ -1,6 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
-import { Link, Tabs } from "expo-router";
-import { type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
+import { Link, type LinkProps, Tabs } from "expo-router";
+import { Pressable, type StyleProp, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { usePlayerSelected } from "src/app/_layout";
 import { SteamImage } from "src/components/profile/SteamImage";
 import { SteamName } from "src/components/profile/SteamName";
@@ -92,6 +92,22 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="chart-line" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
+          tabBarButton: (props) => {
+            return (
+              <Link
+                {...(props as LinkProps)}
+                disabled={player == null}
+                style={[
+                  { display: "flex" },
+                  player == null ? { opacity: 0.5 } : {},
+                  props.style as StyleProp<TextStyle>,
+                ]}
+                asChild
+              >
+                <Pressable>{props.children}</Pressable>
+              </Link>
+            );
+          },
         }}
       />
       <Tabs.Screen
@@ -111,6 +127,22 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <FontAwesome6 name="trophy" solid color={focused ? colors.tint : colors.tintInactive} size={25} />
           ),
+          tabBarButton: (props) => {
+            return (
+              <Link
+                {...(props as LinkProps)}
+                disabled={player == null}
+                style={[
+                  { display: "flex" },
+                  player == null ? { opacity: 0.5 } : {},
+                  props.style as StyleProp<TextStyle>,
+                ]}
+                asChild
+              >
+                <Pressable>{props.children}</Pressable>
+              </Link>
+            );
+          },
         }}
       />
       <Tabs.Screen
