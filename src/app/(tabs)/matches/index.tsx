@@ -9,7 +9,6 @@ import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
 import { useMatchHistory } from "src/hooks/useMatchHistory";
 import { $styles } from "src/theme/styles";
-import { hasSteamId } from "src/utils/steamAuth";
 
 export default function MatchesList() {
   const router = useRouter();
@@ -53,7 +52,7 @@ export default function MatchesList() {
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text tx={!hasSteamId() ? "matchesListScreen:noSteamAccountLinked" : "matchesListScreen:noMatchesFound"} />
+          <Text tx="matchesListScreen:noMatchesFound" />
         </View>
       )}
     </Screen>

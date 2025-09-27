@@ -17,7 +17,6 @@ import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
 import { formatRelativeTime, formatTimePlayed } from "src/utils/matchHistoryStats";
 import { scaleColor } from "src/utils/scaleColor";
-import { hasSteamId } from "src/utils/steamAuth";
 
 export default function HeroesStats() {
   const [timeRange] = useTimeRangeSelected();
@@ -75,7 +74,7 @@ export default function HeroesStats() {
         </View>
       ) : (
         <View style={{ alignItems: "center", justifyContent: "center", padding: 16 }}>
-          <Text tx={!hasSteamId() ? "heroesStatsScreen:noSteamAccountLinked" : "heroesStatsScreen:noHeroStatsFound"} />
+          <Text tx="heroesStatsScreen:noHeroStatsFound" />
         </View>
       )}
     </Screen>
