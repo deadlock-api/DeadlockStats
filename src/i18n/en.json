@@ -88,7 +88,8 @@
       "Plot the number of matches per month",
       "Plot a win/loss chart of my matches"
     ],
-    "pleaseWaitValidatingCaptcha": "Validating Captcha"
+    "pleaseWaitValidatingCaptcha": "Validating Captcha",
+    "pleaseWaitValidatingCaptchaSubtext": "This is a one time process, please wait..."
   },
   "heroDetailsScreen": {
     "heroMatches": "Hero Matches",

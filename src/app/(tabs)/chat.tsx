@@ -307,6 +307,7 @@ export default function Chat() {
             <View style={{ alignItems: "center", justifyContent: "center", gap: theme.spacing.md }}>
               <ActivityIndicator size="large" color={theme.colors.tint} />
               <Text tx="chatBotScreen:pleaseWaitValidatingCaptcha" />
+              <Text tx="chatBotScreen:pleaseWaitValidatingCaptchaSubtext" size="xxs" />
               <Turnstile onToken={handleToken} />
             </View>
           )
