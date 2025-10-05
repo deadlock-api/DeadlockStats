@@ -24,7 +24,6 @@ module.exports = (): ExpoConfig => {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.deadlockapi.deadlockstats",
       userInterfaceStyle: "automatic",
-      versionCode: 2,
       intentFilters: [
         {
           action: "VIEW",
