@@ -85,6 +85,7 @@ export default function Chat() {
   const [prompt, setPrompt] = useState("");
   const [memoryId, setMemoryId] = useState<string | null>(null);
   const [lock, setLock] = useState<boolean>(false);
+  const [pendingSend, setPendingSend] = useState<boolean>(false);
   const [player] = usePlayerSelected();
   const flatListRef: Ref<FlatList<Message>> | undefined = createRef();
 
@@ -94,7 +95,7 @@ export default function Chat() {
     setToken(newToken);
   }, []);
 
-  const { data: isCaptchaValid } = useQuery({
+  const { data: isCaptchaValid, isLoading: isCaptchaValidating } = useQuery({
     queryKey: ["isCaptchaValid", token],
     queryFn: async () => {
       if (!token) return false;
@@ -105,6 +106,8 @@ export default function Chat() {
       return ((await response.json()) as { valid: boolean }).valid;
     },
     staleTime: 60 * 60 * 1000,
+    retry: 2,
+    retryDelay: 1000,
   });
 
   useEffect(() => {
@@ -119,18 +122,27 @@ export default function Chat() {
     setInflightMessage(null);
     setPrompt("");
     setMemoryId(null);
+    setPendingSend(false);
   }, []);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: it's a not changing function
   const handleSend = useCallback(() => {
     if (lock) return;
 
-    if (!token) {
+    // If captcha is still validating or no token yet, queue the message
+    if (isCaptchaValidating || !token) {
+      setPendingSend(true);
+      return;
+    }
+
+    if (isCaptchaValid === false) {
       setMessages((prev) => [
         ...prev,
         { text: prompt.trim(), role: "user" },
         { text: "Please validate the captcha", role: "assistant", error: true },
       ]);
+      setPrompt("");
+      setPendingSend(false);
       return;
     }
     if (prompt.length < 3) {
@@ -139,9 +151,12 @@ export default function Chat() {
         { text: prompt.trim(), role: "user" },
         { text: "Please enter a longer message", role: "assistant", error: true },
       ]);
+      setPrompt("");
+      setPendingSend(false);
       return;
     }
 
+    setPendingSend(false);
     setLock(true);
 
     if (isAnalyticsEnabled()) {
@@ -229,6 +244,13 @@ export default function Chat() {
     });
   }, [token, lock, prompt, memoryId, player, flatListRef]);
 
+  // Auto-send when captcha validation completes and user has a pending send
+  useEffect(() => {
+    if (pendingSend && !isCaptchaValidating && token && isCaptchaValid && prompt.trim().length >= 3) {
+      handleSend();
+    }
+  }, [pendingSend, isCaptchaValidating, token, isCaptchaValid, prompt, handleSend]);
+
   const handleLinkToSteam = useCallback(() => {
     removeSkipWelcomePreference();
     router.replace("/welcome");
@@ -264,14 +286,18 @@ export default function Chat() {
         <View style={{ flex: 1 }}>
           <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
             <Text preset="heading" style={themed($heading)} text="AI Assistant" />
-            <Pressable onPress={reset}>
-              <View style={{ flexDirection: "column", alignItems: "center" }}>
-                <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
-                <Text style={{ color: theme.colors.error }} size="xxs">
-                  Reset
-                </Text>
-              </View>
-            </Pressable>
+            <View style={{ flexDirection: "row", alignItems: "center", gap: theme.spacing.sm }}>
+              {!token && <Turnstile onToken={handleToken} />}
+              {(isCaptchaValidating || lock) && <ActivityIndicator size="small" color={theme.colors.tint} />}
+              <Pressable onPress={reset}>
+                <View style={{ flexDirection: "column", alignItems: "center" }}>
+                  <FontAwesome6 name="rotate" solid color={theme.colors.error} size={20} />
+                  <Text style={{ color: theme.colors.error }} size="xxs">
+                    Reset
+                  </Text>
+                </View>
+              </Pressable>
+            </View>
           </View>
           <FlatList
             data={messages.concat(inflightMessage ? [inflightMessage] : [])}
@@ -283,34 +309,25 @@ export default function Chat() {
           />
         </View>
         {!lock ? (
-          token ? (
-            <View style={[themed($inputContainer)]}>
-              <TextInput
-                autoFocus
-                autoCapitalize="sentences"
-                value={prompt}
-                onChangeText={setPrompt}
-                placeholder={placeholder}
-                placeholderTextColor={theme.colors.textDim}
-                onSubmitEditing={handleSend}
-                submitBehavior="submit"
-                style={themed($inputStyle)}
-                multiline
-                autoCorrect
-                numberOfLines={3}
-              />
-              <TouchableOpacity onPress={handleSend}>
-                <FontAwesome6 name="circle-arrow-right" color={theme.colors.tint} size={24} />
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={{ alignItems: "center", justifyContent: "center", gap: theme.spacing.md }}>
-              <ActivityIndicator size="large" color={theme.colors.tint} />
-              <Text tx="chatBotScreen:pleaseWaitValidatingCaptcha" />
-              <Text tx="chatBotScreen:pleaseWaitValidatingCaptchaSubtext" size="xxs" />
-              <Turnstile onToken={handleToken} />
-            </View>
-          )
+          <View style={[themed($inputContainer)]}>
+            <TextInput
+              autoFocus
+              autoCapitalize="sentences"
+              value={prompt}
+              onChangeText={setPrompt}
+              placeholder={placeholder}
+              placeholderTextColor={theme.colors.textDim}
+              onSubmitEditing={handleSend}
+              submitBehavior="submit"
+              style={themed($inputStyle)}
+              multiline
+              autoCorrect
+              numberOfLines={3}
+            />
+            <TouchableOpacity onPress={handleSend}>
+              <FontAwesome6 name="circle-arrow-right" color={theme.colors.tint} size={24} />
+            </TouchableOpacity>
+          </View>
         ) : (
           <ActivityIndicator size="large" color={theme.colors.tint} />
         )}
