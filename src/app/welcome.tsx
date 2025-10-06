@@ -1,7 +1,6 @@
 import { FontAwesome6 } from "@expo/vector-icons";
 import * as Linking from "expo-linking";
 import { useRouter } from "expo-router";
-import { usePostHog } from "posthog-react-native";
 import { useCallback, useEffect, useState } from "react";
 import { Alert, type TextStyle, View, type ViewStyle } from "react-native";
 import { Button } from "src/components/ui/Button";
@@ -10,7 +9,6 @@ import { Text } from "src/components/ui/Text";
 import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import type { ThemedStyle } from "src/theme/types";
-import { isAnalyticsEnabled } from "src/utils/analytics";
 import {
   convertToSteamID3,
   extractSteamIdFromUrl,
@@ -23,7 +21,6 @@ import {
 const STEAM_OPENID_URL = "https://steamcommunity.com/openid/login";
 
 export default function Welcome() {
-  const posthog = usePostHog();
   const router = useRouter();
   const { themed, theme } = useAppTheme();
   const [isLoading, setIsLoading] = useState(false);
@@ -82,10 +79,7 @@ export default function Welcome() {
           const steamId3 = convertToSteamID3(steamId64);
 
           // Save to storage
-          const saved = saveSteamId(steamId3);
-          if (isAnalyticsEnabled()) posthog.identify(steamId3.toString());
-
-          if (saved) {
+          if (saveSteamId(steamId3)) {
             // Remove skip preference since user has now linked Steam
             removeSkipWelcomePreference();
             // Navigate to main app
@@ -107,7 +101,7 @@ export default function Welcome() {
         ]);
       }
     },
-    [router, posthog],
+    [router],
   );
 
   /**

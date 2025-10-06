@@ -2,7 +2,7 @@ import { FontAwesome6 } from "@expo/vector-icons";
 import * as Application from "expo-application";
 import { useRouter } from "expo-router";
 import type React from "react";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { LayoutAnimation, Linking, Switch, type TextStyle, TouchableOpacity, View, type ViewStyle } from "react-native";
 import { Screen } from "src/components/ui/Screen";
 import { Text } from "src/components/ui/Text";
@@ -10,27 +10,16 @@ import { translate } from "src/i18n/translate";
 import { useAppTheme } from "src/theme/context";
 import { $styles } from "src/theme/styles";
 import type { ThemedStyle } from "src/theme/types";
-import { getAnalyticsOptOut, saveAnalyticsOptOut } from "src/utils/analytics";
 import { hasSteamId, removeSkipWelcomePreference, removeSteamId } from "src/utils/steamAuth";
 
 export default function Settings() {
   const router = useRouter();
   const { setThemeContextOverride, themeContext, themed, theme } = useAppTheme();
 
-  // Analytics opt-out state
-  const [analyticsOptOut, setAnalyticsOptOut] = useState(getAnalyticsOptOut());
-
   const toggleTheme = useCallback(() => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); // Animate the transition
     setThemeContextOverride(themeContext === "dark" ? "light" : "dark");
   }, [themeContext, setThemeContextOverride]);
-
-  // Handle analytics opt-out toggle
-  const toggleAnalyticsOptOut = useCallback(() => {
-    const newOptOut = !analyticsOptOut;
-    setAnalyticsOptOut(newOptOut);
-    saveAnalyticsOptOut(newOptOut);
-  }, [analyticsOptOut]);
 
   // Handle sign out
   const handleSignOut = useCallback(() => {
@@ -61,23 +50,6 @@ export default function Settings() {
             <Switch
               value={themeContext === "dark"}
               onValueChange={toggleTheme}
-              trackColor={{ false: theme.colors.palette.neutral300, true: theme.colors.palette.primary500 }}
-              thumbColor={theme.colors.palette.primary700}
-            />
-          }
-        />
-      </SettingsSection>
-
-      <SettingsSection title={translate("settingsScreen:privacySection")}>
-        <SettingsItem
-          icon={<FontAwesome6 name="chart-line" solid color={theme.colors.text} size={20} />}
-          title={translate("settingsScreen:analyticsOptOut")}
-          subtitle={translate("settingsScreen:analyticsOptOutDescription")}
-          onPress={toggleAnalyticsOptOut}
-          rightElement={
-            <Switch
-              value={analyticsOptOut}
-              onValueChange={toggleAnalyticsOptOut}
               trackColor={{ false: theme.colors.palette.neutral300, true: theme.colors.palette.primary500 }}
               thumbColor={theme.colors.palette.primary700}
             />
