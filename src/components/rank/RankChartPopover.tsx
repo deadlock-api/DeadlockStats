@@ -92,7 +92,7 @@ export function RankChartPopover({ visible, onClose, rankData }: RankChartPopove
                         points={points.player_score}
                         color={theme.colors.tint}
                         strokeWidth={3}
-                        curveType="cardinal"
+                        curveType="linear"
                         connectMissingData
                       />
                     )}
