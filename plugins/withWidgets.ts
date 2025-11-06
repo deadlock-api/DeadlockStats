@@ -9,7 +9,7 @@ export const widgetConfig: WithAndroidWidgetsParams = {
       minWidth: "180dp",
       targetCellHeight: 2,
       targetCellWidth: 3,
-      description: "Check your music in different formats",
+      description: "Check your match history",
       previewImage: "./assets/widgets/match-history-preview.webp",
       resizeMode: "horizontal|vertical",
       updatePeriodMillis: 30 * 60 * 1000, // 30 minutes
