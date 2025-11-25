@@ -24,19 +24,6 @@ module.exports = (): ExpoConfig => {
       icon: "./assets/images/app-icon-android-legacy.png",
       package: "com.deadlockapi.deadlockstats",
       userInterfaceStyle: "automatic",
-      intentFilters: [
-        {
-          action: "VIEW",
-          autoVerify: true,
-          data: [
-            {
-              scheme: "https",
-              host: "deadlock-api.com",
-            },
-          ],
-          category: ["BROWSABLE", "DEFAULT"],
-        },
-      ],
       splash: {
         backgroundColor: "#0F172A",
         image: "./assets/images/splash-logo-android-universal.png",
