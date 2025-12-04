@@ -1,6 +1,6 @@
-import React, { Component, type ErrorInfo, type ReactNode } from "react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
+import { ErrorType, reportCrash } from "src/utils/crashReporting";
 import { ErrorMessage } from "./ErrorMessage";
-import { reportCrash, ErrorType } from "src/utils/crashReporting";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
